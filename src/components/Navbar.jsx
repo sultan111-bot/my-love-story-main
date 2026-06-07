@@ -10,6 +10,7 @@ const ITEMS = [
   { path: "/fun", icon: "🎮", label: "Fun" },
   { path: "/surat", icon: "💌", label: "Surat" },
   { path: "/date", icon: "💑", label: "Date" },
+  { path: "/memories", icon: "💕", label: "Memories" },  // ← TAMBAHKAN INI
 ];
 
 export default function Navbar({ onSecretTrigger }) {

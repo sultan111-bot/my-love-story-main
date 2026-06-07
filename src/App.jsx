@@ -17,6 +17,7 @@ import SecretPage from "./pages/SecretPage.jsx";
 import DatePickerPage from "./pages/DatePickerPage.jsx";
 import SultanMascot from "./components/SultanMascot.jsx";
 import SpeechBubble from "./components/SpeechBubble.jsx";
+import { MemoriesPage } from "./pages/MemoriesPage";
 
 function NotFound() {
   return (
@@ -118,6 +119,7 @@ function Layout() {
             <Route path="/" element={<Opening />} />
             <Route path="/opening" element={<Opening />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/memories" element={<MemoriesPage />} />
             <Route path="/fun" element={<FunMode />} />
             <Route path="/surat" element={<EmotionalCore />} />
             <Route path="/secret" element={<SecretPage />} />
