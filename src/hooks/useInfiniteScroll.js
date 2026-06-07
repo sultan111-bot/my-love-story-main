@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
  * Pauses on user interaction, resumes after `resumeDelay`.
  * Container's content should be duplicated 3x; we wrap when scrollTop >= content height.
  */
-export function useInfiniteScroll(ref, { speed = 1, interval = 25, resumeDelay = 3000 } = {}) {
+export function useInfiniteScroll(ref, { speed = 1, interval = 60, resumeDelay = 3000 } = {}) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;

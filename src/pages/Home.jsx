@@ -1,7 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ColorSwitcher from "../components/ColorSwitcher.jsx";
-import { useInfiniteScroll } from "../hooks/useInfiniteScroll.js";
 import { useHoldPress } from "../hooks/useHoldPress.js";
 import OurStoryModal from "../modals/OurStoryModal.jsx";
 import { useSound } from "../hooks/useSound.js";
@@ -77,6 +76,18 @@ const PHOTO_URLS = [
 
 const HEIGHTS = [140, 180, 220];
 
+const SHUFFLED_PHOTOS = [...PHOTO_URLS]
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 30);
+
+const MEDIA_ITEMS = SHUFFLED_PHOTOS.map((src, i) => ({
+  id: `p${i}`,
+  type: "photo",
+  src,
+  n: i + 1,
+  h: HEIGHTS[i % 3],
+}));
+
 function seededRand(seed) {
   // mulberry32
   let t = seed + 0x6d2b79f5;
@@ -85,64 +96,11 @@ function seededRand(seed) {
   return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
 }
 
-function buildMedia() {
-  const items = [];
-  
-  // Use only photos for better performance
-  const totalPhotos = PHOTO_URLS.length;
-  
-  // Create shuffled photo indices
-  const photoIndices = Array.from({ length: totalPhotos }, (_, i) => i);
-  
-  // Shuffle array
-  for (let i = photoIndices.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [photoIndices[i], photoIndices[j]] = [photoIndices[j], photoIndices[i]];
-  }
-  
-  // Create items with only photos
-  for (let i = 0; i < totalPhotos; i++) {
-    const photoIdx = photoIndices[i];
-    items.push({ 
-      id: `p${photoIdx}`, 
-      type: "photo", 
-      n: photoIdx + 1, 
-      src: PHOTO_URLS[photoIdx], 
-      h: HEIGHTS[items.length % 3] 
-    });
-  }
-  
-  return items;
-}
-
 function MediaCard({ item, index, onExpand }) {
   const rot = (seededRand(index) * 8 - 4).toFixed(2);
   const tx = (seededRand(index + 99) * 12 - 6).toFixed(1);
-  const isPlaceholder = !item.src || item.src.startsWith("[");
-  const [imgError, setImgError] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const cardRef = useRef(null);
   const { playPop } = useSound();
   const { vibratePop } = useVibration();
-
-  // Intersection Observer for lazy loading
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
 
   const handlers = useHoldPress({
     duration: 300,
@@ -155,7 +113,6 @@ function MediaCard({ item, index, onExpand }) {
 
   return (
     <div
-      ref={cardRef}
       {...handlers}
       className="bg-white relative select-none"
       style={{
@@ -165,39 +122,20 @@ function MediaCard({ item, index, onExpand }) {
         borderRadius: 10,
         boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
         transform: `rotate(${rot}deg) translateX(${tx}px)`,
-        opacity: isVisible ? 0.92 : 0,
-        transition: "all 0.3s ease",
       }}
     >
       <div
-        className="rounded flex items-center justify-center text-xs font-semibold relative overflow-hidden"
-        style={{
-          minHeight: 120,
-          maxHeight: item.h,
-          background: "#E0E0E0",
-          color: "#666",
-        }}
+        className="rounded overflow-hidden"
+        style={{ minHeight: 80, maxHeight: item.h, background: "#E0E0E0" }}
       >
-        {isPlaceholder ? (
-          <span>📷 {item.n}</span>
-        ) : !isVisible ? (
-          <span>Loading...</span>
-        ) : imgError ? (
-          <span>📷 Foto {item.n} (Error)</span>
-        ) : (
-          <img 
-            src={item.src} 
-            alt={`Foto ${item.n}`} 
-            draggable={false} 
-            loading="lazy"
-            className="max-w-full max-h-full object-contain rounded"
-            style={{
-              width: "auto",
-              height: "auto"
-            }}
-            onError={() => setImgError(true)}
-          />
-        )}
+        <img
+          src={item.src}
+          alt={`Foto ${item.n}`}
+          draggable={false}
+          loading="lazy"
+          decoding="async"
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+        />
       </div>
     </div>
   );
@@ -206,43 +144,8 @@ function MediaCard({ item, index, onExpand }) {
 export default function Home() {
   const [expanded, setExpanded] = useState(null);
   const [storyOpen, setStoryOpen] = useState(false);
-  const scrollRef = useRef(null);
-  const [mediaLimit, setMediaLimit] = useState(30);
   const { playSuccess } = useSound();
   const { vibrateSuccess } = useVibration();
-
-  // Detect performance mode to adjust media count
-  useEffect(() => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    const isLowEndDevice = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
-    const isLowMemory = navigator.deviceMemory && navigator.deviceMemory <= 4;
-
-    if (prefersReducedMotion || (isMobile && isLowEndDevice) || (isMobile && isLowMemory)) {
-      setMediaLimit(15); // Reduce to 15 on low-end devices
-    } else if (isMobile || isLowEndDevice || isLowMemory) {
-      setMediaLimit(20); // Reduce to 20 on medium devices
-    }
-  }, []);
-
-  const baseMedia = useMemo(() => buildMedia(), []);
-  // Reduce media count for better performance
-  const extendedMedia = useMemo(() => {
-    // Take only limited items for better performance
-    const limited = baseMedia.slice(0, mediaLimit);
-    // Create shuffled versions without too many duplicates
-    const shuffled = [...limited].sort(() => Math.random() - 0.5);
-    const shuffled2 = [...limited].sort(() => Math.random() - 0.5);
-    return [...shuffled, ...shuffled2];
-  }, [baseMedia, mediaLimit]);
-
-  useInfiniteScroll(scrollRef, { speed: 2.0, interval: 30 });
-
-  // Initialize scroll to middle so we can scroll up too
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (el) el.scrollTop = el.scrollHeight / 3;
-  }, []);
 
   const handleStoryClick = () => {
     playSuccess();
@@ -258,29 +161,25 @@ export default function Home() {
         <ColorSwitcher />
       </div>
 
-      <div
-        ref={scrollRef}
-        className="overflow-y-auto no-scrollbar px-2 flex-1"
-      >
+      <div className="overflow-y-auto no-scrollbar px-2 flex-1">
         {/* Mobile: 3 columns, Tablet: 4 columns, Desktop: 5-6 columns */}
         <div className="mobile-columns">
-          {extendedMedia.map((item, idx) => (
-            <MediaCard key={`${item.id}-${idx}`} item={item} index={idx} onExpand={setExpanded} />
+          {MEDIA_ITEMS.map((item, idx) => (
+            <MediaCard key={item.id} item={item} index={idx} onExpand={setExpanded} />
           ))}
         </div>
       </div>
 
       {/* Our Story floating */}
-     {/* Our Story floating */}
-<button
-  onClick={handleStoryClick}
-  className="fixed left-4 z-30 bg-white rounded-full px-4 py-2 text-sm shadow-lg flex items-center gap-1"
-  style={{
-    bottom: "calc(100px + env(safe-area-inset-bottom) + 8px)",
-  }}
->
-  📖 Our Story
-</button>
+      <button
+        onClick={handleStoryClick}
+        className="fixed left-4 z-30 bg-white rounded-full px-4 py-2 text-sm shadow-lg flex items-center gap-1"
+        style={{
+          bottom: "calc(100px + env(safe-area-inset-bottom) + 8px)",
+        }}
+      >
+        📖 Our Story
+      </button>
 
       {/* Expanded media overlay */}
       <AnimatePresence>
@@ -309,8 +208,8 @@ export default function Home() {
                 ✕
               </button>
               <div className="rounded flex items-center justify-center p-2"
-                   style={{ 
-                     maxWidth: "88vw", 
+                   style={{
+                     maxWidth: "88vw",
                      maxHeight: "80vh",
                      overflow: "hidden"
                    }}>
@@ -328,9 +227,9 @@ export default function Home() {
                     📷 Foto {expanded.n}
                   </div>
                 ) : (
-                  <img 
-                    src={expanded.src} 
-                    alt="" 
+                  <img
+                    src={expanded.src}
+                    alt=""
                     className="max-w-full max-h-[70vh] object-contain rounded"
                     style={{
                       width: "auto",
