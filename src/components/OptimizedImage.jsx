@@ -103,7 +103,7 @@ const OptimizedImage = memo(function OptimizedImage({
         onLoad={handleThumbLoad}
         onError={handleError}
         className={`
-          w-full h-full object-cover 
+          w-full h-full object-cover  
           transition-all duration-500 ease-out
           ${loadState === 'loading' ? 'scale-95 blur-md opacity-0' : 'scale-100 blur-0 opacity-100'}
           group-hover:scale-105 group-hover:shadow-lg

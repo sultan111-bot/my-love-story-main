@@ -274,36 +274,37 @@ body {
   }
 }
 
-/* Responsive columns for Home page media grid */
+/* ✅ FIX: Responsive columns for Home page media grid */
+/* TIDAK gunakan column-count karena break infinite scroll */
 .mobile-columns {
-  column-count: 3;
-  column-gap: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
 }
 
 .media-card {
   content-visibility: auto;
   contain-intrinsic-size: auto 200px;
   contain: layout style paint;
+  flex: 0 1 calc(33.333% - 6px);  /* 3 columns default */
 }
 
 @media (min-width: 768px) {
-  .mobile-columns {
-    column-count: 4;
-    column-gap: 12px;
+  .media-card {
+    flex: 0 1 calc(25% - 9px);  /* 4 columns */
   }
 }
 
 @media (min-width: 1024px) {
-  .mobile-columns {
-    column-count: 5;
-    column-gap: 16px;
+  .media-card {
+    flex: 0 1 calc(20% - 12.8px);  /* 5 columns */
   }
 }
 
 @media (min-width: 1280px) {
-  .mobile-columns {
-    column-count: 6;
-    column-gap: 20px;
+  .media-card {
+    flex: 0 1 calc(16.666% - 16px);  /* 6 columns */
   }
 }
 
@@ -394,7 +395,6 @@ body {
 .flip-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .flip-face.back { transform: rotateY(180deg); }
 
-
 /* ✅ PERFORMANCE OPTIMIZATION: Reduce motion on low-end devices */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -413,13 +413,6 @@ body {
   will-change: transform;
   transform: translateZ(0);
   backface-visibility: hidden;
-}
-
-/* ✅ CONTENT VISIBILITY: Optimize rendering performance */
-.media-card {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 200px;
-  contain: layout style paint;
 }
 
 /* ✅ SCROLL OPTIMIZATION: Passive event listeners */
@@ -473,27 +466,4 @@ button {
 /* ✅ ADD: Optimize modal animations */
 .fixed.inset-0 {
   will-change: contents;
-}
-
-/* Tambahkan di src/index.css */
-
-/* GPU Acceleration */
-.media-card {
-  will-change: transform;
-  transform: translateZ(0);
-}
-
-/* Reduce repaints */
-.mobile-columns {
-  contain: content;
-}
-
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Image optimization */
-img {
-  image-rendering: -webkit-optimize-contrast;
 }

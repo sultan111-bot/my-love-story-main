@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import photosData from '../data/photos.json';
+import { shuffleArray } from '../utils/shuffle.js';
 
 /**
- * Hook untuk load dan cache photo data
+ * Hook untuk load dan shuffle photo data
+ * SHUFFLE terjadi di sini, bukan di Home.jsx!
  */
 export function usePhotos() {
   const [photos, setPhotos] = useState([]);
@@ -12,8 +14,17 @@ export function usePhotos() {
   useEffect(() => {
     try {
       if (photosData && photosData.photos) {
-        setPhotos(photosData.photos);
-        console.log(`✅ Loaded ${photosData.photos.length} photos from manifest`);
+        console.log('\n📚 usePhotos: Loading photos from JSON...');
+        const originalPhotos = photosData.photos;
+        console.log('📊 Original count:', originalPhotos.length);
+        
+        // ✅ SHUFFLE DI SINI - bukan di Home.jsx!
+        console.log('🔀 Starting Fisher-Yates shuffle...');
+        const shuffled = shuffleArray(originalPhotos);
+        console.log('✅ Shuffle complete!');
+        console.log('📋 Shuffled IDs (first 15):', shuffled.slice(0, 15).map(p => p.id).join(', '));
+        
+        setPhotos(shuffled);
       } else {
         throw new Error('Invalid photos data structure');
       }
@@ -24,7 +35,7 @@ export function usePhotos() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, []); // ✅ Empty array is correct here - load once on mount
 
   return { photos, loading, error };
 }
