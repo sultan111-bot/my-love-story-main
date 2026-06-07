@@ -6,74 +6,8 @@ import { useHoldPress } from "../hooks/useHoldPress.js";
 import OurStoryModal from "../modals/OurStoryModal.jsx";
 import { useSound } from "../hooks/useSound.js";
 import { useVibration } from "../hooks/useVibration.js";
-
-const PHOTO_URLS = [
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707775/IMG-20260207-WA0372_pdrhtu.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707778/IMG-20260211-WA0254_lwxzci.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707778/IMG_20250425_140021_zwghj7.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707778/IMG_20260214_194524_s4nvgr.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707778/IMG-20260213-WA0589_i0fbg9.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707780/IMG-20260214-WA0061_lx1baz.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707780/IMG-20260213-WA0584_qzw8bj.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707780/IMG-20260213-WA0771_nhdvqq.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707780/IMG-20260213-WA0705_gnttwn.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707781/IMG-20260214-WA0057_tnwnfs.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707782/IMG-20260214-WA0083_pxwh1f.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707782/WhatsApp_Image_2026-04-21_at_00.48.52_ixcews.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707782/WhatsApp_Image_2026-04-21_at_00.49.29_1_ixmu8t.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707784/WhatsApp_Image_2026-04-21_at_00.49.30_1_je3ixl.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707784/WhatsApp_Image_2026-04-21_at_00.49.29_mkiwko.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707785/IMG-20260221-WA0144_joqbgt.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707785/WhatsApp_Image_2026-04-21_at_00.49.30_qx1b6u.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707785/WhatsApp_Image_2026-04-21_at_00.49.36_yydqsl.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707786/WhatsApp_Image_2026-04-21_at_00.49.37_1_ujos1y.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707787/WhatsApp_Image_2026-04-21_at_00.49.37_decz99.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707788/WhatsApp_Image_2026-04-21_at_00.49.39_zld4fb.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707788/WhatsApp_Image_2026-04-21_at_00.49.40_1_fxcwsb.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707789/WhatsApp_Image_2026-04-21_at_00.49.40_pkexdn.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707790/WhatsApp_Image_2026-04-21_at_00.49.41_1_jvdsh0.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707791/WhatsApp_Image_2026-04-21_at_00.49.41_es7sam.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707792/WhatsApp_Image_2026-04-21_at_00.49.42_1_fzwymt.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707792/WhatsApp_Image_2026-04-21_at_00.49.42_tuh6az.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707793/WhatsApp_Image_2026-04-21_at_00.49.44_qogezv.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707793/WhatsApp_Image_2026-04-21_at_00.49.45_1_ja0cwn.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707794/WhatsApp_Image_2026-04-21_at_00.49.45_v3rog1.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707795/WhatsApp_Image_2026-04-21_at_00.49.46_sidega.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707796/WhatsApp_Image_2026-04-21_at_00.49.50_rkg4c6.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707796/WhatsApp_Image_2026-04-21_at_00.49.53_1_t9abmh.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707797/WhatsApp_Image_2026-04-21_at_00.49.53_hn0lyb.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707798/WhatsApp_Image_2026-04-21_at_00.49.54_n8p9vc.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707799/WhatsApp_Image_2026-04-21_at_00.49.57_pbcwuv.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707799/WhatsApp_Image_2026-04-21_at_00.49.58_1_tdjn3e.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707800/WhatsApp_Image_2026-04-21_at_00.49.58_quaeby.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707801/WhatsApp_Image_2026-04-21_at_00.49.59_lzbglm.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707802/WhatsApp_Image_2026-04-21_at_00.50.04_1_tiin2g.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707802/WhatsApp_Image_2026-04-21_at_00.50.04_qjypew.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707803/WhatsApp_Image_2026-04-21_at_00.50.05_iczvee.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707804/WhatsApp_Image_2026-04-21_at_00.50.06_uy533h.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707805/WhatsApp_Image_2026-04-21_at_00.50.09_z8jdni.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707805/WhatsApp_Image_2026-04-21_at_00.50.10_koyadt.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707806/WhatsApp_Image_2026-04-21_at_00.50.11_damvhj.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707807/WhatsApp_Image_2026-04-21_at_00.50.13_cay7zf.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707807/WhatsApp_Image_2026-04-21_at_00.50.15_1_e0jazl.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707808/WhatsApp_Image_2026-04-21_at_00.50.15_xlxnat.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707809/WhatsApp_Image_2026-04-21_at_00.50.17_s6vkcn.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707809/WhatsApp_Image_2026-04-21_at_00.50.20_kwesk4.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707810/WhatsApp_Image_2026-04-21_at_00.50.22_p4nhya.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707811/WhatsApp_Image_2026-04-21_at_00.50.23_zznmas.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707811/WhatsApp_Image_2026-04-21_at_00.50.24_ghylfz.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707812/WhatsApp_Image_2026-04-21_at_00.50.26_aqhyum.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707813/WhatsApp_Image_2026-04-21_at_00.50.30_1_okptbf.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707813/WhatsApp_Image_2026-04-21_at_00.50.30_bdad6t.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707814/WhatsApp_Image_2026-04-21_at_00.50.32_vwjmb0.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707815/WhatsApp_Image_2026-04-21_at_00.50.33_pojt0h.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707816/WhatsApp_Image_2026-04-21_at_00.50.36_wkmcdx.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707816/WhatsApp_Image_2026-04-21_at_00.50.40_xys6oa.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707817/WhatsApp_Image_2026-04-21_at_00.50.41_1_ar4zfu.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707818/WhatsApp_Image_2026-04-21_at_00.50.41_c8riey.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707819/WhatsApp_Image_2026-04-21_at_00.50.42_1_bgou3j.jpg",
-  "https://res.cloudinary.com/dqp7raczz/image/upload/v1776707819/WhatsApp_Image_2026-04-21_at_00.50.42_xjiv2s.jpg"
-];
+import OptimizedImage from "../components/OptimizedImage.jsx";
+import { usePhotos } from "../hooks/usePhotos.js";
 
 const HEIGHTS = [140, 180, 220];
 
@@ -84,35 +18,43 @@ function seededRand(seed) {
   return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
 }
 
-function thumbUrl(url) {
-  return url.replace("/upload/", "/upload/w_320,q_auto,f_auto/");
+/**
+ * Prepare media items dari photos data
+ */
+function prepareMediaItems(photosData) {
+  if (!photosData || photosData.length === 0) return [];
+
+  // Map photos dengan layout properties
+  const MEDIA_ITEMS = photosData.map((photo, i) => ({
+    ...photo,
+    key: `p${photo.id}`,
+    h: HEIGHTS[i % 3],
+    layoutIndex: i,
+    rot: (seededRand(i) * 8 - 4).toFixed(2),
+    tx: (seededRand(i + 99) * 12 - 6).toFixed(1),
+  }));
+
+  // Create 3x duplicates untuk seamless infinite scroll
+  const EXTENDED = Array.from({ length: 3 }, (_, copy) =>
+    MEDIA_ITEMS.map((item, i) => {
+      const layoutIndex = copy * MEDIA_ITEMS.length + i;
+      return {
+        ...item,
+        id: `${item.key}-c${copy}`,
+        layoutIndex,
+        rot: (seededRand(layoutIndex) * 8 - 4).toFixed(2),
+        tx: (seededRand(layoutIndex + 99) * 12 - 6).toFixed(1),
+      };
+    })
+  ).flat();
+
+  return EXTENDED;
 }
 
-// ✅ TIDAK DI-SHUFFLE - Foto dalam urutan asli
-const MEDIA_ITEMS = PHOTO_URLS.map((src, i) => ({
-  id: `p${i}`,
-  type: "photo",
-  src,
-  thumb: thumbUrl(src),
-  n: i + 1,
-  h: HEIGHTS[i % 3],
-}));
-
-// 3x duplicate untuk seamless infinite scroll (tanpa shuffle)
-const EXTENDED_MEDIA_ITEMS = Array.from({ length: 3 }, (_, copy) =>
-  MEDIA_ITEMS.map((item, i) => {
-    const layoutIndex = copy * MEDIA_ITEMS.length + i;
-    return {
-      ...item,
-      id: `${item.id}-c${copy}`,
-      layoutIndex,
-      rot: (seededRand(layoutIndex) * 8 - 4).toFixed(2),
-      tx: (seededRand(layoutIndex + 99) * 12 - 6).toFixed(1),
-    };
-  })
-).flat();
-
-const MediaCard = memo(function MediaCard({ item, onHold }) {
+/**
+ * Media Card Component
+ */
+const MediaCard = memo(function MediaCard({ item, onHold, priority = false }) {
   const handlers = useHoldPress({
     duration: 300,
     onHold: () => onHold(item),
@@ -121,57 +63,71 @@ const MediaCard = memo(function MediaCard({ item, onHold }) {
   return (
     <div
       {...handlers}
-      className="media-card bg-white relative select-none"
+      className="media-card bg-white relative select-none cursor-pointer rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
       style={{
         breakInside: "avoid",
         marginBottom: 8,
         padding: "6px 6px 18px 6px",
-        borderRadius: 10,
-        boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
         transform: `rotate(${item.rot}deg) translateX(${item.tx}px)`,
-        contentVisibility: "auto",
-        containIntrinsicSize: "auto 200px",
+        contentVisibility: 'auto',
+        containIntrinsicSize: `auto ${item.h + 12}px`,
       }}
     >
       <div
-        className="rounded overflow-hidden"
-        style={{ height: item.h, background: "#E0E0E0" }}
+        className="rounded overflow-hidden bg-gray-100"
+        style={{ 
+          height: item.h,
+          contain: 'layout style paint',
+        }}
       >
-        <img
-          src={item.thumb}
-          alt={`Foto ${item.n}`}
-          draggable={false}
-          loading="lazy"
-          decoding="async"
-          width={320}
-          height={item.h}
-          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+        <OptimizedImage 
+          photo={item}
+          alt={`Foto ${item.id}`}
+          priority={priority}
         />
       </div>
     </div>
   );
 });
 
+/**
+ * HOME PAGE COMPONENT
+ */
 export default function Home() {
+  // Load photos dari manifest
+  const { photos, loading, error } = usePhotos();
+  const extendedItems = prepareMediaItems(photos);
+
+  // Component states
   const [expanded, setExpanded] = useState(null);
   const [storyOpen, setStoryOpen] = useState(false);
   const [scrollEnabled, setScrollEnabled] = useState(false);
+  
+  // Refs
   const scrollRef = useRef(null);
+  
+  // Hooks
   const { playSuccess, playPop } = useSound();
   const { vibrateSuccess, vibratePop } = useVibration();
 
-  // ✅ DELAY 2-3 DETIK SEBELUM AUTO-SCROLL MULAI
+  // ===== START AUTO-SCROLL DENGAN DELAY 2.5 DETIK =====
   useEffect(() => {
     const timer = setTimeout(() => {
       setScrollEnabled(true);
-      console.log('✅ Auto-scroll dimulai setelah delay');
-    }, 2500); // 2.5 detik
+      console.log('✅ Auto-scroll dimulai');
+    }, 2500);
 
     return () => clearTimeout(timer);
   }, []);
 
-  useInfiniteScroll(scrollRef, { speed: 35, resumeDelay: 3000, enabled: scrollEnabled });
+  // Enable infinite scroll
+  useInfiniteScroll(scrollRef, { 
+    speed: 35, 
+    resumeDelay: 3000, 
+    enabled: scrollEnabled && !loading 
+  });
 
+  // ===== HANDLERS =====
   const handleExpand = useCallback((item) => {
     playPop();
     vibratePop();
@@ -184,31 +140,66 @@ export default function Home() {
     setStoryOpen(true);
   };
 
+  // ===== LOADING STATE =====
+  if (loading) {
+    return (
+      <div className="relative flex flex-col home-container items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-gray-300 border-t-rose-400 rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-500">Loading photos...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // ===== ERROR STATE =====
+  if (error || extendedItems.length === 0) {
+    return (
+      <div className="relative flex flex-col home-container items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-500 text-lg mb-2">❌ Error loading photos</p>
+          <p className="text-gray-500 text-sm">{error || 'No photos available'}</p>
+          <p className="text-gray-400 text-xs mt-4">Please run: npm run optimize-images</p>
+        </div>
+      </div>
+    );
+  }
+
+  // ===== RENDER =====
   return (
     <div className="relative flex flex-col home-container">
-      {/* Top bar */}
+      {/* TOP BAR */}
       <div className="flex items-center justify-between px-4 pt-3 pb-2 flex-shrink-0">
         <span className="text-[12px] lg:text-sm text-gray-500">Happy Birthday 🎀</span>
         <ColorSwitcher />
       </div>
 
+      {/* PHOTOS SCROLL CONTAINER */}
       <div
         ref={scrollRef}
         className="overflow-y-auto no-scrollbar px-2 flex-1"
-        style={{ WebkitOverflowScrolling: "touch", overflowAnchor: "none" }}
+        style={{ 
+          WebkitOverflowScrolling: "touch", 
+          overflowAnchor: "none",
+          contain: 'layout style paint',
+        }}
       >
-        {/* Mobile: 3 columns, Tablet: 4 columns, Desktop: 5-6 columns */}
         <div className="mobile-columns">
-          {EXTENDED_MEDIA_ITEMS.map((item) => (
-            <MediaCard key={item.id} item={item} onHold={handleExpand} />
+          {extendedItems.map((item, idx) => (
+            <MediaCard 
+              key={item.id} 
+              item={item} 
+              onHold={handleExpand}
+              priority={idx < 9} // First 9 items prioritized
+            />
           ))}
         </div>
       </div>
 
-      {/* Our Story floating */}
+      {/* OUR STORY BUTTON */}
       <button
         onClick={handleStoryClick}
-        className="fixed left-4 z-30 bg-white rounded-full px-4 py-2 text-sm shadow-lg flex items-center gap-1"
+        className="fixed left-4 z-30 bg-white rounded-full px-4 py-2 text-sm shadow-lg flex items-center gap-1 hover:shadow-xl transition-shadow"
         style={{
           bottom: "calc(100px + env(safe-area-inset-bottom) + 8px)",
         }}
@@ -216,7 +207,7 @@ export default function Home() {
         📖 Our Story
       </button>
 
-      {/* Expanded media overlay */}
+      {/* EXPANDED IMAGE MODAL */}
       <AnimatePresence>
         {expanded && (
           <motion.div
@@ -232,52 +223,39 @@ export default function Home() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.3, opacity: 0 }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="relative bg-white inline-block"
+              className="relative bg-white inline-block rounded-lg overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
+              {/* CLOSE BUTTON */}
               <button
                 onClick={() => setExpanded(null)}
-                className="absolute -top-3 -right-3 w-9 h-9 bg-white rounded-full shadow-lg flex items-center justify-center text-gray-700 z-10"
+                className="absolute -top-3 -right-3 w-9 h-9 bg-white rounded-full shadow-lg flex items-center justify-center text-gray-700 z-10 hover:bg-gray-100 transition-colors"
                 aria-label="Close"
               >
                 ✕
               </button>
-              <div className="rounded flex items-center justify-center p-2"
-                   style={{
-                     maxWidth: "88vw",
-                     maxHeight: "80vh",
-                     overflow: "hidden"
-                   }}>
-                {!expanded.src || expanded.src.startsWith("[") ? (
-                  <div
-                    className="flex items-center justify-center text-base font-semibold"
-                    style={{
-                      width: "300px",
-                      height: "200px",
-                      background: "#E0E0E0",
-                      color: "#666",
-                      borderRadius: 8,
-                    }}
-                  >
-                    📷 Foto {expanded.n}
-                  </div>
-                ) : (
-                  <img
-                    src={expanded.src}
-                    alt=""
-                    className="max-w-full max-h-[70vh] object-contain rounded"
-                    style={{
-                      width: "auto",
-                      height: "auto"
-                    }}
-                  />
-                )}
+
+              {/* IMAGE CONTAINER */}
+              <div 
+                className="flex items-center justify-center p-2"
+                style={{
+                  maxWidth: "88vw",
+                  maxHeight: "80vh",
+                  overflow: "hidden"
+                }}
+              >
+                <OptimizedImage 
+                  photo={expanded}
+                  alt={expanded.title}
+                  priority={true}
+                />
               </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
+      {/* STORY MODAL */}
       <AnimatePresence>
         {storyOpen && <OurStoryModal onClose={() => setStoryOpen(false)} />}
       </AnimatePresence>
