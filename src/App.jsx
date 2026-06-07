@@ -5,6 +5,8 @@ import { ThemeProvider } from "./context/ThemeContext.jsx";
 import { MusicProvider } from "./context/MusicContext.jsx";
 import FloatingPetals from "./components/FloatingPetals.jsx";
 import Navbar from "./components/Navbar.jsx";
+import { usePWARegister } from "./utils/pwa-register.jsx";
+import PWAHeader from "./components/PWAHeader.jsx";
 import Opening from "./pages/Opening.jsx";
 import Home from "./pages/Home.jsx";
 import FunMode from "./pages/FunMode.jsx";
@@ -70,6 +72,7 @@ function SecretIntroOverlay({ onDone }) {
 }
 
 function Layout() {
+  usePWARegister();  
   const location = useLocation();
   const navigate = useNavigate();
   const [secretIntro, setSecretIntro] = useState(false);
