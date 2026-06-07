@@ -1,4 +1,4 @@
-import { memo, useCallback, useRef, useState } from "react";
+import { memo, useCallback, useRef, useState, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ColorSwitcher from "../components/ColorSwitcher.jsx";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll.js";
@@ -114,7 +114,12 @@ const MediaCard = memo(function MediaCard({ item, onHold, priority = false }) {
 export default function Home() {
   // Load photos dari manifest
   const { photos, loading, error } = usePhotos();
-  const extendedItems = prepareMediaItems(photos);
+  
+  // ✅ PENTING: Gunakan useMemo untuk cache shuffle result
+  // Ini akan shuffle SEKALI saja ketika photos berubah
+  const extendedItems = useMemo(() => {
+    return prepareMediaItems(photos);
+  }, [photos]);
 
   // Component states
   const [expanded, setExpanded] = useState(null);
