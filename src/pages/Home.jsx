@@ -1,4 +1,4 @@
-import { memo, useCallback, useRef, useState, useEffect } from "react";
+import { memo, useCallback, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ColorSwitcher from "../components/ColorSwitcher.jsx";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll.js";
@@ -156,22 +156,11 @@ const MediaCard = memo(function MediaCard({ item, onHold }) {
 export default function Home() {
   const [expanded, setExpanded] = useState(null);
   const [storyOpen, setStoryOpen] = useState(false);
-  const [autoScrollEnabled, setAutoScrollEnabled] = useState(false);
   const scrollRef = useRef(null);
   const { playSuccess, playPop } = useSound();
   const { vibrateSuccess, vibratePop } = useVibration();
 
-  // Aktifkan auto scroll setelah 2.5 detik
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setAutoScrollEnabled(true);
-    }, 2500); // Delay 2.5 detik
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Gunakan hook dengan parameter enabled
-  useInfiniteScroll(scrollRef, { speed: 35, enabled: autoScrollEnabled });
+  useInfiniteScroll(scrollRef, { speed: 35 });
 
   const handleExpand = useCallback((item) => {
     playPop();
@@ -194,22 +183,17 @@ export default function Home() {
       </div>
 
       <div
-  ref={scrollRef}
-  className="overflow-y-auto no-scrollbar px-2 flex-1"
-  style={{ WebkitOverflowScrolling: "touch", overflowAnchor: "none" }}
->
-  {/* Ganti className dari "mobile-columns" menjadi inline style untuk masonry */}
-  <div style={{
-    columnCount: 3,
-    columnGap: 8,
-    '@media (minWidth: 768px)': { columnCount: 4 },
-    '@media (minWidth: 1024px)': { columnCount: 5 },
-  }}>
-    {EXTENDED_MEDIA_ITEMS.map((item) => (
-      <MediaCard key={item.id} item={item} onHold={handleExpand} />
-    ))}
-  </div>
-</div>
+        ref={scrollRef}
+        className="overflow-y-auto no-scrollbar px-2 flex-1"
+        style={{ WebkitOverflowScrolling: "touch", overflowAnchor: "none" }}
+      >
+        {/* Mobile: 3 columns, Tablet: 4 columns, Desktop: 5-6 columns */}
+        <div className="mobile-columns">
+          {EXTENDED_MEDIA_ITEMS.map((item) => (
+            <MediaCard key={item.id} item={item} onHold={handleExpand} />
+          ))}
+        </div>
+      </div>
 
       {/* Our Story floating */}
       <button
