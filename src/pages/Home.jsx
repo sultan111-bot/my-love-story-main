@@ -9,6 +9,7 @@ import { useVibration } from "../hooks/useVibration.js";
 import OptimizedImage from "../components/OptimizedImage.jsx";
 import { usePhotos } from "../hooks/usePhotos.js";
 import { shuffleArray, verifyShuffle } from "../utils/shuffle.js";
+import { getOrCreateShuffleCache } from "../utils/shuffleCache.js";
 
 const HEIGHTS = [140, 180, 220];
 
@@ -20,19 +21,21 @@ function seededRand(seed) {
 }
 
 /**
- * Prepare media items dari photos data dengan TRUE SHUFFLE
+ * Prepare media items dari photos data dengan CACHED SHUFFLE
+ * Shuffle hanya terjadi SEKALI per session browser
  */
 function prepareMediaItems(photosData) {
   if (!photosData || photosData.length === 0) return [];
 
-  console.log('🔀 [SHUFFLE] Starting...');
   console.log('📊 Total photos:', photosData.length);
   
-  // 🔀 SHUFFLE MENGGUNAKAN DURSTENFELD ALGORITHM
-  const shuffledPhotos = shuffleArray(photosData);
-  
-  // Verify shuffle worked
-  verifyShuffle(photosData, shuffledPhotos);
+  // 🔄 SHUFFLE DENGAN CACHE - hanya shuffle sekali per session
+  const shuffledPhotos = getOrCreateShuffleCache(photosData, (photos) => {
+    console.log('🔀 [SHUFFLE] Starting shuffle algorithm...');
+    const shuffled = shuffleArray(photos);
+    verifyShuffle(photos, shuffled);
+    return shuffled;
+  });
   
   // Show first 10 items sebelum dan sesudah
   console.log('📋 Before shuffle (first 10):', photosData.slice(0, 10).map(p => p.id));
@@ -117,6 +120,7 @@ export default function Home() {
   
   // ✅ PENTING: Gunakan useMemo untuk cache shuffle result
   // Ini akan shuffle SEKALI saja ketika photos berubah
+  // Jika user membuka halaman lain dan kembali, shuffle sudah disimpan di sessionStorage
   const extendedItems = useMemo(() => {
     return prepareMediaItems(photos);
   }, [photos]);
