@@ -4,7 +4,7 @@ import path from 'path'
 import compression from 'vite-plugin-compression'
 
 export default defineConfig({
-  base: '/my-love-story-main/',
+  base: '/', 
   plugins: [
     react(),
     compression({
