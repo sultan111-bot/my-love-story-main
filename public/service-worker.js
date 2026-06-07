@@ -1,19 +1,44 @@
-const CACHE_NAME = 'love-story-v1';
-const RUNTIME_CACHE = 'love-story-runtime-v1';
+const CACHE_NAME = 'love-story-v2';
+const RUNTIME_CACHE = 'love-story-runtime-v2';
 
-// Install event
+// Assets yang harus di-cache saat install
+const ESSENTIAL_ASSETS = [
+  '/',
+  '/index.html',
+  '/manifest.json'
+];
+
+// Install - cache semua assets
 self.addEventListener('install', event => {
   console.log('[SW] Installing...');
-  self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        console.log('[SW] Caching essential assets');
+        return cache.addAll(ESSENTIAL_ASSETS);
+      })
+      .then(() => self.skipWaiting())
+  );
 });
 
-// Activate event
+// Activate - cleanup old caches
 self.addEventListener('activate', event => {
   console.log('[SW] Activating...');
-  event.waitUntil(self.clients.claim());
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames
+          .filter(name => name !== CACHE_NAME && name !== RUNTIME_CACHE)
+          .map(name => {
+            console.log('[SW] Deleting old cache:', name);
+            return caches.delete(name);
+          })
+      );
+    }).then(() => self.clients.claim())
+  );
 });
 
-// Fetch event - Network First strategy
+// Fetch - Cache everything untuk offline access
 self.addEventListener('fetch', event => {
   const { request } = event;
   const url = new URL(request.url);
@@ -28,23 +53,55 @@ self.addEventListener('fetch', event => {
     return;
   }
 
+  // ⭐ CACHE FIRST - ambil dari cache dulu, baru fetch ke network
   event.respondWith(
-    fetch(request)
-      .then(response => {
-        // Cache successful responses
-        if (response && response.status === 200) {
-          const responseClone = response.clone();
-          caches.open(RUNTIME_CACHE).then(cache => {
-            cache.put(request, responseClone);
+    caches.match(request).then(cached => {
+      // Kalau ada di cache, return cached (INSTANT!)
+      if (cached) {
+        // Background fetch untuk update cache
+        fetch(request).then(response => {
+          if (response && response.status === 200) {
+            const responseClone = response.clone();
+            caches.open(RUNTIME_CACHE).then(cache => {
+              cache.put(request, responseClone);
+            });
+          }
+        }).catch(() => {});
+        
+        return cached; // Return cached immediately (CEPAT!)
+      }
+
+      // Kalau tidak ada di cache, fetch dari network
+      return fetch(request)
+        .then(response => {
+          // Cache response yang berhasil
+          if (response && response.status === 200) {
+            const responseClone = response.clone();
+            caches.open(RUNTIME_CACHE).then(cache => {
+              cache.put(request, responseClone);
+            });
+          }
+          return response;
+        })
+        .catch(() => {
+          // Offline - return cached atau error page
+          return caches.match(request).then(cached => {
+            return cached || new Response(
+              `<h1>📴 Offline</h1><p>Tidak ada koneksi internet</p>`,
+              { 
+                status: 503,
+                headers: { 'Content-Type': 'text/html' }
+              }
+            );
           });
-        }
-        return response;
-      })
-      .catch(() => {
-        // Return cached response jika offline
-        return caches.match(request).then(cached => {
-          return cached || new Response('Offline', { status: 503 });
         });
-      })
+    })
   );
+});
+
+// Handle push notifications (untuk update)
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });

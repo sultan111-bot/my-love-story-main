@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { db } from "./utils/database.js";  // ← TAMBAHKAN INI
 import { ThemeProvider } from "./context/ThemeContext.jsx";
 import { MusicProvider } from "./context/MusicContext.jsx";
 import FloatingPetals from "./components/FloatingPetals.jsx";
@@ -73,6 +74,19 @@ function SecretIntroOverlay({ onDone }) {
 
 function Layout() {
   usePWARegister();  
+
+  useEffect(() => {
+    const initDatabase = async () => {
+      try {
+        await db.init();
+        console.log('✅ Database initialized');
+      } catch (error) {
+        console.error('❌ Database init error:', error);
+      }
+    };
+    initDatabase();
+  }, []);
+
   const location = useLocation();
   const navigate = useNavigate();
   const [secretIntro, setSecretIntro] = useState(false);
