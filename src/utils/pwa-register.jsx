@@ -1,38 +1,75 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 export function usePWARegister() {
   const [updateAvailable, setUpdateAvailable] = useState(false);
 
-  useEffect(() => {
-    if (!('serviceWorker' in navigator)) return;
-
-    navigator.serviceWorker.ready.then(reg => {
-      // Check update saat app buka
-      reg.update();
-
-      reg.addEventListener('updatefound', () => {
-        const newWorker = reg.installing;
-
-        newWorker.addEventListener('statechange', () => {
-          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-            setUpdateAvailable(true);
-            showUpdateNotification();
-          }
-        });
-      });
-    });
-  }, []);
-
-  const showUpdateNotification = () => {
+  const showUpdateNotification = useCallback(() => {
     toast('✨ Update tersedia! Refresh halaman untuk update.', {
       duration: Infinity,
       action: {
         label: 'Update',
-        onClick: () => window.location.reload()
-      }
+        onClick: () => window.location.reload(),
+      },
     });
-  };
+  }, []);
+
+  useEffect(() => {
+    if (!import.meta.env.PROD || !('serviceWorker' in navigator)) return;
+
+    let updateInterval;
+
+    const onUpdateFound = (reg) => {
+      const newWorker = reg.installing;
+      if (!newWorker) return;
+
+      newWorker.addEventListener('statechange', () => {
+        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          setUpdateAvailable(true);
+          showUpdateNotification();
+        }
+      });
+    };
+
+    const registerSW = async () => {
+      try {
+        const reg = await navigator.serviceWorker.register('/service-worker.js', { scope: '/' });
+        console.log('✅ Service Worker registered');
+
+        onUpdateFound(reg);
+        reg.addEventListener('updatefound', () => onUpdateFound(reg));
+        await reg.update();
+      } catch (err) {
+        console.error('❌ SW registration failed:', err);
+      }
+    };
+
+    if (document.readyState === 'complete') {
+      registerSW();
+    } else {
+      window.addEventListener('load', registerSW, { once: true });
+    }
+
+    updateInterval = setInterval(() => {
+      navigator.serviceWorker.ready.then((reg) => reg.update()).catch(() => {});
+    }, 60 * 60 * 1000);
+
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') {
+        navigator.serviceWorker.ready.then((reg) => reg.update()).catch(() => {});
+      }
+    };
+    document.addEventListener('visibilitychange', onVisible);
+
+    if (navigator.storage?.persist) {
+      navigator.storage.persist().catch(() => {});
+    }
+
+    return () => {
+      clearInterval(updateInterval);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
+  }, [showUpdateNotification]);
 
   return { updateAvailable };
 }
