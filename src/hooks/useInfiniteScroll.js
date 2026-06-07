@@ -2,17 +2,22 @@ import { useEffect } from "react";
 
 /**
  * Auto-scroll a container vertically with seamless infinite loop.
+ * Waits `startDelay` ms before the auto-scroll begins.
  * Pauses on user interaction, resumes after `resumeDelay`.
  * Content should be duplicated 3x; wraps when scroll passes 2/3 of scrollHeight.
  * Uses delta-time scrolling (px/sec) for smooth 60fps motion.
  */
-export function useInfiniteScroll(ref, { speed = 35, resumeDelay = 3000 } = {}) {
+export function useInfiniteScroll(
+  ref,
+  { speed = 35, resumeDelay = 3000, startDelay = 2500 } = {}
+) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    let paused = false;
+    let paused = true;
     let pauseTimer = null;
+    let startTimer = null;
     let raf = 0;
     let last = 0;
     let segmentHeight = 0;
@@ -54,6 +59,11 @@ export function useInfiniteScroll(ref, { speed = 35, resumeDelay = 3000 } = {}) 
     el.addEventListener("wheel", onInteract, { passive: true });
     el.addEventListener("touchmove", onInteract, { passive: true });
 
+    startTimer = setTimeout(() => {
+      paused = false;
+      last = 0;
+    }, startDelay);
+
     requestAnimationFrame(() => {
       measure();
       if (segmentHeight > 0) el.scrollTop = segmentHeight;
@@ -64,10 +74,11 @@ export function useInfiniteScroll(ref, { speed = 35, resumeDelay = 3000 } = {}) 
     return () => {
       cancelAnimationFrame(raf);
       if (pauseTimer) clearTimeout(pauseTimer);
+      if (startTimer) clearTimeout(startTimer);
       ro?.disconnect();
       el.removeEventListener("pointerdown", onInteract);
       el.removeEventListener("wheel", onInteract);
       el.removeEventListener("touchmove", onInteract);
     };
-  }, [ref, speed, resumeDelay]);
+  }, [ref, speed, resumeDelay, startDelay]);
 }
