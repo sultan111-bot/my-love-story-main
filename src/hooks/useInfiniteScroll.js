@@ -5,11 +5,13 @@ import { useEffect } from "react";
  * Pauses on user interaction, resumes after `resumeDelay`.
  * Content should be duplicated 3x; wraps when scroll passes 2/3 of scrollHeight.
  * Uses delta-time scrolling (px/sec) for smooth 60fps motion.
+ * 
+ * ✅ NEW: Support `enabled` flag untuk delay scroll
  */
-export function useInfiniteScroll(ref, { speed = 35, resumeDelay = 3000 } = {}) {
+export function useInfiniteScroll(ref, { speed = 35, resumeDelay = 3000, enabled = true } = {}) {
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || !enabled) return; // ✅ SKIP jika enabled = false
 
     let paused = false;
     let pauseTimer = null;
@@ -69,5 +71,5 @@ export function useInfiniteScroll(ref, { speed = 35, resumeDelay = 3000 } = {}) 
       el.removeEventListener("wheel", onInteract);
       el.removeEventListener("touchmove", onInteract);
     };
-  }, [ref, speed, resumeDelay]);
+  }, [ref, speed, resumeDelay, enabled]); // ✅ ADD enabled ke dependencies
 }

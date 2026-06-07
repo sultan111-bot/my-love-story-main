@@ -1,6 +1,7 @@
 /**
  * Audio Manager
  * Handle auto-play dengan user interaction
+ * ✅ IMPROVED: Prevent audio duplication & better error handling
  */
 
 class AudioManager {
@@ -8,6 +9,8 @@ class AudioManager {
       this.audio = null;
       this.hasUserInteracted = false;
       this.isPlaying = false;
+      this.playbackAttempts = 0;
+      this.maxAttempts = 3;
     }
   
     init() {
@@ -45,7 +48,7 @@ class AudioManager {
   
       // Add listeners
       events.forEach(event => {
-        document.addEventListener(event, handleInteraction, { once: false });
+        document.addEventListener(event, handleInteraction, { once: true }); // ✅ CHANGED: once: true untuk prevent multiple triggers
       });
     }
   
@@ -54,6 +57,7 @@ class AudioManager {
   
       this.audio.addEventListener('play', () => {
         this.isPlaying = true;
+        this.playbackAttempts = 0; // ✅ Reset attempts on success
         console.log('🎵 Audio playing');
       });
   
@@ -62,8 +66,19 @@ class AudioManager {
         console.log('⏸️ Audio paused');
       });
   
+      this.audio.addEventListener('ended', () => {
+        // ✅ Restart dari awal kalau audio selesai
+        if (this.audio && this.audio.loop) {
+          this.audio.currentTime = 0;
+          this.audio.play().catch(err => {
+            console.warn('⚠️ Loop replay failed:', err.message);
+          });
+        }
+      });
+  
       this.audio.addEventListener('error', (error) => {
         console.error('❌ Audio error:', error);
+        this.isPlaying = false;
       });
     }
   
@@ -71,6 +86,20 @@ class AudioManager {
       if (!this.audio) return;
   
       try {
+        // ✅ Check if already playing to prevent duplicate play calls
+        if (this.isPlaying) {
+          console.log('ℹ️ Audio sudah playing');
+          return;
+        }
+  
+        // ✅ Prevent multiple simultaneous play attempts
+        if (this.playbackAttempts >= this.maxAttempts) {
+          console.warn('⚠️ Max playback attempts reached');
+          return;
+        }
+  
+        this.playbackAttempts++;
+  
         // Set volume
         this.audio.volume = 0.5;
         
@@ -82,7 +111,8 @@ class AudioManager {
           console.log('✅ Audio auto-playing successfully');
         }
       } catch (error) {
-        console.warn('⚠️ Autoplay failed (will retry on interact):', error.message);
+        console.warn('⚠️ Autoplay failed (akan retry on interact):', error.message);
+        this.playbackAttempts++;
       }
     }
   
@@ -109,6 +139,17 @@ class AudioManager {
   
     getVolume() {
       return this.audio ? this.audio.volume : 0;
+    }
+  
+    // ✅ NEW: Cleanup method untuk prevent memory leaks
+    destroy() {
+      if (this.audio) {
+        this.audio.pause();
+        this.audio.src = '';
+      }
+      this.hasUserInteracted = false;
+      this.isPlaying = false;
+      this.playbackAttempts = 0;
     }
   }
   

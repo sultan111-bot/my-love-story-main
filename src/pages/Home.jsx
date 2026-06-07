@@ -1,4 +1,4 @@
-import { memo, useCallback, useRef, useState } from "react";
+import { memo, useCallback, useRef, useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ColorSwitcher from "../components/ColorSwitcher.jsx";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll.js";
@@ -88,11 +88,8 @@ function thumbUrl(url) {
   return url.replace("/upload/", "/upload/w_320,q_auto,f_auto/");
 }
 
-const SHUFFLED_PHOTOS = [...PHOTO_URLS]
-  .sort(() => Math.random() - 0.5)
-  .slice(0, 30);
-
-const MEDIA_ITEMS = SHUFFLED_PHOTOS.map((src, i) => ({
+// ✅ TIDAK DI-SHUFFLE - Foto dalam urutan asli
+const MEDIA_ITEMS = PHOTO_URLS.map((src, i) => ({
   id: `p${i}`,
   type: "photo",
   src,
@@ -101,7 +98,7 @@ const MEDIA_ITEMS = SHUFFLED_PHOTOS.map((src, i) => ({
   h: HEIGHTS[i % 3],
 }));
 
-// 3x duplicate for seamless infinite scroll (90 cards, not 120+)
+// 3x duplicate untuk seamless infinite scroll (tanpa shuffle)
 const EXTENDED_MEDIA_ITEMS = Array.from({ length: 3 }, (_, copy) =>
   MEDIA_ITEMS.map((item, i) => {
     const layoutIndex = copy * MEDIA_ITEMS.length + i;
@@ -132,6 +129,8 @@ const MediaCard = memo(function MediaCard({ item, onHold }) {
         borderRadius: 10,
         boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
         transform: `rotate(${item.rot}deg) translateX(${item.tx}px)`,
+        contentVisibility: "auto",
+        containIntrinsicSize: "auto 200px",
       }}
     >
       <div
@@ -156,11 +155,22 @@ const MediaCard = memo(function MediaCard({ item, onHold }) {
 export default function Home() {
   const [expanded, setExpanded] = useState(null);
   const [storyOpen, setStoryOpen] = useState(false);
+  const [scrollEnabled, setScrollEnabled] = useState(false);
   const scrollRef = useRef(null);
   const { playSuccess, playPop } = useSound();
   const { vibrateSuccess, vibratePop } = useVibration();
 
-  useInfiniteScroll(scrollRef, { speed: 35 });
+  // ✅ DELAY 2-3 DETIK SEBELUM AUTO-SCROLL MULAI
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setScrollEnabled(true);
+      console.log('✅ Auto-scroll dimulai setelah delay');
+    }, 2500); // 2.5 detik
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useInfiniteScroll(scrollRef, { speed: 35, resumeDelay: 3000, enabled: scrollEnabled });
 
   const handleExpand = useCallback((item) => {
     playPop();

@@ -393,3 +393,84 @@ body {
 .flip-inner.flipped { transform: rotateY(180deg); }
 .flip-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .flip-face.back { transform: rotateY(180deg); }
+
+
+/* ✅ PERFORMANCE OPTIMIZATION: Reduce motion on low-end devices */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ✅ GPU ACCELERATION: Force hardware acceleration */
+.media-card,
+.petal,
+.confetti-piece {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* ✅ CONTENT VISIBILITY: Optimize rendering performance */
+.media-card {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 200px;
+  contain: layout style paint;
+}
+
+/* ✅ SCROLL OPTIMIZATION: Passive event listeners */
+.home-container {
+  scroll-behavior: auto; /* Tidak smooth scroll untuk performa lebih baik */
+  overscroll-behavior: contain; /* Prevent scroll chaining */
+}
+
+/* ✅ IMAGE OPTIMIZATION: Better image rendering */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* ✅ FONT OPTIMIZATION: Avoid layout shift */
+@font-face {
+  font-family: "Lato";
+  font-display: swap; /* Show fallback font immediately */
+}
+
+@font-face {
+  font-family: "Playfair Display";
+  font-display: swap;
+}
+
+/* ✅ ANIMATION OPTIMIZATION: Smooth 60fps animations */
+@media (update: fast) {
+  * {
+    animation-timing-function: linear;
+  }
+}
+
+/* ✅ REDUCE MOTION: For slow connections */
+@media (max-width: 640px) {
+  .petal {
+    animation-duration: 8s; /* Slower on mobile */
+  }
+}
+
+/* ✅ OPTIMIZE SCROLLBAR: Hide for better performance */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* ✅ ADD: Prevent layout shift pada buttons */
+button {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ✅ ADD: Optimize modal animations */
+.fixed.inset-0 {
+  will-change: contents;
+}
