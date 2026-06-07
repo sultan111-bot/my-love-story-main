@@ -14,5 +14,14 @@ export default defineConfig({
     outDir: 'dist',
     minify: 'esbuild',
     sourcemap: false,
-  }
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor': ['react', 'react-dom', 'react-router-dom'],
+          'animations': ['framer-motion'],
+        }
+      }
+    },
+    target: 'es2020',
+  },
 })

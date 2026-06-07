@@ -4,23 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1" />
     <title>A Gift For You 🎀</title>
-    <meta name="description" content="Sebuah hadiah spesial untukmu — Happy Birthday Sayangku 💕" />
+    
+    <!-- ⭐ PRELOAD CRITICAL RESOURCES -->
+    <link rel="preload" href="/bgm.mp3" as="audio" />
+    <link rel="preload" href="/icon-192.png" as="image" />
+    
+    <!-- ⭐ DNS PREFETCH -->
+    <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+    <link rel="prefetch" href="https://fonts.googleapis.com" />
+    
+    <meta name="description" content="Sebuah hadiah spesial untukmu" />
     <meta name="theme-color" content="#FFE4EC" />
-
-   <!-- ⭐ TAMBAHKAN INI ⭐ -->
-   <link rel="preconnect" href="https://fonts.googleapis.com" />
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
-   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lato:wght@300;400;700&display=swap" />
-   <!-- ⭐ END ⭐ -->
-
-   <link rel="manifest" href="/manifest.json" crossorigin="use-credentials" />
+    
+    <link rel="manifest" href="/manifest.json" />
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
-
-    <meta property="og:title" content="A Gift For You 🎀" />
-    <meta property="og:description" content="Ada sesuatu untukmu... 💕" />
-    <meta property="og:type" content="website" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -29,11 +27,9 @@
 
   <body>
     <div id="root"></div>
-
-    <audio id="bgm" loop>
+    <audio id="bgm" loop preload="auto">
       <source src="/bgm.mp3" type="audio/mpeg" />
     </audio>
-
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
