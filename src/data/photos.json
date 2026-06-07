@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "total": 39,
-    "generated": "2026-06-07T12:56:20.708Z",
+    "total": 38,
+    "generated": "2026-06-07T14:09:32.637Z",
     "version": "1.0.0"
   },
   "photos": [
@@ -799,27 +799,6 @@
         "width": 3456,
         "height": 4608,
         "aspectRatio": 0.75
-      },
-      "quality": "high",
-      "processed": true
-    },
-    {
-      "id": 39,
-      "title": "Foto 039",
-      "paths": {
-        "thumb": "/photos/039/thumb.webp",
-        "medium": "/photos/039/medium.webp",
-        "full": "/photos/039/full.webp"
-      },
-      "sizes": {
-        "thumb": "12.76",
-        "medium": "82.14",
-        "full": "326.87"
-      },
-      "dimensions": {
-        "width": 4608,
-        "height": 3456,
-        "aspectRatio": 1.333
       },
       "quality": "high",
       "processed": true
