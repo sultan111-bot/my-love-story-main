@@ -1,6 +1,6 @@
-const CACHE_NAME = 'love-story-v6';
-const RUNTIME_CACHE = 'love-story-runtime-v6';
-const IMAGE_CACHE = 'love-story-images-v6';
+const CACHE_NAME = 'love-story-v7';
+const RUNTIME_CACHE = 'love-story-runtime-v7';
+const IMAGE_CACHE = 'love-story-images-v7';
 
 const ESSENTIAL_ASSETS = [
   '/',
@@ -26,6 +26,26 @@ async function cacheFirst(request, cacheName) {
     return response;
   } catch {
     return null;
+  }
+}
+
+async function networkFirst(request, cacheName) {
+  try {
+    const response = await fetch(request);
+    if (response?.status === 200) {
+      const cache = await caches.open(cacheName);
+      cache.put(request, response.clone());
+    }
+    return response;
+  } catch {
+    const cached = await caches.match(request);
+    if (cached) return cached;
+
+    return (
+      (await caches.match('/index.html')) ||
+      (await caches.match('/')) ||
+      new Response('Offline', { status: 503, statusText: 'Offline' })
+    );
   }
 }
 
@@ -100,7 +120,7 @@ self.addEventListener('fetch', (event) => {
 
   if (url.origin === location.origin) {
     if (request.mode === 'navigate' || request.headers.get('accept')?.includes('text/html')) {
-      event.respondWith(staleWhileRevalidate(request, RUNTIME_CACHE));
+      event.respondWith(networkFirst(request, RUNTIME_CACHE));
       return;
     }
 
