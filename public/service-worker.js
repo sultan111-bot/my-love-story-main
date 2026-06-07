@@ -1,5 +1,5 @@
-const CACHE_NAME = 'love-story-v2';
-const RUNTIME_CACHE = 'love-story-runtime-v2';
+const CACHE_NAME = 'love-story-v3';
+const RUNTIME_CACHE = 'love-story-runtime-v3';
 
 // Assets yang harus di-cache saat install
 const ESSENTIAL_ASSETS = [
