@@ -1,4 +1,4 @@
-import { memo, useCallback, useRef, useState } from "react";
+import { memo, useCallback, useRef, useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ColorSwitcher from "../components/ColorSwitcher.jsx";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll.js";
@@ -156,11 +156,22 @@ const MediaCard = memo(function MediaCard({ item, onHold }) {
 export default function Home() {
   const [expanded, setExpanded] = useState(null);
   const [storyOpen, setStoryOpen] = useState(false);
+  const [autoScrollEnabled, setAutoScrollEnabled] = useState(false);
   const scrollRef = useRef(null);
   const { playSuccess, playPop } = useSound();
   const { vibrateSuccess, vibratePop } = useVibration();
 
-  useInfiniteScroll(scrollRef, { speed: 35 });
+  // Aktifkan auto scroll setelah 2.5 detik
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setAutoScrollEnabled(true);
+    }, 2500); // Delay 2.5 detik
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Gunakan hook dengan parameter enabled
+  useInfiniteScroll(scrollRef, { speed: 35, enabled: autoScrollEnabled });
 
   const handleExpand = useCallback((item) => {
     playPop();
