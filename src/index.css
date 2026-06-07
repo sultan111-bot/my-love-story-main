@@ -1,0 +1,389 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --theme-bg: #ffe4ec;
+  --theme-petal: rgba(255, 182, 193, 0.7);
+  --theme-accent: #c2185b;
+  --theme-accent-soft: #ffb6c1;
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .petal,
+  .confetti-piece,
+  .sparkle-blink,
+  .sultan-float,
+  .pulse-glow,
+  .soft-pulse,
+  .tail-wag,
+  .tail-flick,
+  .ear-wiggle {
+    animation: none !important;
+  }
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  font-family: "Lato", system-ui, -apple-system, sans-serif;
+  background-color: var(--theme-bg);
+  color: #333;
+  transition: background-color 0.5s ease;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.font-display {
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+/* Book flip perspective container */
+.book-perspective {
+  perspective: 1200px;
+  contain: layout;
+}
+
+/* Petal float animation */
+@keyframes petal-fall {
+  0% {
+    transform: translateY(-10vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--petal-opacity, 0.4);
+  }
+  90% {
+    opacity: var(--petal-opacity, 0.4);
+  }
+  100% {
+    transform: translateY(110vh) translateX(var(--petal-drift, 30px)) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.petal {
+  position: fixed;
+  top: -10vh;
+  border-radius: 50% 0 50% 50%;
+  background: var(--theme-petal);
+  pointer-events: none;
+  z-index: 1;
+  animation: petal-fall linear infinite;
+}
+
+/* Pulse glow for the active gift button */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 107, 157, 0.5), 0 8px 24px rgba(194, 24, 91, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 36px rgba(255, 107, 157, 0.9), 0 8px 28px rgba(194, 24, 91, 0.5);
+  }
+}
+.pulse-glow {
+  animation: pulse-glow 1.6s ease-in-out infinite;
+}
+
+@keyframes soft-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+.soft-pulse {
+  animation: soft-pulse 1.5s ease-in-out infinite;
+}
+
+/* Sultan idle float */
+@keyframes sultan-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.sultan-float {
+  animation: sultan-float 2s ease-in-out infinite;
+}
+
+/* Confetti */
+@keyframes confetti-fall {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+.confetti-piece {
+  position: fixed;
+  top: -10vh;
+  pointer-events: none;
+  z-index: 9999;
+  animation: confetti-fall linear forwards;
+}
+
+/* Shake animation */
+@keyframes shake-x {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-8px); }
+  80% { transform: translateX(8px); }
+}
+.shake-x { animation: shake-x 0.4s ease-in-out; }
+
+/* Scrollbar hide */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Safe area helpers */
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+.h-safe-nav { height: calc(64px + env(safe-area-inset-bottom)); }
+
+/* Responsive navbar spacer */
+@media (max-width: 768px) {
+  .h-safe-nav { height: calc(100px + env(safe-area-inset-bottom)); }
+}
+
+/* Mobile navbar fixes */
+@media (max-width: 768px) {
+  nav,
+  nav[style*="z-index"] {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 100px !important;
+    min-height: 100px !important;
+    z-index: 999999 !important;
+    box-sizing: border-box !important;
+    margin-bottom: 0 !important;
+    padding-bottom: env(safe-area-inset-bottom) !important;
+  }
+  
+  .fixed.bottom-0.z-50 {
+    z-index: 9999 !important;
+  }
+}
+
+/* Desktop navbar - normal size */
+@media (min-width: 769px) {
+  nav,
+  nav[style*="z-index"] {
+    height: 64px !important;
+    min-height: 64px !important;
+  }
+  
+  .home-container {
+    height: calc(100vh - 64px - env(safe-area-inset-bottom)) !important;
+  }
+}
+
+/* Mobile home container */
+@media (max-width: 768px) {
+  .home-container {
+    height: calc(100vh - 100px - env(safe-area-inset-bottom)) !important;
+  }
+  
+  /* Our Story button positioning on mobile with 10px gap */
+  .our-story-btn {
+    bottom: calc(100px + 10px + env(safe-area-inset-bottom)) !important;
+  }
+}
+
+/* Desktop Our Story button with smaller gap for better balance */
+@media (min-width: 769px) {
+  .our-story-btn {
+    bottom: calc(64px + 8px + env(safe-area-inset-bottom)) !important;
+  }
+}
+
+/* PC-specific responsive improvements */
+@media (min-width: 1024px) {
+  /* Desktop navbar - move to top for better UX */
+  .desktop-navbar,
+  nav.desktop-navbar,
+  nav[style*="z-index"].desktop-navbar {
+    position: fixed !important;
+    top: 0 !important;
+    bottom: auto !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 72px !important;
+    min-height: 72px !important;
+    border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+    border-top: none !important;
+    border-radius: 0 !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
+    z-index: 999999 !important;
+  }
+  
+  /* Desktop navbar content styling */
+  .desktop-nav-content {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Adjust home container for top navbar */
+  .home-container {
+    height: calc(100vh - 72px - env(safe-area-inset-bottom)) !important;
+    margin-top: 72px !important;
+  }
+  
+  /* Desktop Our Story button positioning */
+  .our-story-btn {
+    bottom: calc(8px + env(safe-area-inset-bottom)) !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  /* Larger screens - increase navbar height slightly */
+  nav,
+  nav[style*="z-index"] {
+    height: 80px !important;
+    min-height: 80px !important;
+  }
+  
+  .home-container {
+    height: calc(100vh - 80px - env(safe-area-inset-bottom)) !important;
+    margin-top: 80px !important;
+  }
+}
+
+/* Desktop content max-width for better readability */
+@media (min-width: 1024px) {
+  .desktop-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+}
+
+@media (min-width: 1440px) {
+  .desktop-container {
+    max-width: 1400px;
+  }
+}
+
+/* Responsive columns for Home page media grid */
+.mobile-columns {
+  column-count: 3;
+  column-gap: 8px;
+}
+
+@media (min-width: 768px) {
+  .mobile-columns {
+    column-count: 4;
+    column-gap: 12px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mobile-columns {
+    column-count: 5;
+    column-gap: 16px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .mobile-columns {
+    column-count: 6;
+    column-gap: 20px;
+  }
+}
+
+/* Responsive envelope container for Emotional Core */
+.envelope-container {
+  height: 380px;
+  width: 340px;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .envelope-container {
+    height: 450px;
+    width: 420px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .envelope-container {
+    height: 520px;
+    width: 500px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .envelope-container {
+    height: 600px;
+    width: 580px;
+  }
+}
+
+/* Tail wag */
+@keyframes tail-wag {
+  0%, 100% { transform: rotate(-12deg); }
+  50% { transform: rotate(12deg); }
+}
+.tail-wag { transform-origin: bottom left; animation: tail-wag 0.6s ease-in-out infinite; }
+
+/* Tail flick */
+@keyframes tail-flick {
+  0%, 100% { transform: rotate(20deg); }
+  50% { transform: rotate(35deg); }
+}
+.tail-flick { transform-origin: bottom left; animation: tail-flick 1.2s ease-in-out infinite; }
+
+/* Ear wiggle */
+@keyframes ear-wiggle {
+  0%, 90%, 100% { transform: rotate(0deg); }
+  93% { transform: rotate(-8deg); }
+  96% { transform: rotate(8deg); }
+}
+.ear-wiggle { animation: ear-wiggle 3s ease-in-out infinite; transform-origin: bottom center; }
+
+/* Sparkle blink */
+@keyframes sparkle-blink {
+  0%, 80%, 100% { opacity: 0; transform: scale(0.5); }
+  85%, 95% { opacity: 1; transform: scale(1); }
+}
+.sparkle-blink { animation: sparkle-blink 5s ease-in-out infinite; }
+
+/* Spin once */
+@keyframes spin-360 {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.spin-once { animation: spin-360 1s linear infinite; }
+
+/* Heart float up */
+@keyframes heart-float {
+  0% { transform: translate(0, 0) scale(0.6); opacity: 0; }
+  20% { opacity: 1; transform: translate(var(--hx, 0), -20px) scale(1); }
+  100% { transform: translate(var(--hx, 0), -160px) scale(1.2); opacity: 0; }
+}
+.heart-float { animation: heart-float 1.6s ease-out forwards; }
+
+/* Kiss drop */
+@keyframes kiss-drop {
+  0% { transform: translate(0, 0); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translate(var(--kx, 0), 80px); opacity: 0; }
+}
+.kiss-drop { animation: kiss-drop 3s ease-in-out forwards; }
+
+/* Card flip */
+.flip-card { perspective: 800px; }
+.flip-inner { transition: transform 0.4s; transform-style: preserve-3d; position: relative; width: 100%; height: 100%; }
+.flip-inner.flipped { transform: rotateY(180deg); }
+.flip-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.flip-face.back { transform: rotateY(180deg); }
