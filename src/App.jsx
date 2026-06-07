@@ -78,9 +78,9 @@ function Layout() {
   usePWARegister();  
 
   useEffect(() => {
-    // Initialize audio manager
+    // ✅ Initialize audio manager (TAPI JANGAN AUTO PLAY)
     audioManager.init();
-    console.log('✅ Audio manager initialized');
+    console.log('✅ Audio manager initialized (manual only)');
   }, []);
 
   useEffect(() => {

@@ -1,13 +1,11 @@
 /**
  * Audio Manager
- * Handle auto-play dengan user interaction
- * ✅ IMPROVED: Prevent audio duplication & better error handling
+ * Handle manual play saja (tidak auto play)
  */
 
 class AudioManager {
     constructor() {
       this.audio = null;
-      this.hasUserInteracted = false;
       this.isPlaying = false;
       this.playbackAttempts = 0;
       this.maxAttempts = 3;
@@ -21,35 +19,9 @@ class AudioManager {
         return;
       }
   
-      // Listen untuk user interaction pertama
-      this.setupUserInteractionListener();
-      
-      // Handle audio events
+      // Setup audio listeners
       this.setupAudioListeners();
-    }
-  
-    setupUserInteractionListener() {
-      const events = ['click', 'touchstart', 'keydown', 'mousemove'];
-      
-      const handleInteraction = async () => {
-        if (this.hasUserInteracted) return;
-        
-        this.hasUserInteracted = true;
-        console.log('👤 User interacted, attempting autoplay...');
-        
-        // Try to play audio
-        await this.play();
-        
-        // Remove listeners setelah interact
-        events.forEach(event => {
-          document.removeEventListener(event, handleInteraction);
-        });
-      };
-  
-      // Add listeners
-      events.forEach(event => {
-        document.addEventListener(event, handleInteraction, { once: true }); // ✅ CHANGED: once: true untuk prevent multiple triggers
-      });
+      console.log('✅ Audio manager ready (manual play only)');
     }
   
     setupAudioListeners() {
@@ -57,7 +29,7 @@ class AudioManager {
   
       this.audio.addEventListener('play', () => {
         this.isPlaying = true;
-        this.playbackAttempts = 0; // ✅ Reset attempts on success
+        this.playbackAttempts = 0;
         console.log('🎵 Audio playing');
       });
   
@@ -67,7 +39,6 @@ class AudioManager {
       });
   
       this.audio.addEventListener('ended', () => {
-        // ✅ Restart dari awal kalau audio selesai
         if (this.audio && this.audio.loop) {
           this.audio.currentTime = 0;
           this.audio.play().catch(err => {
@@ -86,13 +57,11 @@ class AudioManager {
       if (!this.audio) return;
   
       try {
-        // ✅ Check if already playing to prevent duplicate play calls
         if (this.isPlaying) {
           console.log('ℹ️ Audio sudah playing');
           return;
         }
   
-        // ✅ Prevent multiple simultaneous play attempts
         if (this.playbackAttempts >= this.maxAttempts) {
           console.warn('⚠️ Max playback attempts reached');
           return;
@@ -103,15 +72,14 @@ class AudioManager {
         // Set volume
         this.audio.volume = 0.5;
         
-        // Attempt to play
         const playPromise = this.audio.play();
         
         if (playPromise !== undefined) {
           await playPromise;
-          console.log('✅ Audio auto-playing successfully');
+          console.log('✅ Audio playing successfully');
         }
       } catch (error) {
-        console.warn('⚠️ Autoplay failed (akan retry on interact):', error.message);
+        console.warn('⚠️ Play failed:', error.message);
         this.playbackAttempts++;
       }
     }
@@ -141,13 +109,11 @@ class AudioManager {
       return this.audio ? this.audio.volume : 0;
     }
   
-    // ✅ NEW: Cleanup method untuk prevent memory leaks
     destroy() {
       if (this.audio) {
         this.audio.pause();
         this.audio.src = '';
       }
-      this.hasUserInteracted = false;
       this.isPlaying = false;
       this.playbackAttempts = 0;
     }

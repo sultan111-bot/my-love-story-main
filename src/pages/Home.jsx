@@ -1,4 +1,4 @@
-import { memo, useCallback, useRef, useState, useEffect } from "react";
+import { memo, useCallback, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ColorSwitcher from "../components/ColorSwitcher.jsx";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll.js";
@@ -8,6 +8,7 @@ import { useSound } from "../hooks/useSound.js";
 import { useVibration } from "../hooks/useVibration.js";
 import OptimizedImage from "../components/OptimizedImage.jsx";
 import { usePhotos } from "../hooks/usePhotos.js";
+import { shuffleArray, verifyShuffle } from "../utils/shuffle.js";
 
 const HEIGHTS = [140, 180, 220];
 
@@ -19,20 +20,35 @@ function seededRand(seed) {
 }
 
 /**
- * Prepare media items dari photos data
+ * Prepare media items dari photos data dengan TRUE SHUFFLE
  */
 function prepareMediaItems(photosData) {
   if (!photosData || photosData.length === 0) return [];
 
+  console.log('🔀 [SHUFFLE] Starting...');
+  console.log('📊 Total photos:', photosData.length);
+  
+  // 🔀 SHUFFLE MENGGUNAKAN DURSTENFELD ALGORITHM
+  const shuffledPhotos = shuffleArray(photosData);
+  
+  // Verify shuffle worked
+  verifyShuffle(photosData, shuffledPhotos);
+  
+  // Show first 10 items sebelum dan sesudah
+  console.log('📋 Before shuffle (first 10):', photosData.slice(0, 10).map(p => p.id));
+  console.log('📋 After shuffle (first 10):', shuffledPhotos.slice(0, 10).map(p => p.id));
+
   // Map photos dengan layout properties
-  const MEDIA_ITEMS = photosData.map((photo, i) => ({
+  const MEDIA_ITEMS = shuffledPhotos.map((photo, i) => ({
     ...photo,
-    key: `p${photo.id}`,
     h: HEIGHTS[i % 3],
     layoutIndex: i,
     rot: (seededRand(i) * 8 - 4).toFixed(2),
     tx: (seededRand(i + 99) * 12 - 6).toFixed(1),
   }));
+
+  console.log('✅ MEDIA_ITEMS created:', MEDIA_ITEMS.length);
+  console.log('📋 MEDIA_ITEMS order (first 10):', MEDIA_ITEMS.slice(0, 10).map(p => p.id));
 
   // Create 3x duplicates untuk seamless infinite scroll
   const EXTENDED = Array.from({ length: 3 }, (_, copy) =>
@@ -40,13 +56,15 @@ function prepareMediaItems(photosData) {
       const layoutIndex = copy * MEDIA_ITEMS.length + i;
       return {
         ...item,
-        id: `${item.key}-c${copy}`,
+        id: `${item.id}-c${copy}`,
         layoutIndex,
         rot: (seededRand(layoutIndex) * 8 - 4).toFixed(2),
         tx: (seededRand(layoutIndex + 99) * 12 - 6).toFixed(1),
       };
     })
   ).flat();
+
+  console.log('✅ EXTENDED created:', EXTENDED.length);
 
   return EXTENDED;
 }
@@ -82,7 +100,7 @@ const MediaCard = memo(function MediaCard({ item, onHold, priority = false }) {
       >
         <OptimizedImage 
           photo={item}
-          alt={`Foto ${item.id}`}
+          alt={`Foto ${item.originalId || item.id}`}
           priority={priority}
         />
       </div>
@@ -101,7 +119,6 @@ export default function Home() {
   // Component states
   const [expanded, setExpanded] = useState(null);
   const [storyOpen, setStoryOpen] = useState(false);
-  const [scrollEnabled, setScrollEnabled] = useState(false);
   
   // Refs
   const scrollRef = useRef(null);
@@ -110,21 +127,11 @@ export default function Home() {
   const { playSuccess, playPop } = useSound();
   const { vibrateSuccess, vibratePop } = useVibration();
 
-  // ===== START AUTO-SCROLL DENGAN DELAY 2.5 DETIK =====
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setScrollEnabled(true);
-      console.log('✅ Auto-scroll dimulai');
-    }, 2500);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Enable infinite scroll
+  // ✅ LANGSUNG AKTIF (tanpa delay)
   useInfiniteScroll(scrollRef, { 
     speed: 35, 
     resumeDelay: 3000, 
-    enabled: scrollEnabled && !loading 
+    enabled: !loading
   });
 
   // ===== HANDLERS =====
@@ -190,7 +197,7 @@ export default function Home() {
               key={item.id} 
               item={item} 
               onHold={handleExpand}
-              priority={idx < 9} // First 9 items prioritized
+              priority={idx < 9}
             />
           ))}
         </div>
@@ -246,7 +253,7 @@ export default function Home() {
               >
                 <OptimizedImage 
                   photo={expanded}
-                  alt={expanded.title}
+                  alt={`Foto ${expanded.id}`}
                   priority={true}
                 />
               </div>

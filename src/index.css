@@ -474,3 +474,26 @@ button {
 .fixed.inset-0 {
   will-change: contents;
 }
+
+/* Tambahkan di src/index.css */
+
+/* GPU Acceleration */
+.media-card {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Reduce repaints */
+.mobile-columns {
+  contain: content;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Image optimization */
+img {
+  image-rendering: -webkit-optimize-contrast;
+}
