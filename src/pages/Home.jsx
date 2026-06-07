@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { memo, useCallback, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ColorSwitcher from "../components/ColorSwitcher.jsx";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll.js";
@@ -77,6 +77,17 @@ const PHOTO_URLS = [
 
 const HEIGHTS = [140, 180, 220];
 
+function seededRand(seed) {
+  let t = seed + 0x6d2b79f5;
+  t = Math.imul(t ^ (t >>> 15), t | 1);
+  t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+}
+
+function thumbUrl(url) {
+  return url.replace("/upload/", "/upload/w_320,q_auto,f_auto/");
+}
+
 const SHUFFLED_PHOTOS = [...PHOTO_URLS]
   .sort(() => Math.random() - 0.5)
   .slice(0, 30);
@@ -85,85 +96,77 @@ const MEDIA_ITEMS = SHUFFLED_PHOTOS.map((src, i) => ({
   id: `p${i}`,
   type: "photo",
   src,
+  thumb: thumbUrl(src),
   n: i + 1,
   h: HEIGHTS[i % 3],
 }));
 
 // 3x duplicate for seamless infinite scroll (90 cards, not 120+)
 const EXTENDED_MEDIA_ITEMS = Array.from({ length: 3 }, (_, copy) =>
-  MEDIA_ITEMS.map((item, i) => ({
-    ...item,
-    id: `${item.id}-c${copy}`,
-    layoutIndex: copy * MEDIA_ITEMS.length + i,
-  }))
+  MEDIA_ITEMS.map((item, i) => {
+    const layoutIndex = copy * MEDIA_ITEMS.length + i;
+    return {
+      ...item,
+      id: `${item.id}-c${copy}`,
+      layoutIndex,
+      rot: (seededRand(layoutIndex) * 8 - 4).toFixed(2),
+      tx: (seededRand(layoutIndex + 99) * 12 - 6).toFixed(1),
+    };
+  })
 ).flat();
 
-function seededRand(seed) {
-  // mulberry32
-  let t = seed + 0x6d2b79f5;
-  t = Math.imul(t ^ (t >>> 15), t | 1);
-  t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-}
-
-function MediaCard({ item, index, onExpand }) {
-  const rot = (seededRand(index) * 8 - 4).toFixed(2);
-  const tx = (seededRand(index + 99) * 12 - 6).toFixed(1);
-  const { playPop } = useSound();
-  const { vibratePop } = useVibration();
-
+const MediaCard = memo(function MediaCard({ item, onHold }) {
   const handlers = useHoldPress({
     duration: 300,
-    onHold: () => {
-      playPop();
-      vibratePop();
-      onExpand(item);
-    },
+    onHold: () => onHold(item),
   });
 
   return (
     <div
       {...handlers}
-      className="bg-white relative select-none"
+      className="media-card bg-white relative select-none"
       style={{
         breakInside: "avoid",
         marginBottom: 8,
         padding: "6px 6px 18px 6px",
         borderRadius: 10,
-        boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
-        transform: `rotate(${rot}deg) translateX(${tx}px)`,
+        boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
+        transform: `rotate(${item.rot}deg) translateX(${item.tx}px)`,
       }}
     >
       <div
         className="rounded overflow-hidden"
-        style={{ minHeight: 80, maxHeight: item.h, background: "#E0E0E0" }}
+        style={{ height: item.h, background: "#E0E0E0" }}
       >
         <img
-          src={item.src}
+          src={item.thumb}
           alt={`Foto ${item.n}`}
           draggable={false}
           loading="lazy"
           decoding="async"
+          width={320}
+          height={item.h}
           style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
         />
       </div>
     </div>
   );
-}
+});
 
 export default function Home() {
   const [expanded, setExpanded] = useState(null);
   const [storyOpen, setStoryOpen] = useState(false);
   const scrollRef = useRef(null);
-  const { playSuccess } = useSound();
-  const { vibrateSuccess } = useVibration();
+  const { playSuccess, playPop } = useSound();
+  const { vibrateSuccess, vibratePop } = useVibration();
 
-  useInfiniteScroll(scrollRef, { speed: 1, interval: 60 });
+  useInfiniteScroll(scrollRef, { speed: 35 });
 
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (el) el.scrollTop = el.scrollHeight / 3;
-  }, []);
+  const handleExpand = useCallback((item) => {
+    playPop();
+    vibratePop();
+    setExpanded(item);
+  }, [playPop, vibratePop]);
 
   const handleStoryClick = () => {
     playSuccess();
@@ -179,16 +182,15 @@ export default function Home() {
         <ColorSwitcher />
       </div>
 
-      <div ref={scrollRef} className="overflow-y-auto no-scrollbar px-2 flex-1">
+      <div
+        ref={scrollRef}
+        className="overflow-y-auto no-scrollbar px-2 flex-1"
+        style={{ WebkitOverflowScrolling: "touch", overflowAnchor: "none" }}
+      >
         {/* Mobile: 3 columns, Tablet: 4 columns, Desktop: 5-6 columns */}
         <div className="mobile-columns">
           {EXTENDED_MEDIA_ITEMS.map((item) => (
-            <MediaCard
-              key={item.id}
-              item={item}
-              index={item.layoutIndex}
-              onExpand={setExpanded}
-            />
+            <MediaCard key={item.id} item={item} onHold={handleExpand} />
           ))}
         </div>
       </div>

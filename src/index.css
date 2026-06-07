@@ -280,6 +280,12 @@ body {
   column-gap: 8px;
 }
 
+.media-card {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 200px;
+  contain: layout style paint;
+}
+
 @media (min-width: 768px) {
   .mobile-columns {
     column-count: 4;
