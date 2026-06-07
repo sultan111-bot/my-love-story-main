@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ColorSwitcher from "../components/ColorSwitcher.jsx";
+import { useInfiniteScroll } from "../hooks/useInfiniteScroll.js";
 import { useHoldPress } from "../hooks/useHoldPress.js";
 import OurStoryModal from "../modals/OurStoryModal.jsx";
 import { useSound } from "../hooks/useSound.js";
@@ -88,6 +89,15 @@ const MEDIA_ITEMS = SHUFFLED_PHOTOS.map((src, i) => ({
   h: HEIGHTS[i % 3],
 }));
 
+// 3x duplicate for seamless infinite scroll (90 cards, not 120+)
+const EXTENDED_MEDIA_ITEMS = Array.from({ length: 3 }, (_, copy) =>
+  MEDIA_ITEMS.map((item, i) => ({
+    ...item,
+    id: `${item.id}-c${copy}`,
+    layoutIndex: copy * MEDIA_ITEMS.length + i,
+  }))
+).flat();
+
 function seededRand(seed) {
   // mulberry32
   let t = seed + 0x6d2b79f5;
@@ -144,8 +154,16 @@ function MediaCard({ item, index, onExpand }) {
 export default function Home() {
   const [expanded, setExpanded] = useState(null);
   const [storyOpen, setStoryOpen] = useState(false);
+  const scrollRef = useRef(null);
   const { playSuccess } = useSound();
   const { vibrateSuccess } = useVibration();
+
+  useInfiniteScroll(scrollRef, { speed: 1, interval: 60 });
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) el.scrollTop = el.scrollHeight / 3;
+  }, []);
 
   const handleStoryClick = () => {
     playSuccess();
@@ -161,11 +179,16 @@ export default function Home() {
         <ColorSwitcher />
       </div>
 
-      <div className="overflow-y-auto no-scrollbar px-2 flex-1">
+      <div ref={scrollRef} className="overflow-y-auto no-scrollbar px-2 flex-1">
         {/* Mobile: 3 columns, Tablet: 4 columns, Desktop: 5-6 columns */}
         <div className="mobile-columns">
-          {MEDIA_ITEMS.map((item, idx) => (
-            <MediaCard key={item.id} item={item} index={idx} onExpand={setExpanded} />
+          {EXTENDED_MEDIA_ITEMS.map((item) => (
+            <MediaCard
+              key={item.id}
+              item={item}
+              index={item.layoutIndex}
+              onExpand={setExpanded}
+            />
           ))}
         </div>
       </div>
