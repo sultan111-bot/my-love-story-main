@@ -1,9 +1,12 @@
 {
     "buildCommand": "npm run build",
     "outputDirectory": "dist",
-    "env": {
-      "VITE_APP_ENV": "production"
-    },
+    "rewrites": [
+      {
+        "source": "/(.*)",
+        "destination": "/"
+      }
+    ],
     "headers": [
       {
         "source": "/(.*)",
