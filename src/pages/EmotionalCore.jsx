@@ -343,10 +343,10 @@ export default function EmotionalCore() {
 <div className="h-[85vh] flex flex-col px-4 pt-6 pb-4 overflow-hidden lg:px-8 lg:pt-8">
   <div className="flex-shrink-0 mb-6 lg:mb-8">
     <h1 className="font-display text-2xl lg:text-4xl text-center" style={{ color: "#C2185B" }}>
-      15 Alasan Aku Mencintaimu 💌
+      15 Reasons I LOVE U SOO MUCHH
     </h1>
     <p className="text-center text-[13px] lg:text-base text-[#999] mt-2">
-      Ketuk amplop untuk membukanya 🥺
+      Pencet yhh amplopnyaa
     </p>
   </div>
       <div className="flex-1 flex items-center justify-center py-1">
