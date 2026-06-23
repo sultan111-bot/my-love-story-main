@@ -22,7 +22,7 @@ const LOVE_REASONS = [
   "Humor kita sama sama receh sik hehe...",
   "Km Bisa ak jadiin tempat ceritaa AKJSKSHJAGHASHJKH",
   "Km klo mish mish, ngeluh, marah, dsb YUYUR AK SUKAK BGT",
-  "KKm menuhin love language ak bgtt coyyy hahayy",
+  "Km menuhin love language ak bgtt coyyy hahayy",
   "Ak klo sama kamu ketawa terus??!! hhhh emang yh jodoh",
   "Km Wangiii BGTTTTTTTTTTTT....",
   "Semuanya tentang km ihh ak sukakkkkk, ga cuma 15 yhh sebenernya ada 923778462374612836712378367356"
@@ -191,7 +191,7 @@ function VirtualHug() {
     <div className="text-center mt-2 pb-1">
       <div className="border-t border-pink-200 pt-2">
         <div className="text-sm text-gray-600 mb-2">
-          Sudah baca semuanya? Ada satu lagi untukmu... 🤗
+          Udh baca semuanya kahh?? Coba tekennn tombol dibawah hehee
         </div>
         <div className="relative inline-block">
           <button
@@ -218,7 +218,7 @@ function VirtualHug() {
           >
             <span className="relative z-10 flex items-center gap-2">
               <span className="animate-pulse">💕</span>
-              Pelukan untuk Kamu
+              Hug For uuuu
               <span className="animate-pulse">💕</span>
             </span>
             {progress > 0 && (
@@ -283,7 +283,7 @@ function VirtualHug() {
     className="absolute font-display italic whitespace-nowrap"
     style={{ top: "100%", left: "50%", transform: "translateX(-50%)", color: "#C2185B", zIndex: 1 }}
   >
-    Rasakan detak jantungku... 💓
+    Utututututuu sinii sinii
   </div>
 </div>
   </div>
