@@ -8,12 +8,12 @@ import { useSound } from "../hooks/useSound.js";
 import { useVibration } from "../hooks/useVibration.js";
 
 const PLACES = [
-  { e: "🎬", n: "[TEMPAT_1_PLACEHOLDER]" },
-  { e: "🍜", n: "[TEMPAT_2_PLACEHOLDER]" },
-  { e: "🌊", n: "[TEMPAT_3_PLACEHOLDER]" },
-  { e: "🎡", n: "[TEMPAT_4_PLACEHOLDER]" },
-  { e: "☕", n: "[TEMPAT_5_PLACEHOLDER]" },
-  { e: "🌅", n: "[TEMPAT_6_PLACEHOLDER]" },
+  { e: "🎬", n: "Bioskop Date" },
+  { e: "🍜", n: "Restaurant Date" },
+  { e: "🌊", n: "Beach Date" },
+  { e: "🎡", n: "Playground Date" },
+  { e: "☕", n: "Coffee Date" },
+  { e: "🎨", n: "Art Date" },
 ];
 
 // CONFIGURATION - Easy to adjust positioning
@@ -68,7 +68,7 @@ function TrapOfLove({ onYesTriggered }) {
   const [hearts, setHearts] = useState([]);
   const [noPos, setNoPos] = useState({ left: 16, top: 8 });
   const [yesPos, setYesPos] = useState({ x: 0, y: 0, scale: 1 });
-  const [sultanState, setSultanState] = useState({ emotion: "happy", speech: "Pilih dengan jujur ya~ 😼" });
+  const [sultanState, setSultanState] = useState({ emotion: "happy", speech: "Pilih yg jujur yhh~" });
   const [hoveredButton, setHoveredButton] = useState(null);
   const [isButtonHidden, setIsButtonHidden] = useState(false);
   const lastMoveTime = useRef(0);
@@ -363,7 +363,7 @@ function TrapOfLove({ onYesTriggered }) {
           animate={{ scale: [1, 1.05, 1] }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         >
-          Kamu sayang Sultan nggak? 💕
+          Km Sayang Ak Kannn??? 😤
         </motion.h2>
         
         <motion.div 
@@ -475,7 +475,7 @@ function DateSelection() {
     setTimeout(() => {
       setTappedIdx(null);
       const place = PLACES[i].n;
-      const url = `https://wa.me/6285805351701?text=${encodeURIComponent(`Hii Sultan! Aku mau kencan ke ${place} dong~ 🥺💕`)}`;
+      const url = `https://wa.me/6285805351701?text=${encodeURIComponent(`ALLOOO SAYANGGG, ak mw date enihh ${place} heheee`)}`;
       window.open(url, "_blank");
     }, 600);
   };
@@ -726,7 +726,7 @@ function CelebrationOverlay({ onDone }) {
           transition={{ duration: 2, repeat: Infinity }}
         >
           <p className="text-lg font-bold bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">
-            Yess! Aku tahu kamu sayang aku! 😼💕
+            HEHEHEHEHE I KNOWW BUBB
           </p>
         </motion.div>
       </motion.div>
