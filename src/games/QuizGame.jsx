@@ -40,8 +40,8 @@ const QUIZ_QUESTIONS = [
   },
   {
     question: "Apa hobi favorit ak?",
-    answers: ["Olahraga", "main game", "tidur", "makan"],
-    correct: 0 & 1 & 2 & 3
+    answers: ["Tidur", "main game", "olahraga", "makan"],
+    correct: 0 
   },
   {
     question: "Apa yang paling ak suka?",
@@ -98,17 +98,17 @@ export default function QuizGame({ onExit }) {
 
   if (gameOver) {
     let emotion = "sad";
-    let message = "Coba lagi ya! 😿";
+    let message = "PARAH BGTT!!??";
     
     if (score >= 8) {
       emotion = "celebrating";
-      message = "Luar biasa! Kamu kenal aku banget! 🎉😻";
+      message = "I KNOWWW HEHEHEHEHEH";
     } else if (score >= 6) {
       emotion = "happy";
-      message = "Bagus! Kamu hafal banyak hal tentang kita 😸";
+      message = "YEAYYYYY walaupun banyak yg salah sik cih";
     } else if (score >= 4) {
       emotion = "shy";
-      message = "Lumayan! Masih banyak yang perlu kamu ingat 😊";
+      message = "HMZZZZ.... yhh lumayan laaa";
     }
 
     return (
