@@ -466,6 +466,7 @@ function DateSelection() {
   const [selectedPlace, setSelectedPlace] = useState(null);
   const { playSuccess } = useSound();
   const { vibrateSuccess } = useVibration();
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const tap = (i) => {
     playSuccess();
@@ -474,8 +475,152 @@ function DateSelection() {
     setSelectedPlace(i);
     setTimeout(() => {
       setTappedIdx(null);
-      const place = PLACES[i].n;
-      const url = `https://wa.me/6285805351701?text=${encodeURIComponent(`ALLOOO SAYANGGG, ak mw ${place} ajaa dehh heheee`)}`;
+      setShowDatePicker(true);
+    }, 600);
+  };
+
+  const place = selectedPlace !== null ? PLACES[selectedPlace].n : null;
+
+  return (
+    <>
+      {!showDatePicker ? (
+        <div className="px-4 pt-4 pb-4 relative min-h-screen">
+          <motion.section
+            className="relative z-10 mt-6"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <motion.div 
+              className="text-center mb-8"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+            >
+              <motion.h2 
+                className="font-display text-3xl sm:text-4xl font-bold bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 bg-clip-text text-transparent mb-2"
+                animate={{ 
+                  backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                }}
+                transition={{ duration: 3, repeat: Infinity }}
+                style={{ backgroundSize: "200% 200%" }}
+              >
+                Mw Nge Date kemanaa???
+              </motion.h2>
+              <motion.p 
+                className="text-sm sm:text-base text-gray-600 font-medium"
+                animate={{ opacity: [0.7, 1, 0.7] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                Pilih satu aja yhh hhhhh
+              </motion.p>
+            </motion.div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
+              {PLACES.map((p, i) => (
+                <motion.button
+                  key={i}
+                  onClick={() => tap(i)}
+                  className={`relative group rounded-3xl p-6 text-center shadow-lg border-2 transition-all duration-300 ${
+                    selectedPlace === i 
+                      ? 'border-pink-400 shadow-pink-200' 
+                      : 'border-pink-200 hover:border-pink-300'
+                  }`}
+                  style={{
+                    background: selectedPlace === i 
+                      ? "linear-gradient(135deg, rgba(255,182,193,0.3), rgba(255,228,236,0.4))"
+                      : "linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,228,236,0.8))",
+                  }}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ 
+                    opacity: 1, 
+                    scale: 1,
+                    y: tappedIdx === i ? -3 : 0
+                  }}
+                  transition={{ 
+                    delay: i * 0.08, 
+                    duration: 0.4,
+                    ease: "easeOut"
+                  }}
+                  whileHover={{ 
+                    scale: 1.03, 
+                    y: -4,
+                    boxShadow: "0 12px 25px rgba(255,107,157,0.25)"
+                  }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-pink-400 to-rose-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
+                  
+                  <motion.div 
+                    className="relative z-10"
+                    animate={{ 
+                      rotate: tappedIdx === i ? [0, 5, -5, 0] : 0,
+                      scale: tappedIdx === i ? [1, 1.1, 1] : 1
+                    }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                  >
+                    <div className="text-4xl sm:text-5xl mb-3">{p.e}</div>
+                    <div className="text-sm sm:text-base font-bold text-gray-800 leading-tight">
+                      {p.n}
+                    </div>
+                  </motion.div>
+
+                  {selectedPlace === i && (
+                    <motion.div
+                      className="absolute -top-2 -right-2 w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", stiffness: 500 }}
+                    >
+                      <span className="text-white text-sm">✓</span>
+                    </motion.div>
+                  )}
+                </motion.button>
+              ))}
+            </div>
+
+            <motion.div
+              className="flex justify-center mt-8"
+              initial={{ scale: 0, rotate: 180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.8, duration: 0.8, type: "spring" }}
+            >
+              <motion.div
+                animate={{ 
+                  y: [0, -10, 0],
+                  rotate: [0, 5, -5, 0]
+                }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <SultanMascot size="lg" emotion="celebrating" />
+              </motion.div>
+            </motion.div>
+          </motion.section>
+        </div>
+      ) : (
+        <DatePicker place={place} />
+      )}
+    </>
+  );
+}
+
+function DatePicker({ place }) {
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [tappedDate, setTappedDate] = useState(null);
+  const { playSuccess } = useSound();
+  const { vibrateSuccess } = useVibration();
+
+  const dates = Array.from({ length: 31 }, (_, i) => i + 1);
+
+  const handleDateSelect = (date) => {
+    playSuccess();
+    vibrateSuccess();
+    setTappedDate(date);
+    setSelectedDate(date);
+    setTimeout(() => {
+      setTappedDate(null);
+      const formattedDate = `${date} Juli 2026`;
+      const url = `https://wa.me/6285805351701?text=${encodeURIComponent(`ALLOOO SAYANGGG, ak mw ${place} ajaa dehh heheee, tanggal ${formattedDate} yahhh!`)}`;
       window.open(url, "_blank");
     }, 600);
   };
@@ -502,29 +647,29 @@ function DateSelection() {
             transition={{ duration: 3, repeat: Infinity }}
             style={{ backgroundSize: "200% 200%" }}
           >
-            Mw Nge Date kemanaa???
+            Pilih Tanggalnya dongg??
           </motion.h2>
           <motion.p 
             className="text-sm sm:text-base text-gray-600 font-medium"
             animate={{ opacity: [0.7, 1, 0.7] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            Pilih satu aja yhh hhhhh
+            Juli 2026 - Pilih hari yang kamu mau!
           </motion.p>
         </motion.div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
-          {PLACES.map((p, i) => (
+        <div className="grid grid-cols-5 sm:grid-cols-7 gap-3 max-w-2xl mx-auto">
+          {dates.map((date) => (
             <motion.button
-              key={i}
-              onClick={() => tap(i)}
-              className={`relative group rounded-3xl p-6 text-center shadow-lg border-2 transition-all duration-300 ${
-                selectedPlace === i 
+              key={date}
+              onClick={() => handleDateSelect(date)}
+              className={`relative group rounded-2xl p-4 text-center shadow-lg border-2 transition-all duration-300 ${
+                selectedDate === date 
                   ? 'border-pink-400 shadow-pink-200' 
                   : 'border-pink-200 hover:border-pink-300'
               }`}
               style={{
-                background: selectedPlace === i 
+                background: selectedDate === date 
                   ? "linear-gradient(135deg, rgba(255,182,193,0.3), rgba(255,228,236,0.4))"
                   : "linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,228,236,0.8))",
               }}
@@ -532,44 +677,43 @@ function DateSelection() {
               animate={{ 
                 opacity: 1, 
                 scale: 1,
-                y: tappedIdx === i ? -3 : 0
+                y: tappedDate === date ? -3 : 0
               }}
               transition={{ 
-                delay: i * 0.08, 
+                delay: date * 0.02, 
                 duration: 0.4,
                 ease: "easeOut"
               }}
               whileHover={{ 
-                scale: 1.03, 
+                scale: 1.05, 
                 y: -4,
                 boxShadow: "0 12px 25px rgba(255,107,157,0.25)"
               }}
               whileTap={{ scale: 0.97 }}
             >
-              <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-pink-400 to-rose-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-pink-400 to-rose-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
               
               <motion.div 
                 className="relative z-10"
                 animate={{ 
-                  rotate: tappedIdx === i ? [0, 5, -5, 0] : 0,
-                  scale: tappedIdx === i ? [1, 1.1, 1] : 1
+                  rotate: tappedDate === date ? [0, 5, -5, 0] : 0,
+                  scale: tappedDate === date ? [1, 1.1, 1] : 1
                 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
               >
-                <div className="text-4xl sm:text-5xl mb-3">{p.e}</div>
-                <div className="text-sm sm:text-base font-bold text-gray-800 leading-tight">
-                  {p.n}
+                <div className="text-lg sm:text-xl font-bold text-gray-800">
+                  {date}
                 </div>
               </motion.div>
 
-              {selectedPlace === i && (
+              {selectedDate === date && (
                 <motion.div
-                  className="absolute -top-2 -right-2 w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center"
+                  className="absolute -top-1 -right-1 w-5 h-5 bg-pink-500 rounded-full flex items-center justify-center"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: "spring", stiffness: 500 }}
                 >
-                  <span className="text-white text-sm">✓</span>
+                  <span className="text-white text-xs">✓</span>
                 </motion.div>
               )}
             </motion.button>
@@ -589,7 +733,7 @@ function DateSelection() {
             }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           >
-            <SultanMascot size="lg" emotion="celebrating" />
+            <SultanMascot size="lg" emotion="excited" />
           </motion.div>
         </motion.div>
       </motion.section>

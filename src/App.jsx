@@ -61,7 +61,7 @@ function SecretIntroOverlay({ onDone }) {
         className="absolute left-1/2 -translate-x-1/2"
         style={{ bottom: "calc(50% + 130px)" }}
       >
-        <SpeechBubble>Kamu nemuin aku! Ada hadiah rahasia nih... 🎁</SpeechBubble>
+        <SpeechBubble>Km nemu secret pagee omaygattt</SpeechBubble>
       </motion.div>
       <motion.div
         initial={{ width: 0 }}
