@@ -118,13 +118,6 @@ export function MemoriesPage() {
           </button>
         </div>
       )}
-
-      {/* Info Box */}
-      <div className="mt-6 p-4 bg-blue-50 border-l-4 border-blue-400">
-        <p className="text-sm text-blue-800">
-          💾 Semua data disimpan di HP Anda secara lokal. Tidak perlu internet untuk mengakses! ✅
-        </p>
-      </div>
     </div>
   );
 }
