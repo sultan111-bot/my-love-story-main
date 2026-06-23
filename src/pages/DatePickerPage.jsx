@@ -8,7 +8,7 @@ import { useSound } from "../hooks/useSound.js";
 import { useVibration } from "../hooks/useVibration.js";
 
 const PLACES = [
-  { e: "🎬", n: "Bioskop Date" },
+  { e: "🎬", n: "Movie Date" },
   { e: "🍜", n: "Restaurant Date" },
   { e: "🌊", n: "Beach Date" },
   { e: "🎡", n: "Playground Date" },
@@ -363,7 +363,7 @@ function TrapOfLove({ onYesTriggered }) {
           animate={{ scale: [1, 1.05, 1] }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         >
-          Km Sayang Ak Kannn??? 😤
+          Km Sayang Ak Kannn???
         </motion.h2>
         
         <motion.div 
@@ -475,7 +475,7 @@ function DateSelection() {
     setTimeout(() => {
       setTappedIdx(null);
       const place = PLACES[i].n;
-      const url = `https://wa.me/6285805351701?text=${encodeURIComponent(`ALLOOO SAYANGGG, ak mw date enihh ${place} heheee`)}`;
+      const url = `https://wa.me/6285805351701?text=${encodeURIComponent(`ALLOOO SAYANGGG, ak mw ${place} ajaa dehh heheee`)}`;
       window.open(url, "_blank");
     }, 600);
   };
@@ -502,14 +502,14 @@ function DateSelection() {
             transition={{ duration: 3, repeat: Infinity }}
             style={{ backgroundSize: "200% 200%" }}
           >
-            Mau Kencan Ke Mana? 💑
+            Mw Nge Date kemanaa???
           </motion.h2>
           <motion.p 
             className="text-sm sm:text-base text-gray-600 font-medium"
             animate={{ opacity: [0.7, 1, 0.7] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            Pilih satu, Sultan yang atur sisanya~ 😼
+            Pilih satu aja yhh hhhhh
           </motion.p>
         </motion.div>
 
