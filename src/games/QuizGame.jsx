@@ -4,54 +4,54 @@ import ConfettiEffect from "../components/ConfettiEffect.jsx";
 
 const QUIZ_QUESTIONS = [
   {
-    question: "Apa nama lengkap kita berdua?",
-    answers: ["Anjas & [Nama Pacar]", "John & Jane", "Budi & Siti", "Rudi & Rina"],
-    correct: 0
-  },
-  {
-    question: "Kapan kita pertama kali jalan?",
-    answers: ["Januari 2024", "Februari 2024", "Maret 2024", "April 2024"],
-    correct: 1
-  },
-  {
-    question: "Tempat favorit kita untuk kencan?",
-    answers: ["Mall", "Taman", "Cafe", "Rumah Makan"],
-    correct: 2
-  },
-  {
-    question: "Apa makanan favorit kita berdua?",
-    answers: ["Sushi", "Pizza", "Ayam Bakar", "Mie Ayam"],
-    correct: 2
-  },
-  {
-    question: "Film apa yang sering kita tonton bersama?",
-    answers: ["Action", "Horror", "Romantis", "Komedi"],
-    correct: 2
-  },
-  {
-    question: "Apa warna favorit kamu?",
-    answers: ["Merah", "Biru", "Pink", "Ungu"],
-    correct: 2
-  },
-  {
-    question: "Hari apa kita biasa ketemu?",
-    answers: ["Senin", "Rabu", "Jumat", "Minggu"],
+    question: "Siapa nama lengkap ur boyfriend (aku)?",
+    answers: ["Sultan Agung", "M. Sultan Ramadhan", "Sultan Suka Mandi", "Sultan Harahara"],
     correct: 3
   },
   {
-    question: "Apa hobi favorit kita?",
-    answers: ["Olahraga", "Musik", "Membaca", "Main Game"],
+    question: "Kapan kita Jadian?",
+    answers: ["15 Februari 2026", "17 Februari 2026", "11 Februari 2026", "11 Februari 2062"],
+    correct: 2
+  },
+  {
+    question: "Apa makanan favorit ak klo pagi?",
+    answers: ["Bubur Ayam", "Nasi Uduk", "Lontong", "Mie Ayam"],
+    correct: 0
+  },
+  {
+    question: "Apa makanan favorit ak klo malem?",
+    answers: ["Bubur Ayam", "Nasi Uduk", "Lontong", "Mie Ayam"],
     correct: 1
   },
   {
-    question: "Musim apa yang kita sukai?",
-    answers: ["Panas", "Hujan", "Dingin", "Semi"],
+    question: "Apa rasa favorit ak?",
+    answers: ["Keju", "Coklat", "Strawberry", "Taro"],
+    correct: 0
+  },
+  {
+    question: "Apa warna favorit ak?",
+    answers: ["putih & hitam", "biru & pink", "Pink & ungu", "putih & biru"],
+    correct: 3
+  },
+  {
+    question: "Apa nama panggilan ak dirumah?",
+    answers: ["Sultan", "Dek", "Utan", "Nak"],
+    correct: 2
+  },
+  {
+    question: "Apa hobi favorit ak?",
+    answers: ["Olahraga", "main game", "tidur", "makan"],
+    correct: 0 & 1 & 2 & 3
+  },
+  {
+    question: "Apa yang paling ak suka?",
+    answers: ["Makanan", "Duit", "Minuman", "Kasur"],
     correct: 1
   },
   {
-    question: "Apa target kita tahun ini?",
-    answers: ["Travel", "Nikah", "Kuliah", "Kerja"],
-    correct: 1
+    question: "Apa target ak tahun ini?",
+    answers: ["kuliah", "kerja", "gatau", "rantau"],
+    correct: 2
   }
 ];
 
