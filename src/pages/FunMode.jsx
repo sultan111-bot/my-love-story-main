@@ -14,17 +14,16 @@ import { useVibration } from "../hooks/useVibration.js";
   // === KONFIGURASI MOOD tracker ===
 // Mudah di调整: ubah emoji, label, dan response sesuai keinginan
 const moodConfig = {
-  title: "Bagaimana Mood Kamu Hari Ini? 🌈",
-  defaultQuestion: "Hari ini kamu gimana moodnya? Pilih yang bener ya~ 😊",
-  shakeResponse: "WAAAAH kamu goyang-goyangkan aku! 😹💫",
+  title: "Gimana Mood Kamu Tudeyyy??",
+  defaultQuestion: "Tudeyy kamu gimana moodnya Bubb? Pilih yaawww",
+  shakeResponse: "WUAAAAAA GILSSSS",
   moods: [
-    { emoji: "😊", label: "Senang", response: "Wih, kamu senang! Aku juga senang kok! 😸💕" },
-    { emoji: "😔", label: "Sedih", response: "Oh, kamu sedih? Nanti aku temenin ya... 🫂💙" },
-    { emoji: "😴", label: "Ngantuk", response: "Ngantuk ya? Istirahat dulu yuk... 😴💤" },
-    { emoji: "😡", label: "Marah", response: "Wah, marah? Tenang, aku di sini buat kamu... 🫂💜" },
-  
-    { emoji: "🥰", label: "Suka", response: "Aww, kamu suka sama aku juga kan? Hehe~ 🥰💕" },
-    { emoji: "😎", label: "Pede", response: "Wih, pede banget! Aku suka itu! 😎⭐" }
+    { emoji: "😊", label: "Senang", response: "YEAYYY KM LAGI SENENGGG YAAA HEPIII HEPIII" },
+    { emoji: "😔", label: "Sedih", response: "whyy sayangg, km kenapaa bubb??" },
+    { emoji: "😴", label: "Ngantuk", response: "HAHAHAHAHAHA pelorr ihh kebiasaann yhh ngantukan" },
+    { emoji: "😡", label: "Marah", response: "hmzzz.... marah kenapaa... takoett" },
+    { emoji: "🥱", label: "Bosen", response: "boring yaa... sama ihh ak juga lagi boring, gimana klo call an?? hehe" },
+    { emoji: "😐", label: "Biasa Aja", response: "yahhh nothing speciall yaaa, ywdaa dehh" }
     // Tambah mood baru di sini jika perlu
   ]
 };
