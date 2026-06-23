@@ -719,23 +719,6 @@ function DatePicker({ place }) {
             </motion.button>
           ))}
         </div>
-
-        <motion.div
-          className="flex justify-center mt-8"
-          initial={{ scale: 0, rotate: 180 }}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ delay: 0.8, duration: 0.8, type: "spring" }}
-        >
-          <motion.div
-            animate={{ 
-              y: [0, -10, 0],
-              rotate: [0, 5, -5, 0]
-            }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <SultanMascot size="lg" emotion="excited" />
-          </motion.div>
-        </motion.div>
       </motion.section>
     </div>
   );
