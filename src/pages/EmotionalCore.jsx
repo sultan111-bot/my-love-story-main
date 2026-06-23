@@ -11,21 +11,21 @@ const ACCENTS = [
 ];
 
 const LOVE_REASONS = [
-  "Cara kamu tersenyum bisa membuat hari ku selalu cerah, bahkan saat hujan deras sekalipun ☀️",
-  "Kamu selalu tahu cara membuat aku merasa lebih baik saat aku sedang sedih 🤗",
-  "Tawa mu adalah musik terindah yang pernah aku dengar di dunia ini 🎵",
-  "Kamu membuatku ingin menjadi versi terbaik dari diriku sendiri 💪",
-  "Setiap hari bersama mu adalah petualangan yang tidak pernah aku lewatkan 🌟",
-  "Kamu sangat kuat dan tegar, aku kagum dengan cara kamu menghadapi segalanya 💎",
-  "Cinta mu memberiku kekuatan untuk melewati hari-hari tersulit sekalipun ⚡",
-  "Kamu sangat baik dan peduli, tidak hanya padaku tapi pada semua orang 🌸",
-  "Cara kamu melihat dunia dengan mata penuh keajaiban menginspirasi aku ✨",
-  "Kamu adalah rumah ku, tempat di mana aku merasa paling aman dan nyaman 🏠",
-  "Bahkan dalam kesunyian, kehadiran mu membuatku merasa tidak pernah sendirain 🌙",
-  "Kamu mengajarkan aku arti sebenarnya dari cinta tanpa syarat 💝",
-  "Setiap momen kecil bersama mu adalah kenangan yang akan aku simpan selamanya 📸",
-  "Kamu adalah jawaban dari semua doa-doaku yang tidak pernah aku ungkapkan 🙏",
-  "Bersama mu, aku menemukan bagian dari diriku yang tidak pernah aku kenal sebelumnya 🦋"
+  "Km baikk bgtt gilssss",
+  "Km perhatiann ihh SUKAKKKK",
+  "Km LUCUKKK, GEMASHHH, GEMOYY greget sendiri ak",
+  "Km ngertiin ak bgtt sihh aseliii no debat no kecot",
+  "Km tipe ak bgt coyyy gilakk",
+  "Km CANTIK SEKALEHH masyaAllah sukakk betoll",
+  "Km unik tw kek peka tapi ga peka, tapi anehnya peka hmzz",
+  "Km selalu inget ak??!! GAK EKSPEKK",
+  "Humor kita sama sama receh sik hehe...",
+  "Km Bisa ak jadiin tempat ceritaa AKJSKSHJAGHASHJKH",
+  "Km klo mish mish, ngeluh, marah, dsb YUYUR AK SUKAK BGT",
+  "KKm menuhin love language ak bgtt coyyy hahayy",
+  "Ak klo sama kamu ketawa terus??!! hhhh emang yh jodoh",
+  "Km Wangiii BGTTTTTTTTTTTT....",
+  "Semuanya tentang km ihh ak sukakkkkk, ga cuma 15 yhh sebenernya ada 923778462374612836712378367356"
 ];
 
 function EnvelopeCard({ n, accent, top, left, rot, onEnvelopeClick, registerRef, isHighest, highestZIndex }) {
