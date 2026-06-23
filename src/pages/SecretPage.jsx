@@ -7,9 +7,9 @@ import { useSound } from "../hooks/useSound.js";
 import { useVibration } from "../hooks/useVibration.js";
 
 const QUESTIONS = [
-  { q: "[PERTANYAAN_1]", a: "aaa" },
-  { q: "[PERTANYAAN_2]", a: "bbb" },
-  { q: "[PERTANYAAN_3]", a: "ccc" },
+  { q: "Dimana pertama kali kita jalan bener bener cuma berdua???", a: "Geprek Mas boy" },
+  { q: "Apa yang ak bener bener gabisa tapi ak mw bisa??", a: "Menggambar" },
+  { q: "Apa Kegiatan yang pertama kali ak ikutin?? (dari kecil)", a: "Atletik" },
 ];
 
 function Quiz({ onDone }) {
@@ -17,7 +17,7 @@ function Quiz({ onDone }) {
   const [val, setVal] = useState("");
   const [wrong, setWrong] = useState(0);
   const [shake, setShake] = useState(false);
-  const [sultanState, setSultanState] = useState({ emotion: "worried", speech: "Aku percaya kamu kenal aku... 🥺" });
+  const [sultanState, setSultanState] = useState({ emotion: "worried", speech: "Ak percaya km pasti kenal ak..." });
   const [confetti, setConfetti] = useState(false);
   const { playSuccess, playError, playCelebration } = useSound();
   const { vibrateSuccess, vibrateError } = useVibration();
@@ -42,7 +42,7 @@ function Quiz({ onDone }) {
       // Auto-pass after 5 wrong
       playSuccess();
       vibrateSuccess();
-      setSultanState({ emotion: "celebrating", speech: "Yeyy benar!! 🎉" });
+      setSultanState({ emotion: "celebrating", speech: "YEAYYYY" });
       setConfetti(true);
       setTimeout(() => setConfetti(false), 1500);
       setTimeout(() => {
@@ -50,7 +50,7 @@ function Quiz({ onDone }) {
           setIdx(idx + 1);
           setVal("");
           setWrong(0);
-          setSultanState({ emotion: "worried", speech: "Lanjut yaa~ 🙈" });
+          setSultanState({ emotion: "worried", speech: "Lanjuttt~" });
         } else {
           playCelebration();
           onDone();
@@ -64,7 +64,7 @@ function Quiz({ onDone }) {
       setShake(true);
       setTimeout(() => setShake(false), 400);
       if (next >= 5) {
-        setSultanState({ emotion: "smug", speech: "Yaudah deh, aku kasih masuk aja... 🙈💦" });
+        setSultanState({ emotion: "smug", speech: "HMZZZ... ywdaa laa lanjut ajhhh" });
         setTimeout(() => submit(), 1500);
       } else {
         setSultanState({
@@ -79,7 +79,7 @@ function Quiz({ onDone }) {
     <div className="px-4 pt-4 pb-8">
       <ConfettiEffect active={confetti} duration={1500} count={30} />
       <h1 className="font-display text-2xl text-center" style={{ color: "var(--theme-accent)" }}>
-        Buktikan Kamu Kenal Aku! 🔐
+        Km harus jawab semua pertanyaan ini klo mw dapet hadiah
       </h1>
 
       <div className="flex justify-center items-center gap-2 mt-4">
