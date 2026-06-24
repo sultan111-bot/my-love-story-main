@@ -924,7 +924,7 @@ export default function DatePickerPage() {
 
       <div className="relative z-10 flex flex-col px-4 pt-4 pb-4 overflow-y-auto" style={{ 
         height: "100%",
-        paddingBottom: "calc(clamp(70px, 10vh, 80px) + env(safe-area-inset-bottom, 0px) + 20px)"
+        paddingBottom: "calc(clamp(80px, 12vh, 100px) + 40px + 20px)" /* Sesuai navbar baru */
       }}>
         <div className={`flex-1 space-y-4`}>
           {!showDateSelection ? (
