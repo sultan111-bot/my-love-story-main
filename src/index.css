@@ -214,15 +214,15 @@ body {
 
 /* ===== NAVBAR STYLING - CLEAN & CONSISTENT ===== */
 nav {
-  z-index: 999999;
+  z-index: 9999999; /* Naikkan z-index lebih tinggi lagi untuk memastikan di atas semua */
   transform: translate3d(0,0,0);
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.8); /* Sedikit lebih opaque agar terlihat jelas */
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(255, 107, 157, 0.2);
+  border-top: 1px solid rgba(255, 107, 157, 0.3);
   border-top-left-radius: 28px;
   border-top-right-radius: 28px;
-  box-shadow: 0 -8px 32px rgba(194, 24, 91, 0.15);
+  box-shadow: 0 -8px 32px rgba(194, 24, 91, 0.2);
   box-sizing: border-box;
 }
 
@@ -241,11 +241,16 @@ nav {
     bottom: 0;
     left: 0;
     right: 0;
+    width: 100%; /* Pastikan lebar penuh */
     height: auto;
-    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 16px); /* Tambah fallback minimal 16px jika safe-area tidak berfungsi */
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
   }
   .navbar-inner {
     height: clamp(70px, 10vh, 80px);
+    width: 100%;
   }
 }
 
@@ -257,12 +262,13 @@ nav {
     bottom: auto;
     left: 0;
     right: 0;
+    width: 100%;
     height: clamp(70px, 10vh, 80px);
     border-bottom: 1px solid rgba(0,0,0,0.08);
     border-top: none;
     border-radius: 0 0 28px 28px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    padding-bottom: 0;
+    padding: 0;
   }
 
   .navbar-inner {
