@@ -235,10 +235,7 @@ export default function Home() {
       {/* OUR STORY BUTTON */}
       <button
         onClick={handleStoryClick}
-        className="fixed left-4 z-30 bg-white rounded-full shadow-lg flex items-center gap-1 hover:shadow-xl transition-shadow btn-responsive"
-        style={{
-          bottom: "calc(clamp(70px, 10vh, 80px) + env(safe-area-inset-bottom) + 4px)",
-        }}
+        className="our-story-btn"
       >
         📖 Our Story
       </button>

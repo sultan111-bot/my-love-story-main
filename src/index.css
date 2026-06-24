@@ -212,138 +212,118 @@ body {
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Safe area helpers */
-.safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
-.h-safe-nav { height: calc(clamp(70px, 10vh, 80px) + env(safe-area-inset-bottom, 0px)); }
-
-/* Responsive navbar spacer */
-@media (max-width: 768px) {
-  .h-safe-nav { height: calc(clamp(70px, 10vh, 80px) + env(safe-area-inset-bottom, 0px)); }
+/* ===== NAVBAR STYLING - CLEAN & CONSISTENT ===== */
+nav {
+  z-index: 999999;
+  transform: translate3d(0,0,0);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 107, 157, 0.2);
+  border-top-left-radius: 28px;
+  border-top-right-radius: 28px;
+  box-shadow: 0 -8px 32px rgba(194, 24, 91, 0.15);
+  box-sizing: border-box;
 }
 
-/* Mobile navbar fixes */
-@media (max-width: 768px) {
-  nav,
-  nav[style*="z-index"] {
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    height: calc(clamp(70px, 10vh, 80px) + env(safe-area-inset-bottom, 0px)) !important;
-    min-height: calc(clamp(70px, 10vh, 80px) + env(safe-area-inset-bottom, 0px)) !important;
-    z-index: 999999 !important;
-    box-sizing: border-box !important;
-    margin-bottom: 0 !important;
-    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
-  }
-  
-  .fixed.bottom-0.z-50 {
-    z-index: 9999 !important;
-  }
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 8px;
+  height: clamp(70px, 10vh, 80px);
 }
 
-/* Desktop navbar - normal size */
-@media (min-width: 769px) {
-  nav,
-  nav[style*="z-index"] {
-    height: clamp(70px, 10vh, 80px) !important;
-    min-height: clamp(70px, 10vh, 80px) !important;
-  }
-  
-  .home-container {
-    height: calc(100vh - clamp(70px, 10vh, 80px) - env(safe-area-inset-bottom, 0px)) !important;
+/* Mobile: Navbar di bawah + safe area */
+@media (max-width: 1023px) {
+  nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: calc(clamp(70px, 10vh, 80px) + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 }
 
-/* Mobile home container */
-@media (max-width: 768px) {
-  .home-container {
-    height: calc(100vh - clamp(70px, 10vh, 80px) - env(safe-area-inset-bottom, 0px)) !important;
-  }
-  
-  /* Our Story button positioning on mobile with 10px gap */
-  .our-story-btn {
-    bottom: calc(clamp(70px, 10vh, 80px) + 10px + env(safe-area-inset-bottom, 0px)) !important;
-  }
-}
-
-/* Desktop Our Story button with smaller gap for better balance */
-@media (min-width: 769px) {
-  .our-story-btn {
-    bottom: calc(clamp(70px, 10vh, 80px) + 8px + env(safe-area-inset-bottom, 0px)) !important;
-  }
-}
-
-/* PC-specific responsive improvements */
+/* Desktop: Navbar di atas */
 @media (min-width: 1024px) {
-  /* Desktop navbar - move to top for better UX */
-  .desktop-navbar,
-  nav.desktop-navbar,
-  nav[style*="z-index"].desktop-navbar {
-    position: fixed !important;
-    top: 0 !important;
-    bottom: auto !important;
-    left: 0 !important;
-    right: 0 !important;
-    height: clamp(70px, 10vh, 80px) !important;
-    min-height: clamp(70px, 10vh, 80px) !important;
-    border-bottom: 1px solid rgba(0,0,0,0.08) !important;
-    border-top: none !important;
-    border-radius: 0 0 28px 28px !important;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
-    z-index: 999999 !important;
-    padding-bottom: 0 !important;
+  nav.desktop-navbar {
+    position: fixed;
+    top: 0;
+    bottom: auto;
+    left: 0;
+    right: 0;
+    height: clamp(70px, 10vh, 80px);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    border-top: none;
+    border-radius: 0 0 28px 28px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding-bottom: 0;
   }
-  
-  /* Desktop navbar content styling */
-  .desktop-nav-content {
+
+  .navbar-inner {
     max-width: 1200px;
     margin: 0 auto;
-  }
-  
-  /* Adjust home container for top navbar */
-  .home-container {
-    height: calc(100vh - clamp(70px, 10vh, 80px) - env(safe-area-inset-bottom, 0px)) !important;
-    margin-top: clamp(70px, 10vh, 80px) !important;
-  }
-  
-  /* Desktop Our Story button positioning */
-  .our-story-btn {
-    bottom: calc(8px + env(safe-area-inset-bottom, 0px)) !important;
+    padding: 0 24px;
   }
 }
 
-@media (min-width: 1280px) {
-  /* Larger screens - use responsive height */
-  nav,
-  nav[style*="z-index"] {
-    height: clamp(70px, 10vh, 80px) !important;
-    min-height: clamp(70px, 10vh, 80px) !important;
-  }
-  
+/* ===== HOME CONTAINER ===== */
+.home-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mobile: Home container dengan ruang untuk navbar di bawah */
+@media (max-width: 1023px) {
   .home-container {
-    height: calc(100vh - clamp(70px, 10vh, 80px) - env(safe-area-inset-bottom, 0px)) !important;
-    margin-top: clamp(70px, 10vh, 80px) !important;
+    padding-bottom: calc(clamp(70px, 10vh, 80px) + env(safe-area-inset-bottom, 0px));
   }
 }
 
-/* Desktop content max-width for better readability */
+/* Desktop: Home container dengan ruang untuk navbar di atas */
 @media (min-width: 1024px) {
-  .desktop-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
+  .home-container {
+    padding-top: clamp(70px, 10vh, 80px);
   }
 }
 
-@media (min-width: 1440px) {
-  .desktop-container {
-    max-width: 1400px;
+/* ===== OUR STORY BUTTON ===== */
+.our-story-btn {
+  position: fixed;
+  left: 16px;
+  z-index: 30;
+  background: white;
+  border-radius: 9999px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 16px;
+  transition: box-shadow 0.2s;
+}
+
+.our-story-btn:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile: Our Story button di atas navbar */
+@media (max-width: 1023px) {
+  .our-story-btn {
+    bottom: calc(clamp(70px, 10vh, 80px) + env(safe-area-inset-bottom, 0px) + 10px);
   }
 }
 
-/* ✅ FIX: Responsive columns for Home page media grid */
-/* TIDAK gunakan column-count karena break infinite scroll */
+/* Desktop: Our Story button di pojok bawah kiri */
+@media (min-width: 1024px) {
+  .our-story-btn {
+    bottom: 16px;
+  }
+}
+
+/* ===== MEDIA CARD ===== */
 .mobile-columns {
   display: flex;
   flex-wrap: wrap;
@@ -355,34 +335,34 @@ body {
   content-visibility: auto;
   contain-intrinsic-size: auto 200px;
   contain: layout style paint;
-  flex: 0 1 calc(50% - 8px);  /* 2 columns default (Mobile First) */
+  flex: 0 1 calc(50% - 8px);
 }
 
 @media (min-width: 640px) {
   .media-card {
-    flex: 0 1 calc(33.333% - 8px);  /* 3 columns */
+    flex: 0 1 calc(33.333% - 8px);
   }
 }
 
 @media (min-width: 768px) {
   .media-card {
-    flex: 0 1 calc(25% - 8px);  /* 4 columns */
+    flex: 0 1 calc(25% - 8px);
   }
 }
 
 @media (min-width: 1024px) {
   .media-card {
-    flex: 0 1 calc(20% - 8px);  /* 5 columns */
+    flex: 0 1 calc(20% - 8px);
   }
 }
 
 @media (min-width: 1280px) {
   .media-card {
-    flex: 0 1 calc(16.666% - 8px);  /* 6 columns */
+    flex: 0 1 calc(16.666% - 8px);
   }
 }
 
-/* Responsive envelope container for Emotional Core */
+/* ===== ENVELOPE & OTHER COMPONENTS ===== */
 .envelope-container {
   height: clamp(260px, 65vh, 360px);
   width: clamp(260px, 95vw, 340px);
@@ -476,18 +456,7 @@ body {
 .flip-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .flip-face.back { transform: rotateY(180deg); }
 
-/* ✅ PERFORMANCE OPTIMIZATION: Reduce motion on low-end devices */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* ✅ GPU ACCELERATION: Force hardware acceleration */
+/* ===== PERFORMANCE OPTIMIZATION ===== */
 .media-card,
 .petal,
 .confetti-piece {
@@ -496,22 +465,19 @@ body {
   backface-visibility: hidden;
 }
 
-/* ✅ SCROLL OPTIMIZATION: Passive event listeners */
 .home-container {
-  scroll-behavior: auto; /* Tidak smooth scroll untuk performa lebih baik */
-  overscroll-behavior: contain; /* Prevent scroll chaining */
+  scroll-behavior: auto;
+  overscroll-behavior: contain;
 }
 
-/* ✅ IMAGE OPTIMIZATION: Better image rendering */
 img {
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
 }
 
-/* ✅ FONT OPTIMIZATION: Avoid layout shift */
 @font-face {
   font-family: "Lato";
-  font-display: swap; /* Show fallback font immediately */
+  font-display: swap;
 }
 
 @font-face {
@@ -519,55 +485,25 @@ img {
   font-display: swap;
 }
 
-/* ✅ ANIMATION OPTIMIZATION: Smooth 60fps animations */
-@media (update: fast) {
-  * {
-    animation-timing-function: linear;
-  }
-}
-
-/* ✅ REDUCE MOTION: For slow connections */
-@media (max-width: 640px) {
-  .petal {
-    animation-duration: 8s; /* Slower on mobile */
-  }
-}
-
-/* ✅ OPTIMIZE SCROLLBAR: Hide for better performance */
-::-webkit-scrollbar {
-  display: none;
-}
-
-/* ✅ ADD: Prevent layout shift pada buttons */
-button {
-  position: relative;
-  overflow: hidden;
-}
-
-/* ✅ ADD: Optimize modal animations */
-.fixed.inset-0 {
-  will-change: contents;
-}
-
-/* ✅ GAME MODAL: Padding untuk menghindari navbar */
+/* ===== GAME MODAL ===== */
 .game-modal-content {
-  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px) + 2rem) !important;
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px) + 2rem);
 }
 
 @media (min-width: 640px) {
   .game-modal-content {
-    padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px) + 3rem) !important;
+    padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px) + 3rem);
   }
 }
 
 @media (min-width: 768px) {
   .game-modal-content {
-    padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px) + 4rem) !important;
+    padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px) + 4rem);
   }
 }
 
 @media (min-width: 1024px) {
   .game-modal-content {
-    padding-bottom: 4rem !important;
+    padding-bottom: 4rem;
   }
 }

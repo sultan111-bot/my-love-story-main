@@ -43,24 +43,9 @@ export default function Navbar({ onSecretTrigger }) {
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: "spring", stiffness: 200, damping: 20 }}
-      className="fixed bottom-0 left-0 right-0 lg:fixed lg:top-0 lg:bottom-auto desktop-navbar"
-      style={{
-        background: "rgba(255, 255, 255, 0.7)",
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
-        borderTop: "1px solid rgba(255, 107, 157, 0.2)",
-        borderTopLeftRadius: 28,
-        borderTopRightRadius: 28,
-        boxShadow: "0 -8px 32px rgba(194, 24, 91, 0.15)",
-        height: "calc(clamp(70px, 10vh, 80px) + env(safe-area-inset-bottom, 0px))",
-        minHeight: "calc(clamp(70px, 10vh, 80px) + env(safe-area-inset-bottom, 0px))",
-        paddingBottom: "env(safe-area-inset-bottom, 0px)",
-        zIndex: 999999,
-        transform: "translate3d(0,0,0)",
-        boxSizing: "border-box",
-      }}
+      className="fixed bottom-0 left-0 right-0 lg:top-0 lg:bottom-auto desktop-navbar"
     >
-      <div className="flex items-center justify-around px-2 sm:px-4 lg:px-6 desktop-nav-content" style={{ height: "clamp(70px, 10vh, 80px)" }}>
+      <div className="navbar-inner">
         {ITEMS.map((it, index) => {
           const active = location.pathname === it.path;
           return (
@@ -86,7 +71,7 @@ export default function Navbar({ onSecretTrigger }) {
                 className="text-[10px] sm:text-[11px] lg:text-xs font-semibold"
                 style={{
                   color: active ? "var(--theme-accent)" : "#888",
-                  fontWeight: active ? 700 : 500,
+                  fontWeight: active ? 700 : 50,
                 }}
               >
                 {it.label}
@@ -128,14 +113,12 @@ export default function Navbar({ onSecretTrigger }) {
           </span>
         </motion.button>
 
-        {/* Sultan secret trigger */}
         <motion.button
           onClick={handleSecretTrigger}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           className="relative flex items-end justify-center flex-1"
           aria-label="?"
-          style={{ height: "clamp(70px, 10vh, 80px)" }}
         >
           <motion.div
             animate={{
@@ -143,7 +126,6 @@ export default function Navbar({ onSecretTrigger }) {
             }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             className="relative"
-            style={{ transform: "translateY(-10px)" }}
           >
             <SultanMascot size="sm" emotion="idle" className="ear-wiggle" />
             {sparkle && (
