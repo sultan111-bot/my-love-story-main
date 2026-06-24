@@ -206,7 +206,7 @@ export default function Home() {
     <div className="relative flex flex-col home-container">
       {/* TOP BAR */}
       <div className="flex items-center justify-between px-4 pt-3 pb-2 flex-shrink-0">
-        <span className="text-[12px] lg:text-sm text-gray-500">Happy Birthday 🎀</span>
+        <span className="text-responsive-sm text-gray-500">Happy Birthday 🎀</span>
         <ColorSwitcher />
       </div>
 
@@ -235,9 +235,9 @@ export default function Home() {
       {/* OUR STORY BUTTON */}
       <button
         onClick={handleStoryClick}
-        className="fixed left-4 z-30 bg-white rounded-full px-4 py-2 text-sm shadow-lg flex items-center gap-1 hover:shadow-xl transition-shadow"
+        className="fixed left-4 z-30 bg-white rounded-full shadow-lg flex items-center gap-1 hover:shadow-xl transition-shadow btn-responsive"
         style={{
-          bottom: "calc(100px + env(safe-area-inset-bottom) + 8px)",
+          bottom: "calc(clamp(70px, 10vh, 80px) + env(safe-area-inset-bottom) + 4px)",
         }}
       >
         📖 Our Story
@@ -247,8 +247,8 @@ export default function Home() {
       <AnimatePresence>
         {expanded && (
           <motion.div
-            className="fixed inset-0 z-[100] flex items-center justify-center"
-            style={{ background: "rgba(0,0,0,0.75)", backdropFilter: "blur(8px)" }}
+            className="fixed inset-0 z-[99999999] flex items-center justify-center p-4"
+            style={{ background: "rgba(0,0,0,0.85)", backdropFilter: "blur(12px)" }}
             onClick={() => setExpanded(null)}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -259,13 +259,13 @@ export default function Home() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.3, opacity: 0 }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="relative bg-white inline-block rounded-lg overflow-hidden"
+              className="relative bg-white inline-block rounded-xl overflow-hidden max-w-full max-h-full"
               onClick={(e) => e.stopPropagation()}
             >
               {/* CLOSE BUTTON */}
               <button
                 onClick={() => setExpanded(null)}
-                className="absolute -top-3 -right-3 w-9 h-9 bg-white rounded-full shadow-lg flex items-center justify-center text-gray-700 z-10 hover:bg-gray-100 transition-colors"
+                className="absolute -top-3 -right-3 w-10 h-10 bg-white rounded-full shadow-xl flex items-center justify-center text-gray-700 z-20 hover:bg-gray-100 transition-colors"
                 aria-label="Close"
               >
                 ✕
@@ -273,10 +273,10 @@ export default function Home() {
 
               {/* IMAGE CONTAINER */}
               <div 
-                className="flex items-center justify-center p-2"
+                className="flex items-center justify-center p-3"
                 style={{
-                  maxWidth: "88vw",
-                  maxHeight: "80vh",
+                  maxWidth: "95vw",
+                  maxHeight: "85vh",
                   overflow: "hidden"
                 }}
               >
@@ -284,6 +284,7 @@ export default function Home() {
                   photo={expanded}
                   alt={`Foto ${expanded.id}`}
                   priority={true}
+                  contain={true}
                 />
               </div>
             </motion.div>

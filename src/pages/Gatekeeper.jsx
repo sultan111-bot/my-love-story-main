@@ -63,24 +63,28 @@ export default function Gatekeeper() {
 
       <h1
         className="font-display text-center"
-        style={{ fontSize: 38, color: "#C2185B", letterSpacing: 2 }}
+        style={{ fontSize: "clamp(24px, 6vw, 42px)", color: "#C2185B", letterSpacing: 2 }}
       >
         A Gift For You
       </h1>
-      <p className="mt-1 text-center text-[#888]" style={{ fontSize: 14 }}>
+      <p className="mt-1 text-center text-[#888]" style={{ fontSize: "clamp(12px, 2.5vw, 16px)" }}>
         Menghitung hari untuk hari istimewamu 🎀
       </p>
 
-      <div className="flex items-end justify-center gap-1 mt-8 flex-wrap">
+      <div className="flex items-end justify-center gap-2 mt-8 flex-wrap">
         {cards.map((c, idx) => (
           <div key={c.label} className="flex items-end">
             <div
-              className={`bg-white rounded-2xl shadow-md px-3 py-3 text-center min-w-[58px] ${c.pulse ? "soft-pulse" : ""}`}
+              className={`bg-white rounded-2xl shadow-md text-center ${c.pulse ? "soft-pulse" : ""}`}
+              style={{
+                padding: "clamp(12px, 2vw, 16px)",
+                minWidth: "clamp(60px, 15vw, 80px)"
+              }}
             >
-              <div className="font-bold tabular-nums" style={{ fontSize: 32, color: "#C2185B", lineHeight: 1 }}>
+              <div className="font-bold tabular-nums" style={{ fontSize: "clamp(24px, 6vw, 36px)", color: "#C2185B", lineHeight: 1 }}>
                 {pad(c.v)}
               </div>
-              <div className="mt-1 uppercase" style={{ fontSize: 9, color: "#aaa", letterSpacing: 1 }}>
+              <div className="mt-1 uppercase" style={{ fontSize: "clamp(8px, 1.5vw, 12px)", color: "#aaa", letterSpacing: 1 }}>
                 {c.label}
               </div>
             </div>
@@ -92,7 +96,7 @@ export default function Gatekeeper() {
       <button
         disabled={!active}
         onClick={() => active && navigate("/opening")}
-        className={`mt-10 px-7 py-3 rounded-full font-semibold transition-all duration-1000 ${
+        className={`mt-10 rounded-full font-semibold transition-all duration-1000 btn-responsive ${
           active
             ? "text-white pulse-glow"
             : "bg-gray-200 text-gray-400 cursor-not-allowed"

@@ -49,17 +49,17 @@ export default function PuzzleSlider({ onExit }) {
   return (
     <div>
       <ConfettiEffect active={solved} duration={4000} count={50} />
-      <div className="text-center text-sm mb-3">Langkah: <b>{moves}</b></div>
-      <div className="grid grid-cols-3 gap-2 max-w-xs mx-auto">
+      <div className="text-center text-xs sm:text-base md:text-lg lg:text-xl mb-3 sm:mb-4 md:mb-5">Langkah: <b>{moves}</b></div>
+      <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-5 max-w-[220px] sm:max-w-sm md:max-w-md lg:max-w-2xl mx-auto">
         {tiles.map((v, i) => (
           <button
             key={i}
             onClick={() => tap(i)}
             disabled={v === 0}
-            className="aspect-square rounded-xl overflow-hidden transition-all"
+            className="aspect-square rounded-xl sm:rounded-2xl overflow-hidden transition-all"
             style={{
               background: v === 0 ? "transparent" : "white",
-              boxShadow: v === 0 ? "none" : solved ? "0 0 0 3px #6BCB77" : "0 4px 10px rgba(0,0,0,0.1)",
+              boxShadow: v === 0 ? "none" : solved ? "0 0 0 3px #6BCB77" : "0 4px 12px rgba(0,0,0,0.12)",
               transitionDuration: "0.15s",
             }}
           >
@@ -78,27 +78,29 @@ export default function PuzzleSlider({ onExit }) {
       </div>
 
       {solved && (
-        <div className="text-center mt-6">
-          <SultanMascot size="lg" emotion="celebrating" className="mx-auto" />
-          <div className="font-display text-xl mt-2" style={{ color: "var(--theme-accent)" }}>
+        <div className="text-center mt-5 sm:mt-7 md:mt-10">
+          <SultanMascot size="md" emotion="celebrating" className="mx-auto sm:hidden" />
+          <SultanMascot size="lg" emotion="celebrating" className="mx-auto hidden sm:block md:hidden" />
+          <SultanMascot size="xl" emotion="celebrating" className="mx-auto hidden md:block lg:block" />
+          <div className="font-display text-xl sm:text-2xl md:text-3xl lg:text-4xl mt-2 sm:mt-3 md:mt-5" style={{ color: "var(--theme-accent)" }}>
             Selamat! 🎉
           </div>
         </div>
       )}
 
-      <div className="flex justify-center gap-3 mt-6">
+      <div className="flex justify-center gap-3 sm:gap-4 md:gap-6 mt-6 sm:mt-8 md:mt-10 mb-2">
         <button
-          onClick={() => { 
+          onClick={() => {
             setPuzzleImage(getRandomPhoto());
-            setTiles(shuffleSolvable()); 
-            setMoves(0); 
+            setTiles(shuffleSolvable());
+            setMoves(0);
           }}
-          className="px-5 py-2 rounded-full text-white text-sm"
+          className="px-5 sm:px-7 md:px-10 py-2.5 sm:py-3.5 md:py-4 rounded-full text-white text-sm sm:text-base md:text-lg lg:text-xl"
           style={{ background: "linear-gradient(135deg,#FF6B9D,#C2185B)" }}
         >
           Acak Lagi
         </button>
-        <button onClick={onExit} className="px-5 py-2 rounded-full bg-gray-200 text-sm">Keluar</button>
+        <button onClick={onExit} className="px-5 sm:px-7 md:px-10 py-2.5 sm:py-3.5 md:py-4 rounded-full bg-gray-200 text-sm sm:text-base md:text-lg lg:text-xl">Keluar</button>
       </div>
     </div>
   );

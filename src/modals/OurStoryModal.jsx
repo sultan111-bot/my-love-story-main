@@ -11,7 +11,7 @@ const ENTRIES = [
 export default function OurStoryModal({ onClose }) {
   return (
     <motion.div
-      className="fixed inset-0 z-[150] book-perspective"
+      className="fixed inset-0 z-[9999999] book-perspective"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}

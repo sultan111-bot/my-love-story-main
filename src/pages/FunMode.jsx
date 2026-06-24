@@ -115,7 +115,7 @@ export default function FunMode() {
   };
 
   return (
-    <div className="h-screen flex flex-col px-4 pt-4 lg:px-8 lg:pt-8">
+    <div className="h-full flex flex-col px-4 pt-4 lg:px-8 lg:pt-8 home-container">
       <div className="flex-1 overflow-y-auto no-scrollbar space-y-4 lg:space-y-6 pb-20 lg:pb-8">
         <div className="max-w-4xl mx-auto w-full">
           <MoodDetector />
@@ -125,7 +125,7 @@ export default function FunMode() {
           <div className="font-display text-lg lg:text-xl mb-2 lg:mb-4" style={{ color: "var(--theme-accent)" }}>
             {gamesConfig.title}
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-6 pb-4">
             {GAMES.map((g) => (
               <div
                 key={g.id}

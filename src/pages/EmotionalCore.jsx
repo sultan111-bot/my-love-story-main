@@ -71,8 +71,8 @@ function EnvelopeCard({ n, accent, top, left, rot, onEnvelopeClick, registerRef,
         left: open ? "50%" : `${left}%`,
         zIndex: z,
         transform: open ? "translate(-50%, -50%)" : `translate(0, 0) rotate(${rot}deg)`,
-        width: 120,
-        height: 90,
+        width: "clamp(75px, 19vw, 135px)",
+        height: "clamp(56px, 14vw, 101px)",
         transition: "all 0.3s ease",
         transformOrigin: "center",
       }}
@@ -100,8 +100,14 @@ function EnvelopeCard({ n, accent, top, left, rot, onEnvelopeClick, registerRef,
         {/* Wax seal */}
         {!open && (
           <div
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold"
-            style={{ background: "#C2185B", boxShadow: "0 2px 6px rgba(0,0,0,0.3)" }}
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center text-white font-bold"
+            style={{ 
+              background: "#C2185B", 
+              boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
+              width: "clamp(28px, 6vw, 36px)",
+              height: "clamp(28px, 6vw, 36px)",
+              fontSize: "clamp(10px, 2.5vw, 14px)"
+            }}
           >
             {n}
           </div>
@@ -116,8 +122,8 @@ function EnvelopeCard({ n, accent, top, left, rot, onEnvelopeClick, registerRef,
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 250,
-            height: 180,
+            width: "clamp(200px, 70vw, 300px)",
+            height: "clamp(140px, 50vw, 220px)",
             background: "#FFFAF0",
             boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
             opacity: 0,
@@ -131,8 +137,8 @@ function EnvelopeCard({ n, accent, top, left, rot, onEnvelopeClick, registerRef,
             }
           }}
         >
-          <div className="text-[11px] text-gray-500 mb-2">Alasan ke-{n} 💌</div>
-          <div className="text-[12px] text-gray-700 leading-tight">
+          <div className="text-gray-500 mb-2" style={{ fontSize: "clamp(10px, 2.5vw, 14px)" }}>Alasan ke-{n} 💌</div>
+          <div className="text-gray-700 leading-tight" style={{ fontSize: "clamp(11px, 2.8vw, 16px)" }}>
             {LOVE_REASONS[n - 1] || `Alasan ke-${n} 💌`}
           </div>
         </div>
@@ -190,8 +196,8 @@ function VirtualHug() {
   return (
     <div className="text-center mt-2 pb-1">
       <div className="border-t border-pink-200 pt-2">
-        <div className="text-sm text-gray-600 mb-2">
-          Udh baca semuanya kahh?? Coba tekennn tombol dibawah hehee
+        <div className="text-gray-600 mb-2" style={{ fontSize: "clamp(12px, 2.5vw, 16px)" }}>
+          Udh baca semuanya kahh?? Coba tekenn tombol dibawah hehee
         </div>
         <div className="relative inline-block">
           <button
@@ -199,7 +205,7 @@ function VirtualHug() {
             onPointerUp={cancel}
             onPointerLeave={cancel}
             onPointerCancel={cancel}
-            className="relative px-8 py-4 rounded-full text-white text-sm font-bold shadow-xl overflow-hidden select-none user-select-none"
+            className="relative rounded-full text-white font-bold shadow-xl overflow-hidden select-none user-select-none btn-responsive"
             style={{
               background: "linear-gradient(135deg, #FF6B9D, #C2185B, #8E1538)",
               backgroundSize: "200% 200%",
@@ -293,15 +299,15 @@ function VirtualHug() {
 }
 
 export default function EmotionalCore() {
-  // Layout positions for 15 envelopes — distribute roughly
+  // Layout positions for 15 envelopes — distribute roughly (optimized for better fit)
   const positions = useMemo(() => {
     return Array.from({ length: 15 }, (_, i) => {
       const row = Math.floor(i / 3);
       const col = i % 3;
       return {
-        top: 4 + row * 17 + (Math.random() * 6 - 3),
-        left: 5 + col * 28 + (Math.random() * 8 - 4),
-        rot: Math.random() * 24 - 12,
+        top: 5 + row * 18 + (Math.random() * 4 - 2),
+        left: 5 + col * 30 + (Math.random() * 6 - 3),
+        rot: Math.random() * 18 - 9,
       };
     });
   }, []);
@@ -340,16 +346,16 @@ export default function EmotionalCore() {
   }, []);
 
   return (
-<div className="h-[85vh] flex flex-col px-4 pt-6 pb-4 overflow-hidden lg:px-8 lg:pt-8">
-  <div className="flex-shrink-0 mb-6 lg:mb-8">
-    <h1 className="font-display text-2xl lg:text-4xl text-center" style={{ color: "#C2185B" }}>
+<div className="flex flex-col px-4 pt-4 pb-4 overflow-y-auto lg:px-8 lg:pt-6" style={{ minHeight: "calc(100vh - clamp(70px, 10vh, 80px) - env(safe-area-inset-bottom))" }}>
+  <div className="flex-shrink-0 mb-4 lg:mb-6">
+    <h1 className="font-display text-center" style={{ color: "#C2185B", fontSize: "clamp(16px, 4vw, 30px)" }}>
       15 Reasons I LOVE U SOO MUCHH
     </h1>
-    <p className="text-center text-[13px] lg:text-base text-[#999] mt-2">
+    <p className="text-center text-[#999] mt-1" style={{ fontSize: "clamp(11px, 2.5vw, 15px)" }}>
       Pencet yhh amplopnyaa
     </p>
   </div>
-      <div className="flex-1 flex items-center justify-center py-1">
+      <div className="flex items-center justify-center py-3">
         <div className="envelope-container relative overflow-hidden">
           {positions.map((p, i) => (
             <EnvelopeCard
@@ -368,7 +374,7 @@ export default function EmotionalCore() {
         </div>
       </div>
 
-      <div className="flex-shrink-0">
+      <div className="flex-shrink-0 mt-3">
         <VirtualHug />
       </div>
 

@@ -68,16 +68,19 @@ export default function MemoryMatch({ onExit }) {
 
   if (allMatched) {
     return (
-      <div className="text-center py-8">
+      <div className="text-center py-6 sm:py-8 md:py-12 mb-2">
         <ConfettiEffect active duration={4000} count={50} />
-        <SultanMascot size="xl" emotion="celebrating" className="mx-auto" />
-        <div className="font-display text-2xl mt-4" style={{ color: "var(--theme-accent)" }}>
+        <SultanMascot size="md" emotion="celebrating" className="mx-auto sm:hidden" />
+        <SultanMascot size="lg" emotion="celebrating" className="mx-auto hidden sm:block md:hidden" />
+        <SultanMascot size="xl" emotion="celebrating" className="mx-auto hidden md:block lg:hidden" />
+        <SultanMascot size="xl" emotion="celebrating" className="mx-auto hidden lg:block" />
+        <div className="font-display text-xl sm:text-2xl md:text-3xl lg:text-4xl mt-4 sm:mt-5 md:mt-7" style={{ color: "var(--theme-accent)" }}>
           Hebat! 🎉
         </div>
-        <div className="text-base mt-2 text-gray-700">
+        <div className="text-base sm:text-lg md:text-xl lg:text-2xl mt-2 sm:mt-3 md:mt-4 text-gray-700">
           {moves} langkah dalam {seconds}s
         </div>
-        <div className="flex justify-center gap-3 mt-6">
+        <div className="flex justify-center gap-3 sm:gap-4 md:gap-6 mt-6 sm:mt-8 md:mt-10">
           <button
             onClick={() => {
               const newPhotos = getShuffledPhotos(8);
@@ -85,12 +88,12 @@ export default function MemoryMatch({ onExit }) {
               setCards(shuffle([...newPhotos, ...newPhotos]).map((photoUrl, i) => ({ id: i, photoUrl, flipped: false, matched: false })));
               setPicks([]); setMoves(0); setDoneTime(null);
             }}
-            className="px-5 py-2 rounded-full text-white text-sm"
+            className="px-5 sm:px-7 md:px-10 py-3 sm:py-4 md:py-5 rounded-full text-white text-sm sm:text-base md:text-lg lg:text-xl"
             style={{ background: "linear-gradient(135deg,#FF6B9D,#C2185B)" }}
           >
             Main Lagi
           </button>
-          <button onClick={onExit} className="px-5 py-2 rounded-full bg-gray-200 text-sm">Keluar</button>
+          <button onClick={onExit} className="px-5 sm:px-7 md:px-10 py-3 sm:py-4 md:py-5 rounded-full bg-gray-200 text-sm sm:text-base md:text-lg lg:text-xl">Keluar</button>
         </div>
       </div>
     );
@@ -98,11 +101,11 @@ export default function MemoryMatch({ onExit }) {
 
   return (
     <div>
-      <div className="flex justify-between mb-4 text-sm">
+      <div className="flex justify-between mb-4 sm:mb-5 md:mb-6 text-xs sm:text-sm md:text-lg lg:text-xl">
         <span>Langkah: <b>{moves}</b></span>
         <span>Waktu: <b>{seconds}s</b></span>
       </div>
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 lg:gap-6 max-w-[260px] sm:max-w-md md:max-w-2xl lg:max-w-3xl mx-auto">
         {cards.map((c, i) => (
           <button
             key={c.id}
@@ -112,12 +115,12 @@ export default function MemoryMatch({ onExit }) {
           >
             <div className={`flip-inner ${c.flipped || c.matched ? "flipped" : ""}`}>
               <div
-                className="flip-face front rounded-xl flex items-center justify-center text-2xl text-white font-bold"
+                className="flip-face front rounded-xl sm:rounded-2xl flex items-center justify-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white font-bold"
                 style={{ background: "linear-gradient(135deg,#FFB6C1,#FF6B9D)" }}
               >?</div>
               <div
-                className="flip-face back rounded-xl overflow-hidden"
-                style={{ boxShadow: c.matched ? "0 0 0 3px #6BCB77" : "0 2px 8px rgba(0,0,0,0.1)" }}
+                className="flip-face back rounded-xl sm:rounded-2xl overflow-hidden"
+                style={{ boxShadow: c.matched ? "0 0 0 4px #6BCB77" : "0 4px 14px rgba(0,0,0,0.14)" }}
               >
                 <img 
                   src={c.photoUrl} 

@@ -16,30 +16,14 @@ const PLACES = [
   { e: "🎨", n: "Art Date" },
 ];
 
-// CONFIGURATION - Easy to adjust positioning
 const CONFIG = {
   mascot: {
     topPadding: "pt-2",
     size: "lg"
   },
   content: {
-    heightOffset: 500,
-    questionMargin: "mb-2",
+    questionMargin: "mb-3",
     speechMargin: "mt-2"
-  },
-  buttons: {
-    areaHeight: "h-16",
-    bottomDistance: "bottom-2",
-    noButton: {
-      size: "px-8 py-4 text-base",
-      position: "left-2",
-      responsiveSize: "text-sm sm:text-base"
-    },
-    yesButton: {
-      size: "px-8 py-4 text-base",
-      position: "left-1/2 -translate-x-1/2",
-      responsiveSize: "text-sm sm:text-base"
-    }
   },
   speeches: {
     escape: [
@@ -51,7 +35,7 @@ const CONFIG = {
       "Terakhir nihhh!! 🎯",
       "Apalahhhh bubbb 💔"
     ],
-    final: "hhhh mampus luwhhh 😏"
+    final: "hhhh mampus luwhhhh 😏"
   }
 };
 
@@ -83,7 +67,7 @@ function TrapOfLove({ onYesTriggered }) {
 
     const btnW = btnRect.width;
     const btnH = btnRect.height;
-    const padding = 24;
+    const padding = 16;
 
     setIsButtonHidden(true);
 
@@ -103,18 +87,18 @@ function TrapOfLove({ onYesTriggered }) {
         const yesX = yesRect.left - rect.left;
         const yesY = yesRect.top - rect.top;
         yesButtonArea = {
-          left: yesX,
-          top: yesY,
-          right: yesX + yesW,
-          bottom: yesY + yesH
+          left: yesX - 20,
+          top: yesY - 20,
+          right: yesX + yesW + 20,
+          bottom: yesY + yesH + 20
         };
       }
 
-      const maxMoveDistance = Math.min(containerWidth, containerHeight) * 0.3;
+      const maxMoveDistance = Math.min(containerWidth, containerHeight) * 0.35;
       
       let newLeft, newTop;
       let attempts = 0;
-      const maxAttempts = 15;
+      const maxAttempts = 20;
       
       do {
         const moveX = (Math.random() - 0.5) * maxMoveDistance * 2;
@@ -130,7 +114,7 @@ function TrapOfLove({ onYesTriggered }) {
           const dx = prev.left - newLeft;
           const dy = prev.top - newTop;
           const distance = Math.sqrt(dx * dx + dy * dy);
-          return distance < 70;
+          return distance < 90;
         });
         
         let overlapsWithYes = false;
@@ -207,7 +191,7 @@ function TrapOfLove({ onYesTriggered }) {
     const dy = cy - fy;
     const dist = Math.hypot(dx, dy);
     
-    if (dist < 130) {
+    if (dist < 120) {
       moveNoButtonRandom();
       registerEscape();
     }
@@ -217,7 +201,7 @@ function TrapOfLove({ onYesTriggered }) {
     if (noGoneRef.current) return;
     
     const now = Date.now();
-    if (now - lastMoveTime.current < 50) return;
+    if (now - lastMoveTime.current < 60) return;
     lastMoveTime.current = now;
     
     const rect = ref.current?.getBoundingClientRect();
@@ -246,7 +230,7 @@ function TrapOfLove({ onYesTriggered }) {
       const dy = cy - fy;
       const dist = Math.hypot(dx, dy);
       
-      if (dist < 120) {
+      if (dist < 110) {
         moveNoButtonRandom();
         registerEscape();
       }
@@ -267,8 +251,8 @@ function TrapOfLove({ onYesTriggered }) {
       const dx = fx - cx;
       const dy = fy - cy;
       const dist = Math.hypot(dx, dy);
-      if (dist < 100) {
-        const factor = 8 / Math.max(20, dist);
+      if (dist < 90) {
+        const factor = 6 / Math.max(15, dist);
         setYesPos(prev => ({ 
           x: prev.x === 0 ? dx * factor : prev.x, 
           y: prev.y === 0 ? dy * factor : prev.y, 
@@ -325,49 +309,50 @@ function TrapOfLove({ onYesTriggered }) {
       onMouseMove={onMove}
       onTouchMove={onMove}
       onTouchStart={onTouchStartContainer}
-      className="bg-white/80 backdrop-blur-md rounded-3xl p-6 shadow-2xl relative overflow-hidden w-full max-w-md mx-auto border-2 border-pink-200"
-      style={{ height: "calc(100vh - 160px)" }}
+      className="bg-white/85 backdrop-blur-xl rounded-3xl p-4 sm:p-6 shadow-2xl relative overflow-hidden w-full max-w-lg mx-auto border-2 border-pink-200"
+      style={{ minHeight: "450px", height: "auto" }}
       initial={{ opacity: 0, scale: 0.8, rotateY: 45 }}
       animate={{ opacity: 1, scale: 1, rotateY: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      whileHover={{ scale: 1.02 }}
+      whileHover={{ scale: 1.01 }}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-br from-pink-50/30 to-rose-50/20 pointer-events-none" />
       
       <motion.div 
-        className={`flex justify-center ${CONFIG.mascot.topPadding}`}
+        className="flex justify-center pt-2"
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.6 }}
       >
         <motion.div
           animate={{ 
-            rotate: [0, 5, -5, 0],
-            scale: [1, 1.05, 1]
+            rotate: [0, 4, -4, 0],
+            scale: [1, 1.03, 1]
           }}
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
         >
-          <SultanMascot size={CONFIG.mascot.size} emotion={sultanState.emotion} />
+          <SultanMascot size="lg" emotion={sultanState.emotion} />
         </motion.div>
       </motion.div>
       
       <motion.div 
-        className="flex flex-col items-center justify-center" 
-        style={{ height: `calc(100% - ${CONFIG.content.heightOffset}px)` }}
+        className="flex flex-col items-center justify-center py-6" 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.6 }}
       >
         <motion.h2 
-          className={`font-display text-3xl sm:text-4xl ${CONFIG.content.questionMargin} text-center bg-gradient-to-r from-pink-500 to-rose-600 bg-clip-text text-transparent`}
-          animate={{ scale: [1, 1.05, 1] }}
+          className="font-display mb-3 text-center bg-gradient-to-r from-pink-500 to-rose-600 bg-clip-text text-transparent"
+          style={{ fontSize: "clamp(18px, 5vw, 34px)" }}
+          animate={{ scale: [1, 1.03, 1] }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         >
           Km Sayang Ak Kannn???
         </motion.h2>
         
         <motion.div 
-          className={`text-sm sm:text-base text-gray-600 ${CONFIG.content.speechMargin} text-center px-4 font-medium`}
+          className="text-gray-600 text-center px-4 font-medium"
+          style={{ fontSize: "clamp(12px, 3vw, 16px)" }}
           animate={{ opacity: [0.8, 1, 0.8] }}
           transition={{ duration: 2, repeat: Infinity }}
         >
@@ -375,21 +360,22 @@ function TrapOfLove({ onYesTriggered }) {
         </motion.div>
       </motion.div>
 
-      <div className={`relative ${CONFIG.buttons.areaHeight}`}>
+      <div className="relative h-40 sm:h-48">
         {!noGone && (
           <motion.button
             ref={noBtn}
-            className={`absolute ${CONFIG.buttons.noButton.size} rounded-full bg-gradient-to-r from-gray-100 to-gray-200 text-gray-600 ${CONFIG.buttons.noButton.responsiveSize} font-medium shadow-lg border border-gray-300`}
+            className="absolute px-6 py-3 rounded-full bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 font-semibold shadow-lg border border-gray-300"
             style={{
               left: `${noPos.left}px`,
               top: `${noPos.top}px`,
               position: 'absolute',
               pointerEvents: 'auto',
+              fontSize: "clamp(12px, 2.5vw, 16px)"
             }}
             animate={{
-              scale: isButtonHidden ? 0 : (hoveredButton === 'no' ? 1.1 : 1),
+              scale: isButtonHidden ? 0 : (hoveredButton === 'no' ? 1.08 : 1),
               opacity: isButtonHidden ? 0 : 1,
-              boxShadow: hoveredButton === 'no' ? '0 10px 25px rgba(0,0,0,0.2)' : '0 4px 6px rgba(0,0,0,0.1)'
+              boxShadow: hoveredButton === 'no' ? '0 10px 25px rgba(0,0,0,0.2)' : '0 4px 12px rgba(0,0,0,0.12)'
             }}
             transition={{ 
               scale: { duration: 0.2, ease: "easeInOut" },
@@ -402,7 +388,7 @@ function TrapOfLove({ onYesTriggered }) {
             whileTap={{ scale: 0.95 }}
           >
             <motion.span
-              animate={{ rotate: [0, -10, 10, 0] }}
+              animate={{ rotate: [0, -8, 8, 0] }}
               transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 2 }}
             >
               Nggak 😤
@@ -412,13 +398,14 @@ function TrapOfLove({ onYesTriggered }) {
         <motion.button
           ref={yesBtn}
           onClick={onYes}
-          className={`absolute ${CONFIG.buttons.yesButton.position} ${CONFIG.buttons.bottomDistance} ${CONFIG.buttons.yesButton.size} rounded-full text-white ${CONFIG.buttons.yesButton.responsiveSize} font-bold shadow-2xl border-2 border-pink-300`}
+          className="absolute left-1/2 -translate-x-1/2 bottom-4 sm:bottom-6 px-8 py-3 sm:px-10 sm:py-4 rounded-full text-white font-bold shadow-2xl border-2 border-pink-300"
           style={{
             background: "linear-gradient(135deg, #FF6B9D, #C2185B)",
-            transform: `translate(${yesPos.x}px, ${yesPos.y}px) scale(${yesPos.scale || 1})`,
+            transform: `translate(calc(-50% + ${yesPos.x}px), ${yesPos.y}px) scale(${yesPos.scale || 1})`,
+            fontSize: "clamp(14px, 3vw, 18px)"
           }}
           animate={{
-            scale: (yesPos.scale || 1) * (hoveredButton === 'yes' ? 1.1 : 1),
+            scale: (yesPos.scale || 1) * (hoveredButton === 'yes' ? 1.08 : 1),
             boxShadow: hoveredButton === 'yes' ? '0 15px 35px rgba(255,107,157,0.4)' : '0 8px 25px rgba(255,107,157,0.3)'
           }}
           transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -427,27 +414,27 @@ function TrapOfLove({ onYesTriggered }) {
           whileTap={{ scale: 0.95 }}
         >
           <motion.span
-            animate={{ scale: [1, 1.2, 1] }}
+            animate={{ scale: [1, 1.15, 1] }}
             transition={{ duration: 1.5, repeat: Infinity }}
           >
             {yesClicked ? "YEAYYYY 💖" : "Sayang! 💖"}
           </motion.span>
         </motion.button>
 
-        <div className={`absolute right-2 sm:right-4 ${CONFIG.buttons.bottomDistance} pointer-events-none`}>
+        <div className="absolute right-3 sm:right-6 bottom-4 sm:bottom-6 pointer-events-none">
           {hearts.map((h) => (
             <motion.span
               key={h.id}
-              className="absolute text-lg sm:text-xl"
+              className="absolute text-xl sm:text-2xl"
               style={{ "--hx": h.x + "px" }}
               animate={{
-                y: [0, -100],
+                y: [0, -120],
                 opacity: [0, 1, 0],
                 scale: [0.5, 1.5, 0.8],
                 rotate: [0, 360]
               }}
               transition={{ 
-                duration: 2, 
+                duration: 2.2, 
                 delay: parseFloat(h.delay),
                 ease: "easeOut"
               }}
@@ -498,17 +485,21 @@ function DateSelection() {
               transition={{ delay: 0.2, duration: 0.5 }}
             >
               <motion.h2 
-                className="font-display text-3xl sm:text-4xl font-bold bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 bg-clip-text text-transparent mb-2"
+                className="font-display font-bold bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 bg-clip-text text-transparent mb-2"
+                style={{ 
+                  fontSize: "clamp(18px, 4vw, 32px)",
+                  backgroundSize: "200% 200%"
+                }}
                 animate={{ 
                   backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
                 }}
                 transition={{ duration: 3, repeat: Infinity }}
-                style={{ backgroundSize: "200% 200%" }}
               >
                 Mw Nge Date kemanaa???
               </motion.h2>
               <motion.p 
-                className="text-sm sm:text-base text-gray-600 font-medium"
+                className="text-gray-600 font-medium"
+                style={{ fontSize: "clamp(12px, 2.5vw, 16px)" }}
                 animate={{ opacity: [0.7, 1, 0.7] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
@@ -640,22 +631,26 @@ function DatePicker({ place }) {
           transition={{ delay: 0.2, duration: 0.5 }}
         >
           <motion.h2 
-            className="font-display text-3xl sm:text-4xl font-bold bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 bg-clip-text text-transparent mb-2"
-            animate={{ 
-              backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-            }}
-            transition={{ duration: 3, repeat: Infinity }}
-            style={{ backgroundSize: "200% 200%" }}
-          >
-            Pilih Tanggalnya dongg??
-          </motion.h2>
-          <motion.p 
-            className="text-sm sm:text-base text-gray-600 font-medium"
-            animate={{ opacity: [0.7, 1, 0.7] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            Juli 2026 - Pilih hari yang kamu mau!
-          </motion.p>
+                className="font-display font-bold bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 bg-clip-text text-transparent mb-2"
+                style={{ 
+                  fontSize: "clamp(18px, 4vw, 32px)",
+                  backgroundSize: "200% 200%"
+                }}
+                animate={{ 
+                  backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                }}
+                transition={{ duration: 3, repeat: Infinity }}
+              >
+                Pilih Tanggalnya dongg??
+              </motion.h2>
+              <motion.p 
+                className="text-gray-600 font-medium"
+                style={{ fontSize: "clamp(12px, 2.5vw, 16px)" }}
+                animate={{ opacity: [0.7, 1, 0.7] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                Juli 2026 - Pilih hari yang kamu mau!
+              </motion.p>
         </motion.div>
 
         <div className="grid grid-cols-5 sm:grid-cols-7 gap-3 max-w-2xl mx-auto">
@@ -724,12 +719,10 @@ function DatePicker({ place }) {
   );
 }
 
-// 🔧 OPTIMIZED CELEBRATION OVERLAY - Reduced lag
 function CelebrationOverlay({ onDone }) {
   const [hearts, setHearts] = useState([]);
   
   useEffect(() => {
-    // ⚡ Reduced from 8 to 5 hearts for better performance
     const emojis = ["💕", "💖", "💗"];
     const newHearts = Array.from({ length: 5 }, (_, i) => ({
       id: Date.now() + i,
@@ -747,10 +740,8 @@ function CelebrationOverlay({ onDone }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      // ⚡ Faster animation for smoother feel
       transition={{ duration: 0.2 }}
     >
-      {/* ⚡ Optimized floating hearts - Fewer count + simpler animations */}
       <div className="absolute inset-0 pointer-events-none">
         {hearts.map((heart) => (
           <motion.div
@@ -768,7 +759,7 @@ function CelebrationOverlay({ onDone }) {
               scale: [0.2, 1, 1, 0.4]
             }}
             transition={{ 
-              duration: 2.8, // ⚡ Reduced from 3
+              duration: 2.8, 
               delay: heart.delay,
               ease: "easeOut"
             }}
@@ -778,7 +769,6 @@ function CelebrationOverlay({ onDone }) {
         ))}
       </div>
 
-      {/* ⚡ Optimized mascot - Single transform instead of multiple */}
       <motion.div
         className="relative"
         initial={{ scale: 0, opacity: 0 }}
@@ -786,7 +776,6 @@ function CelebrationOverlay({ onDone }) {
         transition={{ duration: 0.6, type: "spring", stiffness: 200, damping: 20 }}
         style={{ willChange: "transform" }}
       >
-        {/* ⚡ Simpler glow - Static instead of animated */}
         <div
           className="absolute inset-0 bg-gradient-to-r from-pink-400/20 to-rose-400/20 rounded-full blur-2xl pointer-events-none"
           style={{ width: "120%", height: "120%", left: "-10%", top: "-10%" }}
@@ -802,7 +791,6 @@ function CelebrationOverlay({ onDone }) {
         >
           <SultanMascot size="xl" emotion="celebrating" />
           
-          {/* ⚡ Reduced floating hearts around mascot - Only 3 instead of 6 */}
           <motion.div
             className="absolute -top-10 left-1/2 -translate-x-1/2 text-4xl pointer-events-none"
             animate={{ 
@@ -837,7 +825,6 @@ function CelebrationOverlay({ onDone }) {
         </motion.div>
       </motion.div>
 
-      {/* ⚡ Simpler speech bubble - No gradient animation */}
       <motion.div
         className="absolute left-1/2 -translate-x-1/2 top-[calc(50%-220px)]"
         initial={{ scale: 0, opacity: 0, y: 25 }}
@@ -853,12 +840,11 @@ function CelebrationOverlay({ onDone }) {
           transition={{ duration: 2, repeat: Infinity }}
         >
           <p className="text-lg font-bold bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">
-            HEHEHEHEHE I KNOWW BUBB
+            HEHEHEHE I KNOWW BUBB
           </p>
         </motion.div>
       </motion.div>
 
-      {/* ⚡ Simpler progress bar */}
       <motion.div
         className="absolute bottom-0 left-0 right-0 h-2 bg-pink-200/50"
         initial={{ width: 0 }}
@@ -882,7 +868,6 @@ export default function DatePickerPage() {
   useEffect(() => {
     setMounted(true);
     
-    // Detect performance mode
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     const isLowEndDevice = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
@@ -938,12 +923,11 @@ export default function DatePickerPage() {
         )}
       </div>
 
-      <div className="relative z-10 h-screen flex flex-col px-4 pt-4">
-        <div className={`flex-1 space-y-4 ${showDateSelection ? 'overflow-hidden' : 'overflow-y-auto no-scrollbar'}`}>
+      <div className="relative z-10 h-screen flex flex-col px-4 pt-4 pb-4 overflow-y-auto">
+        <div className={`flex-1 space-y-4`}>
           {!showDateSelection ? (
             <motion.div 
-              className="flex-1 flex items-center justify-center" 
-              style={{ padding: "10px 0" }}
+              className="flex-1 flex items-center justify-center py-8" 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: mounted ? 1 : 0, y: mounted ? 0 : 20 }}
               transition={{ duration: 0.6 }}

@@ -17,7 +17,7 @@ function Quiz({ onDone }) {
   const [val, setVal] = useState("");
   const [wrong, setWrong] = useState(0);
   const [shake, setShake] = useState(false);
-  const [sultanState, setSultanState] = useState({ emotion: "worried", speech: "Ak percaya km pasti kenal ak..." });
+  const [sultanState, setSultanState] = useState({ emotion: "worried", speech: "Ak percaya km tw kok..." });
   const [confetti, setConfetti] = useState(false);
   const { playSuccess, playError, playCelebration } = useSound();
   const { vibrateSuccess, vibrateError } = useVibration();
@@ -79,7 +79,7 @@ function Quiz({ onDone }) {
     <div className="px-4 pt-4 pb-8">
       <ConfettiEffect active={confetti} duration={1500} count={30} />
       <h1 className="font-display text-2xl text-center" style={{ color: "var(--theme-accent)" }}>
-        Km harus jawab semua pertanyaan ini klo mw dapet hadiah
+        Jawab yang bener yhhh hehee
       </h1>
 
       <div className="flex justify-center items-center gap-2 mt-4">

@@ -112,24 +112,27 @@ export default function QuizGame({ onExit }) {
     }
 
     return (
-      <div className="text-center py-8">
+      <div className="text-center py-6 md:py-12 mb-2">
         <ConfettiEffect active={score >= 8} duration={4000} count={50} />
-        <SultanMascot size="xl" emotion={emotion} className="mx-auto" />
-        <div className="font-display text-2xl mt-4" style={{ color: "var(--theme-accent)" }}>
+        <SultanMascot size="md" emotion={emotion} className="mx-auto sm:hidden" />
+        <SultanMascot size="lg" emotion={emotion} className="mx-auto hidden sm:block md:hidden" />
+        <SultanMascot size="xl" emotion={emotion} className="mx-auto hidden md:block lg:hidden" />
+        <SultanMascot size="xl" emotion={emotion} className="mx-auto hidden lg:block" />
+        <div className="font-display text-xl sm:text-2xl md:text-3xl lg:text-4xl mt-3 sm:mt-4 md:mt-6" style={{ color: "var(--theme-accent)" }}>
           Quiz Selesai!
         </div>
-        <div className="text-3xl font-bold my-2">{score}/{QUIZ_QUESTIONS.length}</div>
-        <div className="text-sm text-gray-600 mb-6">{message}</div>
+        <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold my-3 sm:my-4 md:my-5">{score}/{QUIZ_QUESTIONS.length}</div>
+        <div className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-6 sm:mb-8 md:mb-10">{message}</div>
         
-        <div className="flex justify-center gap-3">
+        <div className="flex justify-center gap-3 sm:gap-4 md:gap-6">
           <button
             onClick={resetGame}
-            className="px-5 py-2 rounded-full text-white text-sm"
+            className="px-5 sm:px-7 md:px-10 py-3 sm:py-4 md:py-5 rounded-full text-white text-sm sm:text-base md:text-lg lg:text-xl"
             style={{ background: "linear-gradient(135deg,#FF6B9D,#C2185B)" }}
           >
             Main Lagi
           </button>
-          <button onClick={onExit} className="px-5 py-2 rounded-full bg-gray-200 text-sm">
+          <button onClick={onExit} className="px-5 sm:px-7 md:px-10 py-3 sm:py-4 md:py-5 rounded-full bg-gray-200 text-sm sm:text-base md:text-lg lg:text-xl">
             Keluar
           </button>
         </div>
@@ -141,30 +144,32 @@ export default function QuizGame({ onExit }) {
 
   return (
     <div className="text-center">
-      <div className="mb-4">
-        <div className="flex justify-between items-center text-sm text-gray-600 mb-2">
+      <div className="mb-4 sm:mb-5 md:mb-6">
+        <div className="flex justify-between items-center text-xs sm:text-sm md:text-lg lg:text-xl text-gray-600 mb-2 sm:mb-3 md:mb-4">
           <span>Pertanyaan {currentQuestion + 1} / {QUIZ_QUESTIONS.length}</span>
           <span>Skor: {score}</span>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-2">
+        <div className="w-full bg-gray-200 rounded-full h-2 sm:h-3 md:h-4">
           <div 
-            className="h-2 rounded-full transition-all duration-300"
+            className="h-2 sm:h-3 md:h-4 rounded-full transition-all duration-300"
             style={{ 
               width: `${((currentQuestion + 1) / QUIZ_QUESTIONS.length) * 100}%`,
-              background: "linear-gradient(135deg, #FF6B9D, #C2185B)"
+              background: "linear-gradient(135deg,#FF6B9D,#C2185B)"
             }}
           />
         </div>
       </div>
 
-      <div className="mb-6">
-        <SultanMascot size="lg" emotion={showResult ? (selectedAnswer === question.correct ? "happy" : "sad") : "thinking"} className="mx-auto mb-4" />
-        <div className="font-display text-lg mb-4" style={{ color: "var(--theme-accent)" }}>
+      <div className="mb-5 sm:mb-7 md:mb-10">
+        <SultanMascot size="md" emotion={showResult ? (selectedAnswer === question.correct ? "happy" : "sad") : "thinking"} className="mx-auto mb-3 sm:hidden" />
+        <SultanMascot size="lg" emotion={showResult ? (selectedAnswer === question.correct ? "happy" : "sad") : "thinking"} className="mx-auto mb-4 hidden sm:block md:hidden" />
+        <SultanMascot size="xl" emotion={showResult ? (selectedAnswer === question.correct ? "happy" : "sad") : "thinking"} className="mx-auto mb-5 hidden md:block lg:block" />
+        <div className="font-display text-lg sm:text-xl md:text-2xl lg:text-3xl mb-4 sm:mb-5 md:mb-7" style={{ color: "var(--theme-accent)" }}>
           {question.question}
         </div>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-3 sm:space-y-4 md:space-y-5 lg:space-y-6 max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-3xl mx-auto">
         {question.answers.map((answer, index) => {
           const isSelected = selectedAnswer === index;
           const isCorrect = index === question.correct;
@@ -176,29 +181,29 @@ export default function QuizGame({ onExit }) {
               key={index}
               onClick={() => handleAnswer(index)}
               disabled={showResult}
-              className={`w-full p-4 rounded-xl text-left transition-all duration-300 ${
+              className={`w-full p-3 sm:p-4 md:p-6 lg:p-8 rounded-xl sm:rounded-2xl text-left transition-all duration-300 ${
                 showCorrect 
-                  ? "bg-green-100 border-2 border-green-500 text-green-800"
-                  : showWrong
-                  ? "bg-red-100 border-2 border-red-500 text-red-800"
-                  : isSelected
-                  ? "bg-pink-100 border-2 border-pink-500"
-                  : "bg-white border-2 border-gray-200 hover:border-pink-300"
+                  ? "bg-green-100 border-2 sm:border-3 border-green-500 text-green-800"
+                  : showWrong 
+                  ? "bg-red-100 border-2 sm:border-3 border-red-500 text-red-800"
+                  : isSelected 
+                  ? "bg-pink-100 border-2 sm:border-3 border-pink-500"
+                  : "bg-white border-2 sm:border-3 border-gray-200 hover:border-pink-300"
               }`}
             >
-              <div className="flex items-center gap-3">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+              <div className="flex items-center gap-3 sm:gap-4 md:gap-5 lg:gap-6">
+                <div className={`w-8 h-8 sm:w-10 sm:h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center text-xs sm:text-base md:text-xl lg:text-2xl font-bold ${
                   showCorrect 
                     ? "bg-green-500 text-white"
-                    : showWrong
+                    : showWrong 
                     ? "bg-red-500 text-white"
-                    : isSelected
+                    : isSelected 
                     ? "bg-pink-500 text-white"
                     : "bg-gray-200 text-gray-600"
                 }`}>
                   {showCorrect ? "✓" : showWrong ? "✗" : String.fromCharCode(65 + index)}
                 </div>
-                <span className="flex-1">{answer}</span>
+                <span className="flex-1 text-sm sm:text-base md:text-lg lg:text-xl">{answer}</span>
               </div>
             </button>
           );
@@ -206,10 +211,10 @@ export default function QuizGame({ onExit }) {
       </div>
 
       {showResult && (
-        <div className="mt-6">
+        <div className="mt-6 sm:mt-8 md:mt-10 mb-2">
           <button
             onClick={nextQuestion}
-            className="px-6 py-3 rounded-full text-white font-medium"
+            className="px-7 sm:px-10 md:px-14 lg:px-16 py-3 sm:py-4 md:py-6 lg:py-7 rounded-full text-white text-sm sm:text-base md:text-lg lg:text-xl font-medium"
             style={{ background: "linear-gradient(135deg,#FF6B9D,#C2185B)" }}
           >
             {currentQuestion < QUIZ_QUESTIONS.length - 1 ? "Pertanyaan Selanjutnya" : "Lihat Hasil"}

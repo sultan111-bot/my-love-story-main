@@ -16,7 +16,8 @@ const OptimizedImage = memo(function OptimizedImage({
   alt, 
   priority = false,
   onClick,
-  onLoad
+  onLoad,
+  contain = false // New prop: use object-contain instead of cover
 }) {
   // States: loading -> thumb-ready -> full-ready -> loaded
   const [loadState, setLoadState] = useState('loading');
@@ -103,10 +104,10 @@ const OptimizedImage = memo(function OptimizedImage({
         onLoad={handleThumbLoad}
         onError={handleError}
         className={`
-          w-full h-full object-cover  
+          w-full h-full ${contain ? 'object-contain' : 'object-cover'}  
           transition-all duration-500 ease-out
           ${loadState === 'loading' ? 'scale-95 blur-md opacity-0' : 'scale-100 blur-0 opacity-100'}
-          group-hover:scale-105 group-hover:shadow-lg
+          ${!contain ? 'group-hover:scale-105 group-hover:shadow-lg' : ''}
         `}
         style={{
           contentVisibility: 'auto',
