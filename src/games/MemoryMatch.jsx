@@ -38,13 +38,13 @@ export default function MemoryMatch({ onExit }) {
     if (allMatched && !doneTime) setDoneTime(Date.now() - start);
   }, [allMatched, start, doneTime]);
 
-  const tap = (idx) => {
+  const tap = (i) => {
     if (picks.length >= 2) return;
-    if (cards[idx].flipped || cards[idx].matched) return;
+    if (cards[i].flipped || cards[i].matched) return;
     const next = cards.slice();
-    next[idx] = { ...next[idx], flipped: true };
+    next[i] = { ...next[i], flipped: true };
     setCards(next);
-    const newPicks = [...picks, idx];
+    const newPicks = [...picks, i];
     setPicks(newPicks);
     if (newPicks.length === 2) {
       setMoves((m) => m + 1);
@@ -68,19 +68,28 @@ export default function MemoryMatch({ onExit }) {
 
   if (allMatched) {
     return (
-      <div className="text-center py-6 sm:py-8 md:py-12 mb-2">
+      <div className="text-center w-full">
         <ConfettiEffect active duration={4000} count={50} />
         <SultanMascot size="md" emotion="celebrating" className="mx-auto sm:hidden" />
         <SultanMascot size="lg" emotion="celebrating" className="mx-auto hidden sm:block md:hidden" />
         <SultanMascot size="xl" emotion="celebrating" className="mx-auto hidden md:block lg:hidden" />
         <SultanMascot size="xl" emotion="celebrating" className="mx-auto hidden lg:block" />
-        <div className="font-display text-xl sm:text-2xl md:text-3xl lg:text-4xl mt-4 sm:mt-5 md:mt-7" style={{ color: "var(--theme-accent)" }}>
+        <h2
+          className="font-display mt-4 mb-2"
+          style={{
+            color: "var(--theme-accent)",
+            fontSize: "clamp(18px, 4.5vw, 52px)"
+          }}
+        >
           Hebat! 🎉
-        </div>
-        <div className="text-base sm:text-lg md:text-xl lg:text-2xl mt-2 sm:mt-3 md:mt-4 text-gray-700">
+        </h2>
+        <p
+          className="mt-2 text-gray-700 m-0"
+          style={{ fontSize: "clamp(12px, 3vw, 24px)" }}
+        >
           {moves} langkah dalam {seconds}s
-        </div>
-        <div className="flex justify-center gap-3 sm:gap-4 md:gap-6 mt-6 sm:mt-8 md:mt-10">
+        </p>
+        <div className="flex justify-center mt-6 flex-wrap" style={{ gap: "clamp(10px, 2vw, 32px)" }}>
           <button
             onClick={() => {
               const newPhotos = getShuffledPhotos(8);
@@ -88,44 +97,73 @@ export default function MemoryMatch({ onExit }) {
               setCards(shuffle([...newPhotos, ...newPhotos]).map((photoUrl, i) => ({ id: i, photoUrl, flipped: false, matched: false })));
               setPicks([]); setMoves(0); setDoneTime(null);
             }}
-            className="px-5 sm:px-7 md:px-10 py-3 sm:py-4 md:py-5 rounded-full text-white text-sm sm:text-base md:text-lg lg:text-xl"
-            style={{ background: "linear-gradient(135deg,#FF6B9D,#C2185B)" }}
+            className="rounded-full text-white cursor-pointer border-0"
+            style={{
+              padding: "clamp(10px, 2.5vw, 24px) clamp(16px, 4vw, 48px)",
+              fontSize: "clamp(12px, 2.8vw, 24px)",
+              background: "linear-gradient(135deg,#FF6B9D,#C2185B)"
+            }}
           >
             Main Lagi
           </button>
-          <button onClick={onExit} className="px-5 sm:px-7 md:px-10 py-3 sm:py-4 md:py-5 rounded-full bg-gray-200 text-sm sm:text-base md:text-lg lg:text-xl">Keluar</button>
+          <button
+            onClick={onExit}
+            className="rounded-full bg-gray-200 cursor-pointer border-0"
+            style={{
+              padding: "clamp(10px, 2.5vw, 24px) clamp(16px, 4vw, 48px)",
+              fontSize: "clamp(12px, 2.8vw, 24px)"
+            }}
+          >
+            Keluar
+          </button>
         </div>
       </div>
     );
   }
 
   return (
-    <div>
-      <div className="flex justify-between mb-4 sm:mb-5 md:mb-6 text-xs sm:text-sm md:text-lg lg:text-xl">
+    <div className="w-full">
+      <div
+        className="flex justify-between mb-4"
+        style={{ fontSize: "clamp(12px, 3vw, 22px)" }}
+      >
         <span>Langkah: <b>{moves}</b></span>
         <span>Waktu: <b>{seconds}s</b></span>
       </div>
-      <div className="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 lg:gap-6 max-w-[260px] sm:max-w-md md:max-w-2xl lg:max-w-3xl mx-auto">
+      <div
+        className="grid grid-cols-4 mx-auto"
+        style={{
+          gap: "clamp(4px, 1.2vw, 16px)",
+          maxWidth: "clamp(240px, 94vw, 680px)"
+        }}
+      >
         {cards.map((c, i) => (
           <button
             key={c.id}
             onClick={() => tap(i)}
-            className="aspect-square flip-card relative"
+            className="aspect-square flip-card relative border-0 p-0 cursor-pointer"
             disabled={c.matched}
           >
             <div className={`flip-inner ${c.flipped || c.matched ? "flipped" : ""}`}>
               <div
-                className="flip-face front rounded-xl sm:rounded-2xl flex items-center justify-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white font-bold"
-                style={{ background: "linear-gradient(135deg,#FFB6C1,#FF6B9D)" }}
+                className="flip-face front flex items-center justify-center text-white font-bold"
+                style={{
+                  background: "linear-gradient(135deg,#FFB6C1,#FF6B9D)",
+                  borderRadius: "clamp(8px, 2vw, 24px)",
+                  fontSize: "clamp(20px, 5vw, 52px)"
+                }}
               >?</div>
               <div
-                className="flip-face back rounded-xl sm:rounded-2xl overflow-hidden"
-                style={{ boxShadow: c.matched ? "0 0 0 4px #6BCB77" : "0 4px 14px rgba(0,0,0,0.14)" }}
+                className="flip-face back overflow-hidden"
+                style={{
+                  borderRadius: "clamp(8px, 2vw, 24px)",
+                  boxShadow: c.matched ? "0 0 0 4px #6BCB77" : "0 4px 12px rgba(0,0,0,0.12)"
+                }}
               >
-                <img 
-                  src={c.photoUrl} 
-                  alt="Memory card" 
-                  className="w-full h-full object-cover"
+                <img
+                  src={c.photoUrl}
+                  alt="Memory card"
+                  className="w-full h-full object-cover m-0"
                   draggable={false}
                 />
               </div>

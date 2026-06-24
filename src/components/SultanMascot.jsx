@@ -179,8 +179,7 @@ function renderEyes(emotion) {
       return (
         <>
           <path d="M75 78 Q 82 72 89 78" stroke="#3B1F0F" strokeWidth="3" fill="none" strokeLinecap="round" />
-          {/* Paw covering right eye */}
-          <ellipse cx="118" cy="78" rx="14" ry="10" fill="#FF8C42" />
+          <path d="M111 78 Q 118 72 125 78" stroke="#3B1F0F" strokeWidth="3" fill="none" strokeLinecap="round" />
         </>
       );
     case "smug":

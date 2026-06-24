@@ -153,7 +153,7 @@ export default function FunMode() {
 
       <AnimatePresence>
         {game && (
-          <GameModal title={game.name} onClose={() => setGame(null)}>
+          <GameModal title={game.name} onExit={() => setGame(null)}>
             <game.Component onExit={() => setGame(null)} />
           </GameModal>
         )}

@@ -585,18 +585,35 @@ img {
 
 /* ===== GAME MODAL ===== */
 .game-modal-content {
-  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px) + 2rem);
+  padding-bottom: calc(clamp(80px, 12vh, 100px) + 80px + 4rem);
+  padding-top: clamp(0.25rem, 0.8vh, 1.5rem);
+  padding-left: clamp(0.25rem, 1.8vw, 0.5rem);
+  padding-right: clamp(0.25rem, 1.8vw, 0.5rem);
+}
+
+@media (min-width: 360px) {
+  .game-modal-content {
+    padding-left: clamp(0.5rem, 2.2vw, 1rem);
+    padding-right: clamp(0.5rem, 2.2vw, 1rem);
+  }
+}
+
+@media (min-width: 400px) {
+  .game-modal-content {
+    padding-left: clamp(0.75rem, 2.5vw, 1.5rem);
+    padding-right: clamp(0.75rem, 2.5vw, 1.5rem);
+  }
 }
 
 @media (min-width: 640px) {
   .game-modal-content {
-    padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px) + 3rem);
+    padding-bottom: calc(clamp(80px, 12vh, 100px) + 70px + 4rem);
   }
 }
 
 @media (min-width: 768px) {
   .game-modal-content {
-    padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px) + 4rem);
+    padding-bottom: calc(clamp(80px, 12vh, 100px) + 50px + 4.5rem);
   }
 }
 

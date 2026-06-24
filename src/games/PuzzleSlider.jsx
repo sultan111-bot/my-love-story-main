@@ -3,11 +3,9 @@ import SultanMascot from "../components/SultanMascot.jsx";
 import ConfettiEffect from "../components/ConfettiEffect.jsx";
 import { getRandomPhoto } from "../constants/photos.js";
 
-// 0 represents the empty space.
 const SOLVED = [1, 2, 3, 4, 5, 6, 7, 8, 0];
 
 function isSolvable(arr) {
-  // For 3x3 (odd width), solvable iff inversion count is even.
   const a = arr.filter((x) => x !== 0);
   let inv = 0;
   for (let i = 0; i < a.length; i++)
@@ -47,24 +45,36 @@ export default function PuzzleSlider({ onExit }) {
   };
 
   return (
-    <div>
+    <div className="w-full">
       <ConfettiEffect active={solved} duration={4000} count={50} />
-      <div className="text-center text-xs sm:text-base md:text-lg lg:text-xl mb-3 sm:mb-4 md:mb-5">Langkah: <b>{moves}</b></div>
-      <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-5 max-w-[220px] sm:max-w-sm md:max-w-md lg:max-w-2xl mx-auto">
+      <div
+        className="text-center mb-4"
+        style={{ fontSize: "clamp(12px, 3vw, 22px)" }}
+      >
+        Langkah: <b>{moves}</b>
+      </div>
+      <div
+        className="grid grid-cols-3 mx-auto"
+        style={{
+          gap: "clamp(4px, 1.2vw, 18px)",
+          maxWidth: "clamp(220px, 94vw, 600px)"
+        }}
+      >
         {tiles.map((v, i) => (
           <button
             key={i}
             onClick={() => tap(i)}
             disabled={v === 0}
-            className="aspect-square rounded-xl sm:rounded-2xl overflow-hidden transition-all"
+            className="aspect-square overflow-hidden transition-all border-0 p-0 cursor-pointer"
             style={{
+              borderRadius: "clamp(8px, 2vw, 24px)",
               background: v === 0 ? "transparent" : "white",
-              boxShadow: v === 0 ? "none" : solved ? "0 0 0 3px #6BCB77" : "0 4px 12px rgba(0,0,0,0.12)",
-              transitionDuration: "0.15s",
+              boxShadow: v === 0 ? "none" : solved ? "0 0 0 4px #6BCB77" : "0 4px 12px rgba(0,0,0,0.12)",
+              transitionDuration: "0.15s"
             }}
           >
             {v !== 0 && (
-              <div 
+              <div
                 className="w-full h-full"
                 style={{
                   backgroundImage: `url(${puzzleImage})`,
@@ -78,29 +88,48 @@ export default function PuzzleSlider({ onExit }) {
       </div>
 
       {solved && (
-        <div className="text-center mt-5 sm:mt-7 md:mt-10">
+        <div className="text-center mt-6">
           <SultanMascot size="md" emotion="celebrating" className="mx-auto sm:hidden" />
           <SultanMascot size="lg" emotion="celebrating" className="mx-auto hidden sm:block md:hidden" />
           <SultanMascot size="xl" emotion="celebrating" className="mx-auto hidden md:block lg:block" />
-          <div className="font-display text-xl sm:text-2xl md:text-3xl lg:text-4xl mt-2 sm:mt-3 md:mt-5" style={{ color: "var(--theme-accent)" }}>
+          <h3
+            className="font-display mt-3 mb-0"
+            style={{
+              color: "var(--theme-accent)",
+              fontSize: "clamp(18px, 4.5vw, 52px)"
+            }}
+          >
             Selamat! 🎉
-          </div>
+          </h3>
         </div>
       )}
 
-      <div className="flex justify-center gap-3 sm:gap-4 md:gap-6 mt-6 sm:mt-8 md:mt-10 mb-2">
+      <div className="flex justify-center mt-6 flex-wrap" style={{ gap: "clamp(10px, 2vw, 32px)" }}>
         <button
           onClick={() => {
             setPuzzleImage(getRandomPhoto());
             setTiles(shuffleSolvable());
             setMoves(0);
           }}
-          className="px-5 sm:px-7 md:px-10 py-2.5 sm:py-3.5 md:py-4 rounded-full text-white text-sm sm:text-base md:text-lg lg:text-xl"
-          style={{ background: "linear-gradient(135deg,#FF6B9D,#C2185B)" }}
+          className="rounded-full text-white cursor-pointer border-0"
+          style={{
+            padding: "clamp(10px, 2.5vw, 24px) clamp(16px, 4vw, 48px)",
+            fontSize: "clamp(12px, 2.8vw, 24px)",
+            background: "linear-gradient(135deg,#FF6B9D,#C2185B)"
+          }}
         >
           Acak Lagi
         </button>
-        <button onClick={onExit} className="px-5 sm:px-7 md:px-10 py-2.5 sm:py-3.5 md:py-4 rounded-full bg-gray-200 text-sm sm:text-base md:text-lg lg:text-xl">Keluar</button>
+        <button
+          onClick={onExit}
+          className="rounded-full bg-gray-200 cursor-pointer border-0"
+          style={{
+            padding: "clamp(10px, 2.5vw, 24px) clamp(16px, 4vw, 48px)",
+            fontSize: "clamp(12px, 2.8vw, 24px)"
+          }}
+        >
+          Keluar
+        </button>
       </div>
     </div>
   );
