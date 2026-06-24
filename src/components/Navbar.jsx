@@ -43,7 +43,7 @@ export default function Navbar({ onSecretTrigger }) {
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: "spring", stiffness: 200, damping: 20 }}
-      className="fixed bottom-0 left-0 right-0 lg:top-0 lg:bottom-auto desktop-navbar"
+      className="desktop-navbar"
     >
       <div className="navbar-inner">
         {ITEMS.map((it, index) => {

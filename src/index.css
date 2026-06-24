@@ -234,15 +234,18 @@ nav {
   height: clamp(70px, 10vh, 80px);
 }
 
-/* Mobile: Semua ukuran hp (sampai tablet kecil) - Navbar di bawah + safe area */
+/* Mobile: Navbar di bawah + safe area (tepat di atas home indicator) */
 @media (max-width: 1023px) {
   nav {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    height: calc(clamp(70px, 10vh, 80px) + env(safe-area-inset-bottom, 0px));
+    height: auto;
     padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .navbar-inner {
+    height: clamp(70px, 10vh, 80px);
   }
 }
 
@@ -340,15 +343,17 @@ nav {
     bottom: calc(clamp(70px, 10vh, 80px) + env(safe-area-inset-bottom, 0px) + 12px);
     left: 16px;
   }
+  .navbar-inner {
+    padding: 0 8px;
+  }
 }
 
-/* Untuk hp besar (seperti Redmi Note 13 5G) - tambah sedikit padding dan ukuran */
+/* Untuk hp besar (seperti Redmi Note 13 5G) */
 @media (min-width: 400px) and (max-width: 1023px) {
   .our-story-btn {
     padding: 12px 20px;
     font-size: 15px;
     left: 20px;
-    bottom: calc(clamp(70px, 10vh, 80px) + env(safe-area-inset-bottom, 0px) + 16px);
   }
   .navbar-inner {
     padding: 0 12px;

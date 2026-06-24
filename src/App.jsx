@@ -113,7 +113,7 @@ function Layout() {
           exit={{ rotateY: -90, opacity: 0 }}
           transition={{ duration: 0.8, ease: [0.645, 0.045, 0.355, 1.0] }}
           style={{ transformOrigin: "left center", transformStyle: "preserve-3d", contain: 'layout style paint' }}
-          className="relative z-10 h-full overflow-y-auto"
+          className="relative z-10 h-full"
         >
           <Routes location={location}>
             <Route path="/" element={<Opening />} />
@@ -125,7 +125,6 @@ function Layout() {
             <Route path="/date" element={<DatePickerPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-          {showNav && <div className="h-safe-nav" />}
         </motion.div>
       </AnimatePresence>
 
