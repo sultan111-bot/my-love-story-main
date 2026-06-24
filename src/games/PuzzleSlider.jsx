@@ -50,7 +50,7 @@ export default function PuzzleSlider({ onExit }) {
     <div>
       <ConfettiEffect active={solved} duration={4000} count={50} />
       <div className="text-center text-xs sm:text-base md:text-lg lg:text-xl mb-3 sm:mb-4 md:mb-5">Langkah: <b>{moves}</b></div>
-      <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-5 max-w-full sm:max-w-sm md:max-w-md lg:max-w-2xl mx-auto">
+      <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-5 max-w-[220px] sm:max-w-sm md:max-w-md lg:max-w-2xl mx-auto">
         {tiles.map((v, i) => (
           <button
             key={i}
