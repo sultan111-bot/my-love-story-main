@@ -234,7 +234,7 @@ nav {
   height: clamp(70px, 10vh, 80px);
 }
 
-/* Mobile: Navbar di bawah + safe area */
+/* Mobile: Semua ukuran hp (sampai tablet kecil) - Navbar di bawah + safe area */
 @media (max-width: 1023px) {
   nav {
     position: fixed;
@@ -269,7 +269,31 @@ nav {
   }
 }
 
-/* ===== HOME CONTAINER ===== */
+/* ===== PAGE CONTAINER UTAMA ===== */
+.page-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Container untuk halaman yang BUTUH ruang navbar (seperti Home) */
+.with-navbar-padding {
+  /* Mobile: padding bawah untuk navbar */
+}
+
+@media (max-width: 1023px) {
+  .with-navbar-padding {
+    padding-bottom: calc(clamp(70px, 10vh, 80px) + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (min-width: 1024px) {
+  .with-navbar-padding {
+    padding-top: clamp(70px, 10vh, 80px);
+  }
+}
+
+/* ===== HOME CONTAINER (khusus Home) ===== */
 .home-container {
   height: 100%;
   display: flex;
@@ -303,6 +327,7 @@ nav {
   gap: 4px;
   padding: 10px 16px;
   transition: box-shadow 0.2s;
+  font-size: 14px;
 }
 
 .our-story-btn:hover {
@@ -312,14 +337,31 @@ nav {
 /* Mobile: Our Story button di atas navbar */
 @media (max-width: 1023px) {
   .our-story-btn {
-    bottom: calc(clamp(70px, 10vh, 80px) + env(safe-area-inset-bottom, 0px) + 10px);
+    bottom: calc(clamp(70px, 10vh, 80px) + env(safe-area-inset-bottom, 0px) + 12px);
+    left: 16px;
+  }
+}
+
+/* Untuk hp besar (seperti Redmi Note 13 5G) - tambah sedikit padding dan ukuran */
+@media (min-width: 400px) and (max-width: 1023px) {
+  .our-story-btn {
+    padding: 12px 20px;
+    font-size: 15px;
+    left: 20px;
+    bottom: calc(clamp(70px, 10vh, 80px) + env(safe-area-inset-bottom, 0px) + 16px);
+  }
+  .navbar-inner {
+    padding: 0 12px;
   }
 }
 
 /* Desktop: Our Story button di pojok bawah kiri */
 @media (min-width: 1024px) {
   .our-story-btn {
-    bottom: 16px;
+    bottom: 20px;
+    left: 24px;
+    padding: 12px 20px;
+    font-size: 15px;
   }
 }
 
@@ -335,65 +377,110 @@ nav {
   content-visibility: auto;
   contain-intrinsic-size: auto 200px;
   contain: layout style paint;
-  flex: 0 1 calc(50% - 8px);
+  flex: 0 1 calc(50% - 4px);
+}
+
+/* Hp kecil */
+@media (min-width: 360px) {
+  .media-card {
+    flex: 0 1 calc(50% - 6px);
+  }
+}
+
+/* Hp sedang sampai besar (seperti Redmi Note 13 5G) */
+@media (min-width: 400px) {
+  .media-card {
+    flex: 0 1 calc(50% - 8px);
+  }
+  .mobile-columns {
+    gap: 12px;
+  }
 }
 
 @media (min-width: 640px) {
   .media-card {
     flex: 0 1 calc(33.333% - 8px);
   }
+  .mobile-columns {
+    gap: 12px;
+  }
 }
 
 @media (min-width: 768px) {
   .media-card {
-    flex: 0 1 calc(25% - 8px);
+    flex: 0 1 calc(25% - 10px);
+  }
+  .mobile-columns {
+    gap: 16px;
   }
 }
 
 @media (min-width: 1024px) {
   .media-card {
-    flex: 0 1 calc(20% - 8px);
+    flex: 0 1 calc(20% - 10px);
+  }
+  .mobile-columns {
+    gap: 16px;
   }
 }
 
 @media (min-width: 1280px) {
   .media-card {
-    flex: 0 1 calc(16.666% - 8px);
+    flex: 0 1 calc(16.666% - 12px);
+  }
+  .mobile-columns {
+    gap: 20px;
   }
 }
 
 /* ===== ENVELOPE & OTHER COMPONENTS ===== */
 .envelope-container {
-  height: clamp(260px, 65vh, 360px);
-  width: clamp(260px, 95vw, 340px);
+  height: clamp(280px, 70vh, 380px);
+  width: clamp(280px, 95vw, 360px);
   position: relative;
+}
+
+/* Hp sedang */
+@media (min-width: 360px) {
+  .envelope-container {
+    height: clamp(300px, 70vh, 400px);
+    width: clamp(300px, 95vw, 380px);
+  }
+}
+
+/* Hp besar (seperti Redmi Note 13 5G) */
+@media (min-width: 400px) {
+  .envelope-container {
+    height: clamp(340px, 75vh, 440px);
+    width: clamp(340px, 92vw, 420px);
+  }
 }
 
 @media (min-width: 640px) {
   .envelope-container {
-    height: clamp(340px, 70vh, 420px);
-    width: clamp(340px, 85vw, 400px);
+    height: clamp(380px, 75vh, 460px);
+    width: clamp(380px, 85vw, 440px);
   }
 }
 
 @media (min-width: 768px) {
   .envelope-container {
-    height: clamp(400px, 75vh, 450px);
-    width: clamp(380px, 80vw, 420px);
+    height: clamp(420px, 75vh, 480px);
+    width: clamp(400px, 80vw, 460px);
   }
 }
 
 @media (min-width: 1024px) {
   .envelope-container {
-    height: clamp(460px, 70vh, 520px);
-    width: clamp(440px, 70vw, 500px);
+    height: clamp(480px, 70vh, 540px);
+    width: clamp(460px, 70vw, 520px);
   }
 }
 
 @media (min-width: 1280px) {
   .envelope-container {
-    height: clamp(540px, 70vh, 600px);
-    width: clamp(520px, 60vw, 580px);
+    height: clamp(560px, 70vh, 620px);
+    width: clamp(540px, 60vw, 600px);
   }
 }
 
@@ -505,5 +592,22 @@ img {
 @media (min-width: 1024px) {
   .game-modal-content {
     padding-bottom: 4rem;
+  }
+}
+
+/* ===== TRAP OF LOVE ===== */
+.trap-of-love-inner {
+  min-height: 500px;
+}
+
+@media (min-width: 400px) {
+  .trap-of-love-inner {
+    min-height: 550px;
+  }
+}
+
+@media (min-width: 640px) {
+  .trap-of-love-inner {
+    min-height: 600px;
   }
 }

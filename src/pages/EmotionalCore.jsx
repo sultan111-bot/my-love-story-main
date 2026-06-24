@@ -346,47 +346,52 @@ export default function EmotionalCore() {
   }, []);
 
   return (
-<div className="flex flex-col px-4 pt-4 pb-4 overflow-y-auto lg:px-8 lg:pt-6" style={{ minHeight: "calc(100vh - clamp(70px, 10vh, 80px) - env(safe-area-inset-bottom))" }}>
-  <div className="flex-shrink-0 mb-4 lg:mb-6">
-    <h1 className="font-display text-center" style={{ color: "#C2185B", fontSize: "clamp(16px, 4vw, 30px)" }}>
-      15 Reasons I LOVE U SOO MUCHH
-    </h1>
-    <p className="text-center text-[#999] mt-1" style={{ fontSize: "clamp(11px, 2.5vw, 15px)" }}>
-      Pencet yhh amplopnyaa
-    </p>
-  </div>
-      <div className="flex items-center justify-center py-3">
-        <div className="envelope-container relative overflow-hidden">
-          {positions.map((p, i) => (
-            <EnvelopeCard
-              key={i}
-              n={i + 1}
-              accent={ACCENTS[i % ACCENTS.length]}
-              top={p.top}
-              left={p.left}
-              rot={p.rot}
-              onEnvelopeClick={handleEnvelopeClick}
-              registerRef={(num, ref) => envelopeRefs.current[num] = ref}
-              isHighest={openEnvelope === i + 1}
-              highestZIndex={highestZIndex}
-            />
-          ))}
+    <div className="page-container">
+      <div className="flex flex-col px-4 pt-4 pb-4 overflow-y-auto lg:px-8 lg:pt-6" style={{ 
+        height: "100%",
+        paddingBottom: "calc(clamp(70px, 10vh, 80px) + env(safe-area-inset-bottom, 0px) + 20px)"
+      }}>
+        <div className="flex-shrink-0 mb-4 lg:mb-6">
+          <h1 className="font-display text-center" style={{ color: "#C2185B", fontSize: "clamp(20px, 5vw, 36px)" }}>
+            15 Reasons I LOVE U SOO MUCHH
+          </h1>
+          <p className="text-center text-[#999] mt-1" style={{ fontSize: "clamp(13px, 3vw, 17px)" }}>
+            Pencet yhh amplopnyaa
+          </p>
         </div>
-      </div>
+            <div className="flex items-center justify-center py-3 flex-grow">
+              <div className="envelope-container relative overflow-hidden">
+                {positions.map((p, i) => (
+                  <EnvelopeCard
+                    key={i}
+                    n={i + 1}
+                    accent={ACCENTS[i % ACCENTS.length]}
+                    top={p.top}
+                    left={p.left}
+                    rot={p.rot}
+                    onEnvelopeClick={handleEnvelopeClick}
+                    registerRef={(num, ref) => envelopeRefs.current[num] = ref}
+                    isHighest={openEnvelope === i + 1}
+                    highestZIndex={highestZIndex}
+                  />
+                ))}
+              </div>
+            </div>
 
-      <div className="flex-shrink-0 mt-3">
-        <VirtualHug />
-      </div>
+            <div className="flex-shrink-0 mt-3">
+              <VirtualHug />
+            </div>
 
-      {kiss && (
-        <span
-          key={kiss.id}
-          className="fixed text-2xl pointer-events-none z-50 kiss-drop"
-          style={{ left: kiss.left + "%", top: 80, "--kx": kiss.drift + "px" }}
-        >
-          💋
-        </span>
-      )}
+            {kiss && (
+              <span
+                key={kiss.id}
+                className="fixed text-2xl pointer-events-none z-50 kiss-drop"
+                style={{ left: kiss.left + "%", top: 80, "--kx": kiss.drift + "px" }}
+              >
+                💋
+              </span>
+            )}
+          </div>
     </div>
   );
 }

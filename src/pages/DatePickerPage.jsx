@@ -309,8 +309,7 @@ function TrapOfLove({ onYesTriggered }) {
       onMouseMove={onMove}
       onTouchMove={onMove}
       onTouchStart={onTouchStartContainer}
-      className="bg-white/85 backdrop-blur-xl rounded-3xl p-4 sm:p-6 shadow-2xl relative overflow-hidden w-full max-w-lg mx-auto border-2 border-pink-200"
-      style={{ minHeight: "450px", height: "auto" }}
+      className="bg-white/85 backdrop-blur-xl rounded-3xl p-4 sm:p-6 shadow-2xl relative overflow-hidden w-full max-w-lg mx-auto border-2 border-pink-200 trap-of-love-inner"
       initial={{ opacity: 0, scale: 0.8, rotateY: 45 }}
       animate={{ opacity: 1, scale: 1, rotateY: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
@@ -888,7 +887,7 @@ export default function DatePickerPage() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden" style={{ background: current.bg }}>
+    <div className="page-container" style={{ background: current.bg }}>
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {enableBackgroundCircles && (
           <>
@@ -923,7 +922,10 @@ export default function DatePickerPage() {
         )}
       </div>
 
-      <div className="relative z-10 h-screen flex flex-col px-4 pt-4 pb-4 overflow-y-auto">
+      <div className="relative z-10 flex flex-col px-4 pt-4 pb-4 overflow-y-auto" style={{ 
+        height: "100%",
+        paddingBottom: "calc(clamp(70px, 10vh, 80px) + env(safe-area-inset-bottom, 0px) + 20px)"
+      }}>
         <div className={`flex-1 space-y-4`}>
           {!showDateSelection ? (
             <motion.div 
