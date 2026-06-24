@@ -105,7 +105,7 @@ export default function MemoryMatch({ onExit }) {
         <span>Langkah: <b>{moves}</b></span>
         <span>Waktu: <b>{seconds}s</b></span>
       </div>
-      <div className="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 lg:gap-6 max-w-[260px] sm:max-w-md md:max-w-2xl lg:max-w-3xl mx-auto">
+      <div className="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 lg:gap-6 max-w-full sm:max-w-md md:max-w-2xl lg:max-w-3xl mx-auto">
         {cards.map((c, i) => (
           <button
             key={c.id}
