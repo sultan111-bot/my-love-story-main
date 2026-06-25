@@ -84,7 +84,7 @@ export default function Opening() {
           SITI NUR KHOLIFAH 🎂
         </p>
         <p className="mt-4 text-[#888]" style={{ fontSize: "clamp(14px, 2vw, 24px)" }}>
-          Semoga hari ini seindah kamu 💕
+          Semoga km selalu bahagiaa yaa sayangg~ 💕
         </p>
       </motion.div>
     </div>

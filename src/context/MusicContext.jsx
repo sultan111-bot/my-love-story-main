@@ -84,6 +84,24 @@ export function MusicProvider({ children }) {
     requestAnimationFrame(tick);
   }, []);
 
+  const fadeOut = useCallback((duration = 800) => {
+    const a = audioRef.current;
+    if (!a) return;
+    const start = performance.now();
+    const startVol = a.volume;
+    const tick = (now) => {
+      const t = Math.min(1, (now - start) / duration);
+      a.volume = startVol * (1 - t);
+      if (t < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        a.pause();
+        setPlaying(false);
+      }
+    };
+    requestAnimationFrame(tick);
+  }, []);
+
   const toggle = useCallback(() => {
     console.log("Toggle music clicked");
     const a = audioRef.current;
@@ -112,7 +130,7 @@ export function MusicProvider({ children }) {
   }, []);
 
   return (
-    <MusicContext.Provider value={{ playing, toggle, fadeIn, ready }}>
+    <MusicContext.Provider value={{ playing, toggle, fadeIn, fadeOut, ready }}>
       {children}
     </MusicContext.Provider>
   );
