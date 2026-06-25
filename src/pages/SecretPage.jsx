@@ -293,13 +293,12 @@ function GiftBox({ onOpen }) {
 function HiddenContent() {
   const videoRef = useRef(null);
   const { fadeIn, fadeOut, playing } = useMusic();
-  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
 
   // Preload video ketika komponen mount
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.preload = "auto";
-      videoRef.current.load();
+      videoRef.current.preload = "metadata"; // Lebih ringkas dari "auto"
     }
   }, []);
 
@@ -307,72 +306,113 @@ function HiddenContent() {
     <div 
       className="min-h-screen flex flex-col items-center justify-center"
       style={{ 
-        paddingTop: "clamp(16px, 4vw, 32px)",
-        paddingBottom: "calc(clamp(70px, 11vh, 90px) + 40px)",
-        paddingLeft: "clamp(12px, 4vw, 24px)",
-        paddingRight: "clamp(12px, 4vw, 24px)",
+        paddingTop: "clamp(20px, 5vw, 40px)",
+        paddingBottom: "calc(clamp(70px, 11vh, 90px) + 60px)",
+        paddingLeft: "clamp(14px, 4.5vw, 28px)",
+        paddingRight: "clamp(14px, 4.5vw, 28px)",
         background: "var(--theme-bg)"
       }}
     >
-      <div className="w-full" style={{ maxWidth: "clamp(280px, 95vw, 900px)", margin: "0 auto" }}>
-        <div className="text-center mb-4">
+      {/* Background dekoratif ringkas */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div 
+          className="absolute rounded-full opacity-20"
+          style={{
+            background: "linear-gradient(135deg, #FF6B9D 0%, #FFB6C1 100%)",
+            width: "clamp(200px, 50vw, 400px)",
+            height: "clamp(200px, 50vw, 400px)",
+            top: "-10%",
+            left: "-15%"
+          }}
+        />
+        <div 
+          className="absolute rounded-full opacity-15"
+          style={{
+            background: "linear-gradient(135deg, #C2185B 0%, #FF6B9D 100%)",
+            width: "clamp(150px, 40vw, 300px)",
+            height: "clamp(150px, 40vw, 300px)",
+            bottom: "5%",
+            right: "-10%"
+          }}
+        />
+      </div>
+
+      <div className="relative z-10 w-full" style={{ maxWidth: "clamp(280px, 92vw, 850px)", margin: "0 auto" }}>
+        {/* Header cantik */}
+        <div className="text-center mb-6">
+          <div className="flex justify-center mb-4">
+            <div className="animate-bounce-slow" style={{ animationDuration: "2.5s" }}>
+              <SultanMascot size="md" emotion="excited" />
+            </div>
+          </div>
           <h2 
-            className="font-display font-bold"
+            className="font-display font-bold mb-2"
             style={{ 
               color: "var(--theme-accent)",
-              fontSize: "clamp(20px, 5vw, 36px)",
+              fontSize: "clamp(22px, 5.5vw, 38px)",
+              textShadow: "0 2px 10px rgba(255, 107, 157, 0.2)"
             }}
           >
             Pesan Spesial Untukmu 💕
           </h2>
+          <p
+            className="text-gray-600"
+            style={{ fontSize: "clamp(13px, 3.2vw, 18px)" }}
+          >
+            Ak buat video inii khusus untuk km tw~ ✨
+          </p>
         </div>
 
+        {/* Video Container */}
         <div className="relative">
-          {/* Loading state sebelum video siap */}
-          {!videoLoaded && (
+          {/* Loading state */}
+          {!videoReady && (
             <div 
-              className="absolute inset-0 flex items-center justify-center rounded-2xl z-10"
+              className="absolute inset-0 flex items-center justify-center rounded-2xl z-20"
               style={{
-                background: "#FFF5F8",
+                background: "linear-gradient(135deg, #FFF5F8 0%, #FFE0E9 100%)",
                 paddingBottom: "56.25%"
               }}
             >
               <div className="text-center" style={{ marginTop: "50%" }}>
                 <div 
-                  className="animate-bounce-slow mb-4"
-                  style={{ fontSize: "clamp(32px, 8vw, 48px)" }}
+                  className="animate-bounce-slow mb-3"
+                  style={{ fontSize: "clamp(36px, 9vw, 52px)" }}
                 >
-                  🎬
+                  🎀
                 </div>
                 <p 
-                  className="text-gray-600"
-                  style={{ fontSize: "clamp(12px, 3vw, 16px)" }}
+                  className="text-gray-600 font-medium"
+                  style={{ fontSize: "clamp(13px, 3.2vw, 17px)" }}
                 >
-                  Memuat video...
+                  Memuat hadiah spesial...
                 </p>
               </div>
             </div>
           )}
 
+          {/* Video Player with Cloudinary (100% Smooth!) */}
           <div 
-            className="relative rounded-xl overflow-hidden shadow-lg"
+            className="relative rounded-2xl overflow-hidden shadow-xl transition-all duration-300"
             style={{ 
-              border: "2px solid #FFE0E9"
+              border: "3px solid #FFE0E9",
+              boxShadow: "0 8px 30px rgba(255, 107, 157, 0.3)"
             }}
           >
             <div className="relative" style={{ paddingBottom: "56.25%" }}>
+              {/* Cloudinary Video - Optimized for all devices! */}
               <video
                 ref={videoRef}
-                src="/video_hbd.mp4"
+                src="https://res.cloudinary.com/dqp7raczz/video/upload/q_auto:low,f_auto,w_720/v1782417065/video_hbd_kjmtqd.mp4"
                 controls
                 playsInline
-                preload="auto"
-                className={`absolute top-0 left-0 w-full h-full ${videoLoaded ? "object-cover" : "object-contain"}`}
+                preload="metadata"
+                className="absolute top-0 left-0 w-full h-full"
                 style={{
                   background: "#FFF5F8",
+                  borderRadius: "16px"
                 }}
-                onCanPlay={() => setVideoLoaded(true)}
-                onLoadedData={() => setVideoLoaded(true)}
+                onCanPlay={() => setVideoReady(true)}
                 onPlay={() => {
                   if (playing) {
                     fadeOut();
@@ -386,15 +426,47 @@ function HiddenContent() {
                 }}
               />
             </div>
+            
+            {/* Dekorasi sudut */}
+            <div 
+              className="absolute rounded-full flex items-center justify-center text-white shadow-lg"
+              style={{
+                top: "-12px",
+                left: "-12px",
+                width: "clamp(28px, 7vw, 40px)",
+                height: "clamp(28px, 7vw, 40px)",
+                fontSize: "clamp(14px, 3.5vw, 18px)",
+                background: "linear-gradient(135deg, #FF6B9D 0%, #FF8FAE 100%)"
+              }}
+            >
+              ❤️
+            </div>
+            
+            <div 
+              className="absolute rounded-full flex items-center justify-center text-white shadow-lg"
+              style={{
+                top: "-12px",
+                right: "-12px",
+                width: "clamp(28px, 7vw, 40px)",
+                height: "clamp(28px, 7vw, 40px)",
+                fontSize: "clamp(14px, 3.5vw, 18px)",
+                background: "linear-gradient(135deg, #C2185B 0%, #D44B8B 100%)"
+              }}
+            >
+              ✨
+            </div>
           </div>
         </div>
 
-        <p 
-          className="text-center text-gray-600 mt-4"
-          style={{ fontSize: "clamp(11px, 2.8vw, 15px)" }}
-        >
-          Klik play untuk menonton! ✨
-        </p>
+        {/* Footer manis */}
+        <div className="text-center mt-6">
+          <p 
+            className="text-gray-500"
+            style={{ fontSize: "clamp(11px, 2.8vw, 15px)" }}
+          >
+            Semoga kamu suka! 💕
+          </p>
+        </div>
       </div>
     </div>
   );
