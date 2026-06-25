@@ -34,14 +34,12 @@ function EnvelopeCard({ n, accent, top, left, rot, onEnvelopeClick, registerRef,
   const { playPop, playCelebration } = useSound();
   const { vibratePop } = useVibration();
 
-  // Register close method with parent
   useEffect(() => {
     if (registerRef) {
       registerRef(n, { close: () => setOpen(false) });
     }
   }, [n, registerRef]);
 
-  // Update z-index when this envelope becomes the highest
   useEffect(() => {
     if (isHighest) {
       setZ(highestZIndex);
@@ -57,7 +55,6 @@ function EnvelopeCard({ n, accent, top, left, rot, onEnvelopeClick, registerRef,
       setZ(1);
     } else {
       setOpen(true);
-      // Notify parent to close other envelopes
       if (onEnvelopeClick) onEnvelopeClick(n);
     }
   };
@@ -70,30 +67,32 @@ function EnvelopeCard({ n, accent, top, left, rot, onEnvelopeClick, registerRef,
         top: open ? "50%" : `${top}%`,
         left: open ? "50%" : `${left}%`,
         zIndex: z,
-        transform: open ? "translate(-50%, -50%)" : `translate(0, 0) rotate(${rot}deg)`,
-        width: "clamp(75px, 19vw, 135px)",
-        height: "clamp(56px, 14vw, 101px)",
+        transform: open 
+          ? "translate(-50%, -50%)" 
+          : `rotate(${rot}deg)`,
+        width: open ? "clamp(240px, 75vw, 340px)" : "clamp(80px, 20vw, 140px)",
+        height: open ? "clamp(160px, 55vw, 240px)" : "clamp(60px, 15vw, 105px)",
         transition: "all 0.3s ease",
-        transformOrigin: "center",
       }}
     >
       <div
         className="relative w-full h-full rounded-lg overflow-hidden"
         style={{
           background: "#FFFAF0",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+          boxShadow: open ? "0 8px 24px rgba(0,0,0,0.15)" : "0 3px 8px rgba(0,0,0,0.12)",
+          border: `2px solid ${accent}`,
         }}
       >
         {/* Flap */}
         <div
           className="absolute top-0 left-0 right-0"
           style={{
-            height: "55%",
+            height: "50%",
             background: accent,
             clipPath: "polygon(0 0, 100% 0, 50% 100%)",
             transformOrigin: "top center",
             transform: open ? "rotateX(-180deg)" : "rotateX(0deg)",
-            transition: "transform 0.6s ease",
+            transition: "transform 0.4s ease",
           }}
         />
 
@@ -103,46 +102,40 @@ function EnvelopeCard({ n, accent, top, left, rot, onEnvelopeClick, registerRef,
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center text-white font-bold"
             style={{ 
               background: "#C2185B", 
-              boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
+              boxShadow: "0 2px 6px rgba(194, 24, 91, 0.3)",
               width: "clamp(28px, 6vw, 36px)",
               height: "clamp(28px, 6vw, 36px)",
-              fontSize: "clamp(10px, 2.5vw, 14px)"
+              fontSize: "clamp(10px, 2.5vw, 14px)",
             }}
           >
             {n}
           </div>
         )}
-      </div>
 
-      {/* Letter that appears when opened */}
-      {open && (
-        <div
-          className="absolute rounded-lg p-4 text-center flex flex-col items-center justify-center"
-          style={{
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "clamp(200px, 70vw, 300px)",
-            height: "clamp(140px, 50vw, 220px)",
-            background: "#FFFAF0",
-            boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
-            opacity: 0,
-            transition: "opacity 0.5s ease 0.3s",
-          }}
-          ref={(el) => {
-            if (el && open) {
-              setTimeout(() => {
-                el.style.opacity = 1;
-              }, 75);
-            }
-          }}
-        >
-          <div className="text-gray-500 mb-2" style={{ fontSize: "clamp(10px, 2.5vw, 14px)" }}>Alasan ke-{n} 💌</div>
-          <div className="text-gray-700 leading-tight" style={{ fontSize: "clamp(11px, 2.8vw, 16px)" }}>
-            {LOVE_REASONS[n - 1] || `Alasan ke-${n} 💌`}
+        {/* Letter content */}
+        {open && (
+          <div
+            className="absolute inset-0 flex flex-col items-center justify-center p-4"
+            style={{
+              opacity: open ? 1 : 0,
+              transition: "opacity 0.3s ease 0.2s",
+            }}
+          >
+            <div 
+              className="text-gray-500 mb-3"
+              style={{ fontSize: "clamp(12px, 3vw, 16px)" }}
+            >
+              Alasan ke-{n} 💌
+            </div>
+            <div 
+              className="text-gray-700 text-center leading-snug font-medium"
+              style={{ fontSize: "clamp(14px, 3.5vw, 20px)" }}
+            >
+              {LOVE_REASONS[n - 1] || `Alasan ke-${n} 💌`}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
@@ -299,17 +292,30 @@ function VirtualHug() {
 }
 
 export default function EmotionalCore() {
-  // Layout positions for 15 envelopes — distribute roughly (optimized for better fit)
+  // Layout positions for 15 envelopes - neat and organized grid
   const positions = useMemo(() => {
-    return Array.from({ length: 15 }, (_, i) => {
-      const row = Math.floor(i / 3);
-      const col = i % 3;
-      return {
-        top: 5 + row * 18 + (Math.random() * 4 - 2),
-        left: 5 + col * 30 + (Math.random() * 6 - 3),
-        rot: Math.random() * 18 - 9,
-      };
-    });
+    return [
+      // Row 1
+      { top: 8, left: 12, rot: -3 },
+      { top: 6, left: 42, rot: 2 },
+      { top: 8, left: 72, rot: -2 },
+      // Row 2
+      { top: 26, left: 8, rot: 2 },
+      { top: 24, left: 38, rot: -1 },
+      { top: 26, left: 68, rot: 1 },
+      // Row 3
+      { top: 44, left: 12, rot: -1 },
+      { top: 42, left: 42, rot: 0 },
+      { top: 44, left: 72, rot: -1 },
+      // Row 4
+      { top: 62, left: 8, rot: 1 },
+      { top: 60, left: 38, rot: -2 },
+      { top: 62, left: 68, rot: 1 },
+      // Row 5
+      { top: 80, left: 12, rot: -1 },
+      { top: 78, left: 42, rot: 1 },
+      { top: 80, left: 72, rot: -1 },
+    ];
   }, []);
 
   const [kiss, setKiss] = useState(null);

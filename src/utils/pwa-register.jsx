@@ -1,27 +1,18 @@
 import { useCallback, useEffect, useState, useRef } from 'react';
-import { toast } from 'sonner';
 
 export function usePWARegister() {
   const [updateAvailable, setUpdateAvailable] = useState(false);
-  const registrationRef = useRef(null); // ✅ Track registration to prevent duplicates
+  const registrationRef = useRef(null);
 
   const showUpdateNotification = useCallback(() => {
-    toast('✨ Update tersedia! Refresh halaman untuk update.', {
-      duration: Infinity,
-      action: {
-        label: 'Update',
-        onClick: () => {
-          window.location.reload();
-        },
-      },
-    });
+    console.log('✨ Update tersedia! Refresh halaman untuk update.');
   }, []);
 
   useEffect(() => {
     if (!import.meta.env.PROD || !('serviceWorker' in navigator)) return;
 
     let updateInterval;
-    let isMounted = true; // ✅ Track component mount status
+    let isMounted = true;
 
     const onUpdateFound = (reg) => {
       const newWorker = reg.installing;
@@ -38,7 +29,6 @@ export function usePWARegister() {
     };
 
     const registerSW = async () => {
-      // ✅ IMPROVED: Check if already registered
       if (registrationRef.current) {
         console.log('ℹ️ Service Worker sudah terdaftar');
         return;
@@ -46,13 +36,12 @@ export function usePWARegister() {
 
       try {
         const reg = await navigator.serviceWorker.register('/service-worker.js', { scope: '/' });
-        registrationRef.current = reg; // ✅ Store reference
+        registrationRef.current = reg;
         console.log('✅ Service Worker registered');
 
         onUpdateFound(reg);
         reg.addEventListener('updatefound', () => onUpdateFound(reg));
         
-        // ✅ Update check dengan error handling
         try {
           await reg.update();
         } catch (updateError) {
@@ -69,7 +58,6 @@ export function usePWARegister() {
       window.addEventListener('load', registerSW, { once: true });
     }
 
-    // ✅ IMPROVED: Periodic update check dengan better error handling
     updateInterval = setInterval(() => {
       navigator.serviceWorker.ready
         .then((reg) => {
@@ -78,9 +66,8 @@ export function usePWARegister() {
         .catch((err) => {
           console.warn('⚠️ Periodic SW update failed:', err);
         });
-    }, 60 * 60 * 1000); // 1 hour
+    }, 60 * 60 * 1000);
 
-    // ✅ IMPROVED: Check on visibility change dengan safety checks
     const onVisible = () => {
       if (document.visibilityState === 'visible' && isMounted) {
         navigator.serviceWorker.ready
@@ -92,7 +79,6 @@ export function usePWARegister() {
     };
     document.addEventListener('visibilitychange', onVisible);
 
-    // ✅ IMPROVED: Persist storage dengan error handling
     if (navigator.storage?.persist) {
       navigator.storage.persist()
         .then((persisted) => {
@@ -108,7 +94,7 @@ export function usePWARegister() {
     }
 
     return () => {
-      isMounted = false; // ✅ Cleanup flag
+      isMounted = false;
       clearInterval(updateInterval);
       document.removeEventListener('visibilitychange', onVisible);
     };
@@ -120,12 +106,12 @@ export function usePWARegister() {
 export function usePWAInstall() {
   const [installPrompt, setInstallPrompt] = useState(null);
   const [isInstallable, setIsInstallable] = useState(false);
-  const promptRef = useRef(null); // ✅ Store prompt reference
+  const promptRef = useRef(null);
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e) => {
       e.preventDefault();
-      promptRef.current = e; // ✅ Store untuk later use
+      promptRef.current = e;
       setInstallPrompt(e);
       setIsInstallable(true);
       console.log('✅ Install prompt available');
@@ -133,7 +119,6 @@ export function usePWAInstall() {
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
-    // ✅ IMPROVED: Listen for app installed event
     const handleAppInstalled = () => {
       console.log('✅ App installed successfully');
       setInstallPrompt(null);
@@ -161,7 +146,7 @@ export function usePWAInstall() {
       const { outcome } = await prompt.userChoice;
       
       if (outcome === 'accepted') {
-        toast.success('🎉 Aplikasi terinstall!');
+        console.log('🎉 Aplikasi terinstall!');
         console.log('✅ User accepted install');
       } else {
         console.log('ℹ️ User dismissed install');
@@ -171,7 +156,6 @@ export function usePWAInstall() {
       promptRef.current = null;
     } catch (error) {
       console.error('❌ Install failed:', error);
-      toast.error('Instalasi gagal');
     }
   };
 

@@ -50,7 +50,7 @@ function TrapOfLove({ onYesTriggered }) {
   const lastEscapeTime = useRef(0);
   const [yesClicked, setYesClicked] = useState(false);
   const [hearts, setHearts] = useState([]);
-  const [noPos, setNoPos] = useState({ left: 16, top: 8 });
+  const [noPos, setNoPos] = useState({ left: 16, bottom: 14 });
   const [yesPos, setYesPos] = useState({ x: 0, y: 0, scale: 1 });
   const [sultanState, setSultanState] = useState({ emotion: "happy", speech: "Pilih yg jujur yhh~" });
   const [hoveredButton, setHoveredButton] = useState(null);
@@ -59,6 +59,23 @@ function TrapOfLove({ onYesTriggered }) {
   const previousPositions = useRef([]);
   const { playClick, playSuccess, playError, playCelebration } = useSound();
   const { vibrateClick, vibrateSuccess, vibrateError } = useVibration();
+
+  // Calculate initial bottom position
+  useEffect(() => {
+    const calculateInitialBottom = () => {
+      const containerHeight = ref.current?.getBoundingClientRect().height;
+      if (!containerHeight) return;
+      
+      // Calculate pixel value for clamp(14px, 3.5vw, 28px)
+      const vw = window.innerWidth * 0.035;
+      const initialBottom = Math.min(28, Math.max(14, vw));
+      setNoPos(prev => ({ ...prev, bottom: initialBottom }));
+    };
+
+    calculateInitialBottom();
+    window.addEventListener('resize', calculateInitialBottom);
+    return () => window.removeEventListener('resize', calculateInitialBottom);
+  }, []);
 
   const moveNoButtonRandom = () => {
     const rect = ref.current?.getBoundingClientRect();
@@ -76,7 +93,7 @@ function TrapOfLove({ onYesTriggered }) {
       const containerHeight = rect.height;
       
       const currentLeft = noPos.left;
-      const currentTop = noPos.top;
+      const currentBottom = noPos.bottom;
 
       let yesButtonArea = null;
       if (yesBtn.current) {
@@ -96,7 +113,7 @@ function TrapOfLove({ onYesTriggered }) {
 
       const maxMoveDistance = Math.min(containerWidth, containerHeight) * 0.35;
       
-      let newLeft, newTop;
+      let newLeft, newBottom;
       let attempts = 0;
       const maxAttempts = 20;
       
@@ -105,14 +122,14 @@ function TrapOfLove({ onYesTriggered }) {
         const moveY = (Math.random() - 0.5) * maxMoveDistance * 2;
         
         newLeft = currentLeft + moveX;
-        newTop = currentTop + moveY;
+        newBottom = currentBottom + moveY;
         
         newLeft = Math.max(padding, Math.min(newLeft, containerWidth - btnW - padding));
-        newTop = Math.max(padding, Math.min(newTop, containerHeight - btnH - padding));
+        newBottom = Math.max(padding, Math.min(newBottom, containerHeight - btnH - padding));
         
         const isTooCloseToPrevious = previousPositions.current.some(prev => {
           const dx = prev.left - newLeft;
-          const dy = prev.top - newTop;
+          const dy = prev.bottom - newBottom;
           const distance = Math.sqrt(dx * dx + dy * dy);
           return distance < 90;
         });
@@ -120,24 +137,24 @@ function TrapOfLove({ onYesTriggered }) {
         let overlapsWithYes = false;
         if (yesButtonArea) {
           const noRight = newLeft + btnW;
-          const noBottom = newTop + btnH;
+          const noTop = containerHeight - newBottom - btnH;
           
           overlapsWithYes = !(noRight < yesButtonArea.left || 
                            newLeft > yesButtonArea.right || 
-                           noBottom < yesButtonArea.top || 
-                           newTop > yesButtonArea.bottom);
+                           containerHeight - newBottom < yesButtonArea.top || 
+                           noTop > yesButtonArea.bottom);
         }
         
         if (!isTooCloseToPrevious && !overlapsWithYes) break;
         attempts++;
       } while (attempts < maxAttempts);
 
-      previousPositions.current.push({ left: newLeft, top: newTop });
+      previousPositions.current.push({ left: newLeft, bottom: newBottom });
       if (previousPositions.current.length > 3) {
         previousPositions.current.shift();
       }
 
-      setNoPos({ left: newLeft, top: newTop });
+      setNoPos({ left: newLeft, bottom: newBottom });
       setTimeout(() => setIsButtonHidden(false), 50);
     }, 200);
   };
@@ -309,86 +326,101 @@ function TrapOfLove({ onYesTriggered }) {
       onMouseMove={onMove}
       onTouchMove={onMove}
       onTouchStart={onTouchStartContainer}
-      className="bg-white/85 backdrop-blur-xl rounded-3xl p-4 sm:p-6 shadow-2xl relative overflow-hidden w-full max-w-lg mx-auto border-2 border-pink-200 trap-of-love-inner"
+      className="relative w-full max-w-lg mx-auto trap-of-love-inner"
+      style={{
+        background: "#FFF5F8",
+        borderRadius: "24px",
+        padding: "clamp(20px, 5vw, 32px)",
+        boxShadow: "0 6px 24px rgba(255, 107, 157, 0.12)",
+        border: "2px solid #FFE0E9"
+      }}
       initial={{ opacity: 0, scale: 0.8, rotateY: 45 }}
       animate={{ opacity: 1, scale: 1, rotateY: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
       whileHover={{ scale: 1.01 }}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-pink-50/30 to-rose-50/20 pointer-events-none" />
-      
+      {/* Sultan Mascot */}
       <motion.div 
-        className="flex justify-center pt-2"
+        className="flex justify-center mb-4"
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.6 }}
       >
         <motion.div
           animate={{ 
-            rotate: [0, 4, -4, 0],
-            scale: [1, 1.03, 1]
+            y: [0, -6, 0],
+            rotate: [0, 3, -3, 0]
           }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOutSine" }}
         >
           <SultanMascot size="lg" emotion={sultanState.emotion} />
         </motion.div>
       </motion.div>
       
+      {/* Text Section */}
       <motion.div 
-        className="flex flex-col items-center justify-center py-6" 
+        className="flex flex-col items-center justify-center mb-8" 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.6 }}
       >
         <motion.h2 
-          className="font-display mb-3 text-center bg-gradient-to-r from-pink-500 to-rose-600 bg-clip-text text-transparent"
-          style={{ fontSize: "clamp(18px, 5vw, 34px)" }}
-          animate={{ scale: [1, 1.03, 1] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          className="font-display text-center"
+          style={{ 
+            color: "#C2185B",
+            fontSize: "clamp(20px, 5.5vw, 38px)",
+            marginBottom: "clamp(8px, 2vw, 12px)"
+          }}
+          animate={{ scale: [1, 1.02, 1] }}
+          transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOutSine" }}
         >
           Km Sayang Ak Kannn???
         </motion.h2>
         
         <motion.div 
           className="text-gray-600 text-center px-4 font-medium"
-          style={{ fontSize: "clamp(12px, 3vw, 16px)" }}
-          animate={{ opacity: [0.8, 1, 0.8] }}
-          transition={{ duration: 2, repeat: Infinity }}
+          style={{ fontSize: "clamp(13px, 3.2vw, 17px)" }}
+          animate={{ opacity: [0.85, 1, 0.85] }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
         >
           {sultanState.speech}
         </motion.div>
       </motion.div>
 
-      <div className="relative h-40 sm:h-48">
+      {/* Buttons Section */}
+      <div className="relative" style={{ height: "clamp(160px, 42vw, 240px)" }}>
         {!noGone && (
           <motion.button
             ref={noBtn}
-            className="absolute px-6 py-3 rounded-full bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 font-semibold shadow-lg border border-gray-300"
+            className="absolute px-6 py-3 rounded-full text-gray-700 font-semibold border-2"
             style={{
               left: `${noPos.left}px`,
-              top: `${noPos.top}px`,
+              bottom: `${noPos.bottom}px`,
               position: 'absolute',
               pointerEvents: 'auto',
-              fontSize: "clamp(12px, 2.5vw, 16px)"
+              fontSize: "clamp(13px, 2.7vw, 16px)",
+              background: "#F9FAFB",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+              borderColor: "#E5E7EB"
             }}
             animate={{
-              scale: isButtonHidden ? 0 : (hoveredButton === 'no' ? 1.08 : 1),
+              scale: isButtonHidden ? 0 : (hoveredButton === 'no' ? 1.07 : 1),
               opacity: isButtonHidden ? 0 : 1,
-              boxShadow: hoveredButton === 'no' ? '0 10px 25px rgba(0,0,0,0.2)' : '0 4px 12px rgba(0,0,0,0.12)'
+              boxShadow: hoveredButton === 'no' ? '0 8px 20px rgba(0,0,0,0.15)' : '0 4px 12px rgba(0,0,0,0.1)'
             }}
             transition={{ 
               scale: { duration: 0.2, ease: "easeInOut" },
               opacity: { duration: 0.2, ease: "easeInOut" },
-              boxShadow: { type: "spring", stiffness: 400, damping: 17 }
+              boxShadow: { type: "spring", stiffness: 380, damping: 18 }
             }}
             onClick={onNoClick}
             onHoverStart={() => setHoveredButton('no')}
             onHoverEnd={() => setHoveredButton(null)}
-            whileTap={{ scale: 0.95 }}
+            whileTap={{ scale: 0.94 }}
           >
             <motion.span
-              animate={{ rotate: [0, -8, 8, 0] }}
-              transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 2 }}
+              animate={{ rotate: [0, -6, 6, 0] }}
+              transition={{ duration: 0.6, repeat: Infinity, repeatDelay: 2.2 }}
             >
               Nggak 😤
             </motion.span>
@@ -397,43 +429,51 @@ function TrapOfLove({ onYesTriggered }) {
         <motion.button
           ref={yesBtn}
           onClick={onYes}
-          className="absolute left-1/2 -translate-x-1/2 bottom-4 sm:bottom-6 px-8 py-3 sm:px-10 sm:py-4 rounded-full text-white font-bold shadow-2xl border-2 border-pink-300"
+          className="absolute left-1/2 -translate-x-1/2 rounded-full text-white font-bold border-2"
           style={{
-            background: "linear-gradient(135deg, #FF6B9D, #C2185B)",
+            bottom: "clamp(14px, 3.5vw, 28px)",
+            padding: "clamp(13px, 3.2vw, 20px) clamp(22px, 5.5vw, 36px)",
+            background: "linear-gradient(135deg, #FF6B9D 0%, #C2185B 100%)",
+            borderColor: "#FF8FAE",
+            boxShadow: "0 6px 20px rgba(255, 107, 157, 0.3)",
             transform: `translate(calc(-50% + ${yesPos.x}px), ${yesPos.y}px) scale(${yesPos.scale || 1})`,
-            fontSize: "clamp(14px, 3vw, 18px)"
+            fontSize: "clamp(15px, 3.5vw, 20px)"
           }}
           animate={{
-            scale: (yesPos.scale || 1) * (hoveredButton === 'yes' ? 1.08 : 1),
-            boxShadow: hoveredButton === 'yes' ? '0 15px 35px rgba(255,107,157,0.4)' : '0 8px 25px rgba(255,107,157,0.3)'
+            scale: (yesPos.scale || 1) * (hoveredButton === 'yes' ? 1.07 : 1),
+            boxShadow: hoveredButton === 'yes' ? '0 10px 30px rgba(255, 107, 157, 0.4)' : '0 6px 20px rgba(255, 107, 157, 0.3)'
           }}
           transition={{ type: "spring", stiffness: 400, damping: 17 }}
           onHoverStart={() => setHoveredButton('yes')}
           onHoverEnd={() => setHoveredButton(null)}
-          whileTap={{ scale: 0.95 }}
+          whileTap={{ scale: 0.94 }}
         >
           <motion.span
-            animate={{ scale: [1, 1.15, 1] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
+            animate={{ scale: [1, 1.12, 1] }}
+            transition={{ duration: 1.7, repeat: Infinity, ease: "easeInOut" }}
           >
             {yesClicked ? "YEAYYYY 💖" : "Sayang! 💖"}
           </motion.span>
         </motion.button>
 
+        {/* Floating Hearts */}
         <div className="absolute right-3 sm:right-6 bottom-4 sm:bottom-6 pointer-events-none">
           {hearts.map((h) => (
             <motion.span
               key={h.id}
-              className="absolute text-xl sm:text-2xl"
-              style={{ "--hx": h.x + "px" }}
+              style={{ 
+                position: "absolute",
+                fontSize: "clamp(18px, 4vw, 28px)",
+                "--hx": h.x + "px" 
+              }}
               animate={{
-                y: [0, -120],
+                y: [0, -140],
                 opacity: [0, 1, 0],
-                scale: [0.5, 1.5, 0.8],
+                scale: [0.4, 1.6, 0.7],
                 rotate: [0, 360]
               }}
               transition={{ 
-                duration: 2.2, 
+                duration: 2.4, 
                 delay: parseFloat(h.delay),
                 ease: "easeOut"
               }}

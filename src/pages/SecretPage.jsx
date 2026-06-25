@@ -428,7 +428,7 @@ function HiddenContent() {
             animate={{ opacity: [0.65, 1, 0.65] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
           >
-            Sesuatu yang spesial hanya untuk kamu~ 💕
+            Ak buat video inii khusus untuk km tw~ 💕
           </motion.p>
         </motion.div>
 

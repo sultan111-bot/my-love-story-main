@@ -214,15 +214,13 @@ body {
 
 /* ===== NAVBAR STYLING - CLEAN & CLEAR ===== */
 nav {
-  z-index: 99999999; /* Lebih tinggi lagi! */
+  z-index: 99999999;
   transform: translate3d(0,0,0);
-  background: rgba(255, 255, 255, 0.95); /* Lebih jelas */
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
-  border-top: 2px solid rgba(255, 107, 157, 0.5); /* Lebih tegas */
+  background: #fff;
+  border-top: 2px solid #FF6B9D;
   border-top-left-radius: 32px;
   border-top-right-radius: 32px;
-  box-shadow: 0 -10px 40px rgba(194, 24, 91, 0.3);
+  box-shadow: 0 -4px 20px rgba(194, 24, 91, 0.2);
   box-sizing: border-box;
 }
 
@@ -449,6 +447,10 @@ nav {
   height: clamp(280px, 70vh, 380px);
   width: clamp(280px, 95vw, 360px);
   position: relative;
+  background: #FFF5F8;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(194, 24, 91, 0.12);
+  border: 2px solid #FFE4EC;
 }
 
 /* Hp sedang */

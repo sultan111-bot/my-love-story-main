@@ -1,19 +1,40 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
-import path from 'path'
+import viteCompression from 'vite-plugin-compression'
 
 export default defineConfig({
   base: '/',
-  plugins: [react()],
+  plugins: [
+    react(),
+    viteCompression({
+      algorithm: 'gzip',
+      ext: '.gz',
+      threshold: 10240, // File > 10KB akan di-compress
+      deleteOriginFile: false,
+    }),
+    viteCompression({
+      algorithm: 'brotliCompress',
+      ext: '.br',
+      threshold: 10240,
+      deleteOriginFile: false,
+    })
+  ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': '/src',
     },
   },
   build: {
     outDir: 'dist',
-    minify: 'esbuild',
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
     sourcemap: false,
+    cssMinify: true,
     rollupOptions: {
       output: {
         manualChunks: {
@@ -23,5 +44,10 @@ export default defineConfig({
       }
     },
     target: 'es2020',
+    chunkSizeWarningLimit: 600,
+  },
+  server: {
+    port: 3000,
+    open: true,
   },
 })
