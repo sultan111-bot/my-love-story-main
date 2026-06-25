@@ -229,7 +229,7 @@ nav {
   align-items: center;
   justify-content: space-around;
   padding: 0 12px;
-  height: clamp(80px, 12vh, 100px); /* Lebih tinggi agar jelas */
+  height: clamp(70px, 11vh, 90px);
 }
 
 /* Mobile: Navbar di bawah */
@@ -261,7 +261,7 @@ nav {
     left: 0;
     right: 0;
     width: 100%;
-    height: clamp(80px, 12vh, 100px);
+    height: clamp(70px, 11vh, 90px);
     border-bottom: 2px solid rgba(0,0,0,0.1);
     border-top: none;
     border-radius: 0 0 32px 32px;
@@ -317,7 +317,7 @@ nav {
 /* Desktop: Home container dengan ruang untuk navbar di atas */
 @media (min-width: 1024px) {
   .home-container {
-    padding-top: clamp(80px, 12vh, 100px);
+    padding-top: clamp(70px, 11vh, 90px);
   }
 }
 
@@ -587,7 +587,7 @@ img {
 
 /* ===== GAME MODAL ===== */
 .game-modal-content {
-  padding-bottom: calc(clamp(80px, 12vh, 100px) + 80px + 4rem);
+  padding-bottom: calc(clamp(70px, 11vh, 90px) + 80px + 4rem);
   padding-top: clamp(0.25rem, 0.8vh, 1.5rem);
   padding-left: clamp(0.25rem, 1.8vw, 0.5rem);
   padding-right: clamp(0.25rem, 1.8vw, 0.5rem);
@@ -609,13 +609,13 @@ img {
 
 @media (min-width: 640px) {
   .game-modal-content {
-    padding-bottom: calc(clamp(80px, 12vh, 100px) + 70px + 4rem);
+    padding-bottom: calc(clamp(70px, 11vh, 90px) + 70px + 4rem);
   }
 }
 
 @media (min-width: 768px) {
   .game-modal-content {
-    padding-bottom: calc(clamp(80px, 12vh, 100px) + 50px + 4.5rem);
+    padding-bottom: calc(clamp(70px, 11vh, 90px) + 50px + 4.5rem);
   }
 }
 
@@ -641,3 +641,44 @@ img {
     min-height: 600px;
   }
 }
+
+/* ===== NAVBAR ANIMATIONS ===== */
+.animate-spin-slow {
+  animation: spinSlow 2s ease-in-out infinite;
+}
+
+@keyframes spinSlow {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(10deg); }
+  50% { transform: rotate(-10deg); }
+  75% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.animate-bounce-slow {
+  animation: bounceSlow 2s ease-in-out infinite;
+}
+
+@keyframes bounceSlow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* ===== PAGE TRANSITION ===== */
+.page-transition {
+  animation: pageFadeIn 0.45s ease-out 0.08s forwards;
+  opacity: 0;
+}
+
+@keyframes pageFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+

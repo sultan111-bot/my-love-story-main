@@ -26,6 +26,14 @@ function NotFound() {
   );
 }
 
+function AnimatedPage({ children }) {
+  return (
+    <div className="page-transition h-full">
+      {children}
+    </div>
+  );
+}
+
 function Layout() {
   usePWARegister();  
 
@@ -60,12 +68,12 @@ function Layout() {
         <Routes location={location}>
           <Route path="/" element={<Opening />} />
           <Route path="/opening" element={<Opening />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/fun" element={<FunMode />} />
-          <Route path="/surat" element={<EmotionalCore />} />
-          <Route path="/secret" element={<SecretPage />} />
-          <Route path="/date" element={<DatePickerPage />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/home" element={<AnimatedPage key={location.pathname}><Home /></AnimatedPage>} />
+          <Route path="/fun" element={<AnimatedPage key={location.pathname}><FunMode /></AnimatedPage>} />
+          <Route path="/surat" element={<AnimatedPage key={location.pathname}><EmotionalCore /></AnimatedPage>} />
+          <Route path="/secret" element={<AnimatedPage key={location.pathname}><SecretPage /></AnimatedPage>} />
+          <Route path="/date" element={<AnimatedPage key={location.pathname}><DatePickerPage /></AnimatedPage>} />
+          <Route path="*" element={<AnimatedPage key={location.pathname}><NotFound /></AnimatedPage>} />
         </Routes>
       </div>
 

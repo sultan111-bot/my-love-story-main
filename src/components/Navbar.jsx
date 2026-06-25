@@ -4,7 +4,6 @@ import SultanMascot from "./SultanMascot.jsx";
 import { useEffect, useState } from "react";
 import { useSound } from "../hooks/useSound.js";
 import { useVibration } from "../hooks/useVibration.js";
-import { motion } from "framer-motion";
 
 const ITEMS = [
   { path: "/home", icon: "🏠", label: "Home" },
@@ -39,35 +38,33 @@ export default function Navbar({ onSecretTrigger }) {
   };
 
   return (
-    <motion.nav
-      initial={{ y: 100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ type: "spring", stiffness: 200, damping: 20 }}
-      className="desktop-navbar"
-    >
+    <nav className="desktop-navbar">
       <div className="navbar-inner">
         {ITEMS.map((it, index) => {
           const active = location.pathname === it.path;
           return (
-            <motion.button
+            <button
               key={it.path}
               onClick={() => handleNavigate(it.path)}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="relative flex flex-col items-center justify-center flex-1 gap-1 py-2 lg:gap-2"
+              className="relative flex flex-col items-center justify-center flex-1 gap-1 py-2 lg:gap-2 transition-transform"
+              style={{ transform: "scale(1)" }}
+              onMouseEnter={(e) => { e.target.style.transform = "scale(1.1)" }}
+              onMouseLeave={(e) => { e.target.style.transform = "scale(1)" }}
+              onMouseDown={(e) => { e.target.style.transform = "scale(0.9)" }}
+              onMouseUp={(e) => { e.target.style.transform = "scale(1.1)" }}
               aria-label={it.label}
             >
-              <motion.span
-                animate={active ? { y: -3 } : { y: 0 }}
-                transition={{ type: "spring", stiffness: 300 }}
+              <span
                 className="text-xl sm:text-2xl lg:text-3xl"
                 style={{
                   filter: active ? "drop-shadow(0 0 8px rgba(194,24,91,0.4))" : "grayscale(0.2)",
+                  transform: active ? "translateY(-3px)" : "translateY(0)",
+                  transition: "all 0.2s ease"
                 }}
               >
                 {it.icon}
-              </motion.span>
-              <motion.span
+              </span>
+              <span
                 className="text-[10px] sm:text-[11px] lg:text-xs font-semibold"
                 style={{
                   color: active ? "var(--theme-accent)" : "#888",
@@ -75,73 +72,72 @@ export default function Navbar({ onSecretTrigger }) {
                 }}
               >
                 {it.label}
-              </motion.span>
+              </span>
               {active && (
-                <motion.div
-                  layoutId="active-indicator"
+                <div
                   className="absolute -bottom-1 w-8 h-1 rounded-full"
-                  style={{ background: "var(--theme-accent)" }}
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  style={{ 
+                    background: "var(--theme-accent)",
+                    opacity: 1,
+                    transform: "scale(1)",
+                    transition: "all 0.3s ease"
+                  }}
                 />
               )}
-            </motion.button>
+            </button>
           );
         })}
 
-        <motion.button
+        <button
           onClick={() => {
             toggle();
             playClick();
             vibrateClick();
           }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          className="flex flex-col items-center justify-center flex-1 gap-1 py-2 lg:gap-2"
+          className="flex flex-col items-center justify-center flex-1 gap-1 py-2 lg:gap-2 transition-transform"
+          style={{ transform: "scale(1)" }}
+          onMouseEnter={(e) => { e.target.style.transform = "scale(1.1)" }}
+          onMouseLeave={(e) => { e.target.style.transform = "scale(1)" }}
+          onMouseDown={(e) => { e.target.style.transform = "scale(0.9)" }}
+          onMouseUp={(e) => { e.target.style.transform = "scale(1.1)" }}
           aria-label={playing ? "Pause music" : "Play music"}
         >
-          <motion.span
-            animate={playing ? { rotate: [0, 10, -10, 0] } : {}}
-            transition={{ duration: 0.5, repeat: playing ? Infinity : 0, repeatDelay: 2 }}
-            className="text-xl sm:text-2xl lg:text-3xl"
+          <span
+            className={`text-xl sm:text-2xl lg:text-3xl ${playing ? 'animate-spin-slow' : ''}`}
+            style={{ animationDuration: "2s" }}
           >
             {playing ? "🎵" : "🔇"}
-          </motion.span>
+          </span>
           <span className="text-[10px] sm:text-[11px] lg:text-xs font-semibold text-gray-500">
             Musik
           </span>
-        </motion.button>
+        </button>
 
-        <motion.button
+        <button
           onClick={handleSecretTrigger}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          className="relative flex items-end justify-center flex-1"
+          className="relative flex items-end justify-center flex-1 transition-transform"
+          style={{ transform: "scale(1)" }}
+          onMouseEnter={(e) => { e.target.style.transform = "scale(1.1)" }}
+          onMouseLeave={(e) => { e.target.style.transform = "scale(1)" }}
+          onMouseDown={(e) => { e.target.style.transform = "scale(0.9)" }}
+          onMouseUp={(e) => { e.target.style.transform = "scale(1.1)" }}
           aria-label="?"
         >
-          <motion.div
-            animate={{
-              y: [0, -4, 0],
-            }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="relative"
+          <div
+            className="relative animate-bounce-slow"
+            style={{ animationDuration: "2s" }}
           >
             <SultanMascot size="sm" emotion="idle" className="ear-wiggle" />
             {sparkle && (
-              <motion.span
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: [1, 1.3, 1], opacity: [1, 0.8, 1] }}
-                exit={{ scale: 0, opacity: 0 }}
-                transition={{ duration: 1, repeat: Infinity }}
+              <span
                 className="absolute -top-1 -right-1 text-base sparkle-blink"
               >
                 ✨
-              </motion.span>
+              </span>
             )}
-          </motion.div>
-        </motion.button>
+          </div>
+        </button>
       </div>
-    </motion.nav>
+    </nav>
   );
 }
