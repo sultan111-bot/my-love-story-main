@@ -26,8 +26,7 @@ export default function Gatekeeper() {
   const navigate = useNavigate();
   const [t, setT] = useState(getRemaining);
   const [celebrate, setCelebrate] = useState(false);
-  const [showSplash, setShowSplash] = useState(false);
-  const [splashComplete, setSplashComplete] = useState(false);
+  const [celebrateDone, setCelebrateDone] = useState(false);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -35,8 +34,8 @@ export default function Gatekeeper() {
         const next = getRemaining();
         if (!prev.done && next.done && !celebrate) {
           setCelebrate(true);
-          setTimeout(() => setShowSplash(true), 1000);
-          setTimeout(() => setSplashComplete(true), 4000);
+          setTimeout(() => setCelebrate(false), 5000);
+          setTimeout(() => setCelebrateDone(true), 4000);
         }
         return next;
       });
@@ -58,48 +57,6 @@ export default function Gatekeeper() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-5 py-10 relative">
-      {/* Splash Screen Ultra-Spesial */}
-      {showSplash && !splashComplete && (
-        <div className="fixed inset-0 z-40 flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 to-pink-200 pointer-events-none">
-          <div className="text-center">
-            <SultanMascot size="xl" emotion="excited" />
-            <h2
-              className="font-display mt-6 mb-4"
-              style={{ 
-                fontSize: "clamp(32px, 8vw, 56px)", 
-                color: "#C2185B",
-                animation: "fadeInUp 1s ease-out"
-              }}
-            >
-              SELAMAT ULANG TAHUN!
-            </h2>
-            <p 
-              style={{ 
-                fontSize: "clamp(16px, 4vw, 24px)", 
-                color: "#88153E" 
-              }}
-            >
-              Sayangku 🎂❤️
-            </p>
-            <div className="mt-8 text-4xl animate-bounce">
-              ✨🎁✨
-            </div>
-          </div>
-          <style>{`
-            @keyframes fadeInUp {
-              from {
-                opacity: 0;
-                transform: translateY(30px);
-              }
-              to {
-                opacity: 1;
-                transform: translateY(0);
-              }
-            }
-          `}</style>
-        </div>
-      )}
-
       <div className="absolute top-3 right-3 z-30">
         <ShareButton />
       </div>
@@ -154,7 +111,7 @@ export default function Gatekeeper() {
       </button>
 
       {/* Sultan corner */}
-      {!celebrate && !showSplash && (
+      {!celebrate && (
         <div className="fixed bottom-6 right-4 z-20 flex items-end gap-2">
           <div style={{ marginBottom: 60 }}>
             <SpeechBubble>Sabar ya, rahasianya masih disimpan rapat! 🐱</SpeechBubble>
@@ -164,7 +121,7 @@ export default function Gatekeeper() {
       )}
 
       {/* Midnight celebration */}
-      {celebrate && !showSplash && (
+      {celebrate && !celebrateDone && (
         <div className="fixed inset-0 z-30 flex flex-col items-center justify-center pointer-events-none">
           <SultanMascot size="xl" emotion="celebrating" />
           <div className="mt-3">
@@ -172,7 +129,7 @@ export default function Gatekeeper() {
           </div>
         </div>
       )}
-      <ConfettiEffect active={celebrate} duration={7000} count={80} />
+      <ConfettiEffect active={celebrate} duration={5000} count={60} />
     </div>
   );
 }
