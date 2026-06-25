@@ -356,7 +356,7 @@ function GiftBox({ onOpen }) {
               className="text-gray-600"
               style={{ fontSize: "clamp(13px, 3.2vw, 17px)" }}
             >
-              {downloading ? "Tunggu sebentar ya..." : "Video sudah ada di galeri hp kamu! 💕"}
+              {downloading ? "Tunggu sebentar ya..." : "Hadiahnya sudah ada di galeri hp kamu! 💕"}
             </p>
           </>
         )}
@@ -423,8 +423,8 @@ function SuccessPage() {
           className="text-gray-600 mb-8"
           style={{ fontSize: "clamp(14px, 3.5vw, 18px)", lineHeight: 1.6 }}
         >
-          Video pesan spesial sudah tersimpan di galeri hp kamu ya! <br />
-          Semoga kamu suka dan senang selalu! 💕✨
+          Hadiah secret nya udh kedownload belommm??? <br />
+          HEHEHEEHHEEH mff yhh klo alay dikit...
         </p>
         
         <div 
@@ -438,7 +438,7 @@ function SuccessPage() {
             className="text-gray-700 font-medium"
             style={{ fontSize: "clamp(13px, 3.2vw, 17px)" }}
           >
-            📌 Kalo video tidak otomatis muncul di galeri, coba cek folder Download!
+            📌 Klo hadiah gaada di galeri, coba cek folder Download bubb!
           </p>
         </div>
       </div>
