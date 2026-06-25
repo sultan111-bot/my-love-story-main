@@ -293,42 +293,71 @@ function GiftBox({ onOpen }) {
 function HiddenContent() {
   const videoRef = useRef(null);
   const { fadeIn, fadeOut, playing } = useMusic();
+  const [videoLoaded, setVideoLoaded] = useState(false);
+
+  // Preload video ketika komponen mount
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.preload = "auto";
+      videoRef.current.load();
+    }
+  }, []);
 
   return (
     <div 
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
+      className="min-h-screen flex flex-col items-center justify-center"
       style={{ 
-        paddingTop: "clamp(24px, 6vw, 48px)",
-        paddingBottom: "calc(clamp(70px, 11vh, 90px) + 80px)",
-        paddingLeft: "clamp(14px, 4.5vw, 28px)",
-        paddingRight: "clamp(14px, 4.5vw, 28px)"
+        paddingTop: "clamp(16px, 4vw, 32px)",
+        paddingBottom: "calc(clamp(70px, 11vh, 90px) + 40px)",
+        paddingLeft: "clamp(12px, 4vw, 24px)",
+        paddingRight: "clamp(12px, 4vw, 24px)",
+        background: "var(--theme-bg)"
       }}
     >
-      <div className="relative z-10 w-full" style={{ maxWidth: "clamp(260px, 90vw, 850px)", margin: "0 auto" }}>
-        <div className="text-center mb-8">
+      <div className="w-full" style={{ maxWidth: "clamp(280px, 95vw, 900px)", margin: "0 auto" }}>
+        <div className="text-center mb-4">
           <h2 
-            className="font-display font-bold mb-3"
+            className="font-display font-bold"
             style={{ 
               color: "var(--theme-accent)",
-              fontSize: "clamp(22px, 5.5vw, 40px)",
+              fontSize: "clamp(20px, 5vw, 36px)",
             }}
           >
-            Pesan Spesial Untukmu 
+            Pesan Spesial Untukmu 💕
           </h2>
-          <p
-            className="text-gray-600"
-            style={{ fontSize: "clamp(13px, 3.2vw, 20px)" }}
-          >
-            Ak buat video inii khusus untuk km tw~ 💕
-          </p>
         </div>
 
-        <div className="relative" style={{ marginTop: "clamp(18px, 4.5vw, 44px)" }}>
+        <div className="relative">
+          {/* Loading state sebelum video siap */}
+          {!videoLoaded && (
+            <div 
+              className="absolute inset-0 flex items-center justify-center rounded-2xl z-10"
+              style={{
+                background: "#FFF5F8",
+                paddingBottom: "56.25%"
+              }}
+            >
+              <div className="text-center" style={{ marginTop: "50%" }}>
+                <div 
+                  className="animate-bounce-slow mb-4"
+                  style={{ fontSize: "clamp(32px, 8vw, 48px)" }}
+                >
+                  🎬
+                </div>
+                <p 
+                  className="text-gray-600"
+                  style={{ fontSize: "clamp(12px, 3vw, 16px)" }}
+                >
+                  Memuat video...
+                </p>
+              </div>
+            </div>
+          )}
+
           <div 
-            className="relative rounded-2xl overflow-hidden shadow-xl"
+            className="relative rounded-xl overflow-hidden shadow-lg"
             style={{ 
-              border: "2px solid #FFE0E9",
-              background: "#FFF5F8"
+              border: "2px solid #FFE0E9"
             }}
           >
             <div className="relative" style={{ paddingBottom: "56.25%" }}>
@@ -337,11 +366,13 @@ function HiddenContent() {
                 src="/video_hbd.mp4"
                 controls
                 playsInline
-                className="absolute top-0 left-0 w-full h-full object-cover"
-                poster=""
+                preload="auto"
+                className={`absolute top-0 left-0 w-full h-full ${videoLoaded ? "object-cover" : "object-contain"}`}
                 style={{
-                  background: "linear-gradient(135deg, #FFB6C1 0%, #FF6B9D 100%)",
+                  background: "#FFF5F8",
                 }}
+                onCanPlay={() => setVideoLoaded(true)}
+                onLoadedData={() => setVideoLoaded(true)}
                 onPlay={() => {
                   if (playing) {
                     fadeOut();
@@ -358,11 +389,12 @@ function HiddenContent() {
           </div>
         </div>
 
-        <div className="flex justify-center mt-8">
-          <div className="animate-bounce-slow" style={{ animationDuration: "3s" }}>
-            <SultanMascot size="md" emotion="celebrating" />
-          </div>
-        </div>
+        <p 
+          className="text-center text-gray-600 mt-4"
+          style={{ fontSize: "clamp(11px, 2.8vw, 15px)" }}
+        >
+          Klik play untuk menonton! ✨
+        </p>
       </div>
     </div>
   );
