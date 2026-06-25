@@ -7,7 +7,6 @@ import { MusicProvider } from "./context/MusicContext.jsx";
 import FloatingPetals from "./components/FloatingPetals.jsx";
 import Navbar from "./components/Navbar.jsx";
 import SultanMascot from "./components/SultanMascot.jsx";
-import { usePWARegister } from "./utils/pwa-register.jsx";
 import Opening from "./pages/Opening.jsx";
 import Home from "./pages/Home.jsx";
 import FunMode from "./pages/FunMode.jsx";
@@ -35,8 +34,6 @@ function AnimatedPage({ children }) {
 }
 
 function Layout() {
-  usePWARegister();  
-
   useEffect(() => {
     audioManager.init();
     console.log('✅ Audio manager initialized (manual only)');
