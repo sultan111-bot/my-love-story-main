@@ -232,7 +232,7 @@ nav {
   height: clamp(80px, 12vh, 100px); /* Lebih tinggi agar jelas */
 }
 
-/* Mobile: Navbar di bawah + PASTI di atas gesture bar */
+/* Mobile: Navbar di bawah */
 @media (max-width: 1023px) {
   nav {
     position: fixed;
@@ -241,13 +241,13 @@ nav {
     right: 0;
     width: 100%;
     height: auto;
-    padding-bottom: 40px; /* PADDING BESAR untuk pastikan tidak tertutupi gesture bar */
+    padding-bottom: 0;
     padding-top: 0;
     padding-left: 0;
     padding-right: 0;
   }
   .navbar-inner {
-    height: clamp(80px, 12vh, 100px);
+    height: clamp(70px, 11vh, 90px);
     width: 100%;
   }
 }
@@ -310,7 +310,7 @@ nav {
 /* Mobile: Home container dengan ruang untuk navbar di bawah */
 @media (max-width: 1023px) {
   .home-container {
-    padding-bottom: calc(clamp(80px, 12vh, 100px) + 40px + 10px); /* Sesuai navbar baru */
+    padding-bottom: 0;
   }
 }
 
@@ -344,7 +344,7 @@ nav {
 /* Mobile: Our Story button di atas navbar */
 @media (max-width: 1023px) {
   .our-story-btn {
-    bottom: calc(clamp(80px, 12vh, 100px) + 40px + 20px); /* Sesuai navbar baru */
+    bottom: calc(clamp(70px, 11vh, 90px) + 12px);
     left: 16px;
   }
   .navbar-inner {

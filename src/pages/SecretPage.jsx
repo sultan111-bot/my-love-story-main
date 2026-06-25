@@ -76,7 +76,7 @@ function Quiz({ onDone }) {
         paddingLeft: "clamp(12px, 4vw, 24px)",
         paddingRight: "clamp(12px, 4vw, 24px)",
         paddingTop: "clamp(20px, 5vw, 40px)",
-        paddingBottom: "calc(clamp(80px, 12vh, 100px) + 80px + 4rem)"
+        paddingBottom: "calc(clamp(70px, 11vh, 90px) + 80px)"
       }}
     >
       <ConfettiEffect active={confetti} duration={1500} count={30} />
@@ -259,7 +259,7 @@ function HiddenContent() {
     },
     container: {
       paddingTop: "clamp(24px, 6vw, 48px)",
-      paddingBottom: "calc(clamp(80px, 12vh, 100px) + 80px + 5rem)", // For bottom navbar
+      paddingBottom: "calc(clamp(70px, 11vh, 90px) + 80px)", // For bottom navbar
       paddingHorizontal: "clamp(14px, 4.5vw, 28px)"
     },
     sparkles: {

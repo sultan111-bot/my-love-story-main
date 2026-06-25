@@ -355,7 +355,7 @@ export default function EmotionalCore() {
     <div className="page-container">
       <div className="flex flex-col px-4 pt-4 pb-4 overflow-y-auto lg:px-8 lg:pt-6" style={{ 
         height: "100%",
-        paddingBottom: "calc(clamp(80px, 12vh, 100px) + 40px + 20px)" /* Sesuai navbar baru */
+        paddingBottom: "calc(clamp(70px, 11vh, 90px) + 40px)"
       }}>
         <div className="flex-shrink-0 mb-4 lg:mb-6">
           <h1 className="font-display text-center" style={{ color: "#C2185B", fontSize: "clamp(20px, 5vw, 36px)" }}>

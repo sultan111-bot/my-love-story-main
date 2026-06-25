@@ -118,7 +118,7 @@ export default function FunMode() {
     <div className="page-container">
       <div className="flex flex-col px-4 pt-4 lg:px-8 lg:pt-8 overflow-y-auto" style={{ 
         height: "100%",
-        paddingBottom: "calc(clamp(80px, 12vh, 100px) + 40px + 20px)" /* Sesuai navbar baru */
+        paddingBottom: "calc(clamp(70px, 11vh, 90px) + 20px)"
       }}>
         <div className="flex-1 space-y-4 lg:space-y-6">
           <div className="max-w-4xl mx-auto w-full">
