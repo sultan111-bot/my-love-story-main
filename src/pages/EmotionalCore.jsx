@@ -21,7 +21,7 @@ const LOVE_REASONS = [
   "Km selalu inget ak??!! GAK EKSPEKK",
   "Humor kita sama sama receh sik hehe...",
   "Km Bisa ak jadiin tempat ceritaa AKJSKSHJAGHASHJKH",
-  "Km klo mish mish, ngeluh, marah, dsb YUYUR AK SUKAK BGT",
+  "Km klo misuh misuh, ngeluh, marah, dsb YUYUR AK SUKAK BGT",
   "Km menuhin love language ak bgtt coyyy hahayy",
   "Ak klo sama kamu ketawa terus??!! hhhh emang yh jodoh",
   "Km Wangiii BGTTTTTTTTTTTT....",
@@ -30,6 +30,7 @@ const LOVE_REASONS = [
 
 function EnvelopeCard({ n, accent, top, left, rot, onEnvelopeClick, registerRef, isHighest, highestZIndex }) {
   const [open, setOpen] = useState(false);
+  const [showContent, setShowContent] = useState(false);
   const [z, setZ] = useState(1);
   const { playPop, playCelebration } = useSound();
   const { vibratePop } = useVibration();
@@ -45,6 +46,18 @@ function EnvelopeCard({ n, accent, top, left, rot, onEnvelopeClick, registerRef,
       setZ(highestZIndex);
     }
   }, [isHighest, highestZIndex]);
+
+  // Handle content show/hide after envelope opens
+  useEffect(() => {
+    if (open) {
+      const timer = setTimeout(() => {
+        setShowContent(true);
+      }, 450); // Envelope buka dulu baru teks muncul
+      return () => clearTimeout(timer);
+    } else {
+      setShowContent(false);
+    }
+  }, [open]);
 
   const handleClick = () => {
     playPop();
@@ -72,7 +85,7 @@ function EnvelopeCard({ n, accent, top, left, rot, onEnvelopeClick, registerRef,
           : `rotate(${rot}deg)`,
         width: open ? "clamp(240px, 75vw, 340px)" : "clamp(80px, 20vw, 140px)",
         height: open ? "clamp(160px, 55vw, 240px)" : "clamp(60px, 15vw, 105px)",
-        transition: "all 0.3s ease",
+        transition: "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
       }}
     >
       <div
@@ -92,7 +105,7 @@ function EnvelopeCard({ n, accent, top, left, rot, onEnvelopeClick, registerRef,
             clipPath: "polygon(0 0, 100% 0, 50% 100%)",
             transformOrigin: "top center",
             transform: open ? "rotateX(-180deg)" : "rotateX(0deg)",
-            transition: "transform 0.4s ease",
+            transition: "transform 0.45s ease-out",
           }}
         />
 
@@ -106,19 +119,21 @@ function EnvelopeCard({ n, accent, top, left, rot, onEnvelopeClick, registerRef,
               width: "clamp(28px, 6vw, 36px)",
               height: "clamp(28px, 6vw, 36px)",
               fontSize: "clamp(10px, 2.5vw, 14px)",
+              transition: "opacity 0.2s ease",
             }}
           >
             {n}
           </div>
         )}
 
-        {/* Letter content */}
+        {/* Letter content - Fade IN ONLY after envelope is fully open */}
         {open && (
           <div
             className="absolute inset-0 flex flex-col items-center justify-center p-4"
             style={{
-              opacity: open ? 1 : 0,
-              transition: "opacity 0.3s ease 0.2s",
+              opacity: showContent ? 1 : 0,
+              transform: showContent ? "translateY(0)" : "translateY(8px)",
+              transition: "opacity 0.5s ease-out 0s, transform 0.5s ease-out 0s",
             }}
           >
             <div 
